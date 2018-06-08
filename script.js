@@ -118,8 +118,8 @@ function Kixley() {
           this.blobs -= 30;
           break;
         default:
-          const err = new Error("Spell " + spell + " is invalid.");
-          throw(err);
+          const err = new Error("Spell \"" + spell + "\" is invalid.");
+          throw err;
       }
     }
     
@@ -133,7 +133,8 @@ function Kixley() {
             this.hitPoints -= 1;
             break;
           default:
-            alert("Error: Effect " + this.statusEffects[i][0] + " is invalid.");
+            const err = new Error("Effect \"" + this.statusEffects[i][0] + "\" is invalid.");
+            throw err;
         }
         this.statusEffects[i][1]--;
         if(this.statusEffects[i][1] === 0) {
@@ -198,10 +199,11 @@ function Kixley() {
             }
             break;
           case spec[0].toLowerCase():
-            doSpec(this.target);
+            for(var i = 0; i < spec
             break;
           default:
-            alert("Error: " + this.action + " is not a valid command.");
+            const err = new Error("\"" + this.action + "\" is not a valid command.");
+            throw err;
             break;
         }
       }
@@ -249,10 +251,18 @@ function Kixley() {
           WonTheFight();
           break;
         default:
-          alert("Error: " + this.endFight + " is not a valid way to end the fight.");
+          const err = new Error("\"" + this.endFight + "\" is not a valid way to end the fight.");
+          throw err;
       }
     }
   }
+  
+  function Spec(name, desc, func) {
+    this.name = name;
+    this.desc = desc;
+    this.func = func;
+  }
+  
   var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50)];
   kixleyNCo[1].calledPlusThe = 'You';
   kixleyNCo[1].calledPlusthe = 'you';
@@ -319,6 +329,10 @@ function Kixley() {
   var fightingAAbea = false;
   var fightingBalbeag = false;
   var arrows = 0;
+  var possibleSpec = [
+    new Spec("Steal", "A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!", Function("target", "if (percentChance(43) && !usedSteal) { alert('You steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!'); kixleyNCo[1].attackPow += 2; fightHandler.notTurn[target].attackPow -= 2; usedSteal = true; } else if(usedSteal) { alert('You\'ve already stolen ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!'); } else { alert('You fail to steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon.'); }"),
+    new Spec("Shoot", "You drop back and shoot an arrow at the monster, decreasing your enemy's accuracy. However, this attack costs arrows.", Function("target", "usedShot = true; fightHandler.notTurn[target].accuracy -= 30; arrows -= 1; alert('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!'); alert('You have ' + arrows + ' arrows!'); fightHandler.notTurn[target].hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3);"0
+  ];
   var spec = []; // special move
   var usedShot = false;
   var usedSteal = false;
@@ -487,7 +501,7 @@ function Kixley() {
     }
     Credits()
     const err = new Error("Thanks for playing!");
-    throw(err)
+    throw err;
   }
 
   function NotAnOption() {
@@ -676,7 +690,8 @@ function Kixley() {
     } else if(place === "mountains") {
       temp = mountainNames[randomNumber(1, mountainNames.length - 1)];
     } else {
-      alert("Error: " + place + " is not a valid place.");
+      const err = new Error("\"" + place + "\" is an invalid place.");
+      throw err;
     }
     numMons = 1;
     monsterGroup[1] = new Fighter(100, 5, 90, temp, kixleyNCo[1].lev, "N/A", 50);
@@ -803,8 +818,8 @@ function Kixley() {
           monsterGroup[i].element = 'Fighting'
           break;
         default:
-          alert("Caution. " + monsterGroup[i].calledPlusThe + "'s type is not defined.");
-          monsterGroup[i].element = undefined
+          const err = new Error("\"" + monsterGroup[i].called + "\" is not in the monster type index.");
+          throw err;
           break;
       }
       monsterGroup[i].intializeMagic();
@@ -998,34 +1013,26 @@ function Kixley() {
       return FightMenu()
     }
   }
-
-  function doSpec(target) {
-    if (chosenClass === 'archer') {
-      Shoot(target)
-    } else {
-      Steal(target)
-    }
-  }
   
   function Shoot(target) {
     usedShot = true
-    fightHandler.notTurn[target].accuracy -= 30
+    target.accuracy -= 30
     arrows -= 1
     alert('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!')
     alert('You have ' + arrows + ' arrows!')
-    fightHandler.notTurn[target].hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3)
+    target.hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3)
   }
 
   function Steal(target) {
     if (percentChance(43) && !usedSteal) {
-      alert('You steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!')
+      alert('You steal ' + target.calledPlusthe + '\'s weapon!')
       kixleyNCo[1].attackPow += 2
-      fightHandler.notTurn[target].attackPow -= 2;
+      target.attackPow -= 2;
       usedSteal = true;
     } else if(usedSteal) {
-      alert('You\'ve already stolen ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!');
+      alert('You\'ve already stolen ' + target.calledPlusthe + '\'s weapon!');
     } else {
-      alert('You fail to steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon.')
+      alert('You fail to steal ' + target.calledPlusthe + '\'s weapon.')
     }
   }
   
@@ -1139,7 +1146,7 @@ function Kixley() {
           Credits()
           pineapples = bananas
         } else {
-          chosenClass = 'dragon'
+          kixleyNCo[1].chosenClass = 12
           kixleyNCo[1].hitPoints = 80000
           kixleyNCo[1].attackPow = 1000
           kixleyNCo[1].magicSkillz = 2000000000000
@@ -1175,7 +1182,7 @@ function Kixley() {
     loc = 5
     numMons = 1;
     towerSaveMenu()
-    if (chosenClass !== 'dragon') {
+    if (kixleyNCo[1].chosenClass !== 12) {
       alert('You use some blobs of doom that you find in Tivél\'s bag to blast down the door and fight Balbeag!')
     }
     monsterGroup[1] = new Fighter(100, 100, 90, "Balbeag", 50, "Boss", 100);
@@ -2077,10 +2084,10 @@ function Kixley() {
         case 'vala':
           ValaClass()
           break;
-        case 'GOOD MUSIC':
+        case 'good music':
           alert('https://www.youtube.com/watch?v=awrzeuTMQfU Watch this!')
           alert('And while you\'re at it, watch this too!: https://www.youtube.com/watch?v=dQw4w9WgXcQ ')
-          ChoosingAClass(chosenClass)
+          ChooseClass()
           break;
         default:
           NotAnOption()
@@ -3080,3 +3087,4 @@ function Kixley() {
     }
   }
 }
+Kixley()
