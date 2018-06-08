@@ -199,7 +199,11 @@ function Kixley() {
             }
             break;
           case spec[0].toLowerCase():
-            for(var i = 0; i < spec
+            for(var i = 0; i < possibleSpec.length; i++) {
+              if(possibleSpec[i] === spec[0]) {
+                possibleSpec.func();
+              }
+            }
             break;
           default:
             const err = new Error("\"" + this.action + "\" is not a valid command.");
@@ -329,7 +333,7 @@ function Kixley() {
   var fightingAAbea = false;
   var fightingBalbeag = false;
   var arrows = 0;
-  var possibleSpec = [new Spec("Steal", "A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!", Function("target", "if (percentChance(43) && !usedSteal) { alert('You steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!'); kixleyNCo[1].attackPow += 2; fightHandler.notTurn[target].attackPow -= 2; usedSteal = true; } else if(usedSteal) { alert('You\'ve already stolen ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!'); } else { alert('You fail to steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon.'); }"), new Spec("Shoot", "You drop back and shoot an arrow at the monster, decreasing your enemy's accuracy. However, this attack costs arrows.", Function("target", "usedShot = true; fightHandler.notTurn[target].accuracy -= 30; arrows -= 1; alert('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!'); alert('You have ' + arrows + ' arrows!'); fightHandler.notTurn[target].hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3);")];
+  var possibleSpec = [new Spec("Steal", "A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!", Function("target", "if (percentChance(43) && !usedSteal) { alert('You steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!'); kixleyNCo[1].attackPow += 2; fightHandler.notTurn[target].attackPow -= 2; usedSteal = true; } else if(usedSteal) { alert('You\'ve already stolen ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!'); } else { alert('You fail to steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon.'); }")),new Spec("Shoot", "You drop back and shoot an arrow at the monster, decreasing your enemy's accuracy. However, this attack costs arrows.", Function("target", "usedShot = true; fightHandler.notTurn[target].accuracy -= 30; arrows -= 1; alert('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!'); alert('You have ' + arrows + ' arrows!'); fightHandler.notTurn[target].hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3);"))];
   var spec = []; // special move
   var usedShot = false;
   var usedSteal = false;
@@ -1494,7 +1498,7 @@ function Kixley() {
         useDefaultClass = parseBool(useDefaultClass)
       }
     }
-    answer = prompt('Choose an option. (Version: Beta 1.2)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
+    answer = prompt('Choose an option. (Version: Beta 1.1)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
     switch (answer) {
       case 'START':
         alert('Before you start, please set the difficulty. Easier difficulties have monsters with less health and attack. Harder difficulties have monsters with more health and attack.')
