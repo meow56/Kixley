@@ -1497,7 +1497,7 @@ function Kixley() {
         useDefaultClass = parseBool(useDefaultClass)
       }
     }
-    answer = prompt('Choose an option. (Version: Beta 1.1)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
+    answer = prompt('Choose an option. (Version: Beta 1.2)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
     switch (answer) {
       case 'START':
         alert('Before you start, please set the difficulty. Easier difficulties have monsters with less health and attack. Harder difficulties have monsters with more health and attack.')
