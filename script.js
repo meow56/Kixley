@@ -184,22 +184,22 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.determineAction = function() {
       switch(this.action) {
-        case "fight":
+        case "Fight":
           this.turn[i].hitMiss(this.notTurn[this.target]);
           break;
-        case "health potion":
+        case "Health Potion":
           useHealthPotion();
           break;
-        case "fire":
+        case "Fire":
           this.turn[i].magic("Fire", this.notTurn[this.target]);
           break;
-        case "rage":
+        case "Rage":
           this.turn[i].magic("Rage");
           break;
-        case "heal":
+        case "Heal":
           this.turn[i].magic("Heal");
           break;
-        case "run":
+        case "Run":
           if(this.notTurn[0].called === "Group of Balbeag's Soldiers" || this.notTurn[0].called === "Tivél" || this.notTurn[0].called === "Balbeag") {
             alert(this.notTurn.calledPlusThe + " got to you before you could get away.");
           } else {
@@ -210,7 +210,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
             }
           }
           break;
-        case spec[0].toLowerCase():
+        case spec[0]:
           actualSpec(this.notTurn[this.target]);
           break;
         default:
@@ -898,9 +898,9 @@ function MonsterAI(monster) {
     }
   }
   if(temp) {
-    fightHandler.action = "rage";
+    fightHandler.action = "Rage";
   } else {
-    fightHandler.action =  "fight";
+    fightHandler.action =  "Fight";
   }
 }
 
