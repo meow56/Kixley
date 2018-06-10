@@ -153,14 +153,15 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
 function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighter2, etc.] faction 2: [faction name, fighter3, fighter4, etc.]
   this.turn = faction1;
   this.notTurn = faction2;
-  this.action;
+  this.action = [""];
   this.endFight = " ";
   this.target;
   this.actionChosen = false;
   this.targetChosen = false;
   
+  var i = 1;
   this.chooseAction = function() {
-    for(var i = 1; i < this.turn.length; i++) {
+    for(i = 1; i < this.turn.length; i++) {
       if(this.turn[i].called === "You") {
         FightMenu();
       } else {
@@ -170,19 +171,20 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
   
   this.chooseTarget = function() {
-      if((this.action === "fight" || this.action === "fire" || this.action === "shoot" || this.action === "steal") && this.notTurn.length > 2) {
+      if((this.action === "Fight" || this.action === "Fire" || this.action === "Shoot" || this.action === "Steal") && this.notTurn.length > 2) {
         this.target = ChooseTarget();
-        if(this.target === "not targeting") {
+        if(this.target === "Cancel") {
           this.actionChosen = false;
           this.fightLoop();
         }
-      } else if (this.action === "fight" || this.action === "fire" || this.action === "shoot" || this.action === "steal") {
+      } else if (this.action === "Fight" || this.action === "Fire" || this.action === "Shoot" || this.action === "Steal") {
         this.target = 1;
         this.targetChosen = true;
       }
   }
   
   this.determineAction = function() {
+    for(var i = 1; i < this.turn.length; i++) {
       switch(this.action) {
         case "Fight":
           this.turn[i].hitMiss(this.notTurn[this.target]);
@@ -218,6 +220,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           throw err;
           break;
       }
+    }
   }
   
   this.endTurn = function() {
@@ -279,6 +282,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
               this.determineAction();
               this.checkEnd();
               this.endTurn();
+              setTimeout(this.fightLoop, 0);
             }
           }
           
@@ -289,7 +293,6 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
         }
       };
       this.fightLoop2();
-      setTimeout(this.fightLoop, 0);
     } else {
     alert(this.endFight);
       this.determineEnd();
@@ -898,9 +901,9 @@ function MonsterAI(monster) {
     }
   }
   if(temp) {
-    fightHandler.action = "Rage";
+    fightHandler.action.push("Rage");
   } else {
-    fightHandler.action =  "Fight";
+    fightHandler.action.push("Fight");
   }
 }
 
@@ -913,18 +916,18 @@ function ChooseTarget() {
     temp.push("Cancel");
     requestInput(temp, determineAnswer);
     function determineAnswer() {
-      fightHandler.action = answer;
+      fightHandler.target = answer;
     }
   } else {
     temp = 0;
     var temp2;
-    for(var i = 0; i < fightHandler.notTurn.length; i++) {
+    for(var i = 1; i < fightHandler.notTurn.length; i++) {
       if(fightHandler.notTurn[i].attackPow > temp) {
         temp = fightHandler.notTurn[i].attackPow; // if the player is not attacking, choose the target with the greatest attack
         temp2 = i;
       }
     }
-    return temp2;
+    fightHandler.target =  temp2;
   }
 }
 
@@ -936,7 +939,7 @@ function FightMenu() {
     requestInput(["Fight", "Health Potion", "Magic", "Run"], determineAnswer);
   }
   function determineAnswer() {
-    fightHandler.action = answer;
+    fightHandler.action.push(answer);
     fightHandler.chooseTarget();
     fightHandler.determineAction();
     // Running From Failure is too great a speech to just delete.
