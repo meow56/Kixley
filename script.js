@@ -287,9 +287,8 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
         } else {
           setTimeout(this.fightLoop2, 0);
         }
-        
-      this.fightLoop2();
       };
+      this.fightLoop2();
       setTimeout(this.fightLoop, 0);
     } else {
     alert(this.endFight);
