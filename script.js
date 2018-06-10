@@ -199,11 +199,7 @@ function Kixley() {
             }
             break;
           case spec[0].toLowerCase():
-            for(var i = 0; i < possibleSpec.length; i++) {
-              if(possibleSpec[i] === spec[0]) {
-                possibleSpec.func();
-              }
-            }
+            actualSpec(this.notTurn[this.target]);
             break;
           default:
             const err = new Error("\"" + this.action + "\" is not a valid command.");
@@ -333,8 +329,8 @@ function Kixley() {
   var fightingAAbea = false;
   var fightingBalbeag = false;
   var arrows = 0;
-  var possibleSpec = [new Spec("Steal", "A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!", Function("target", "if (percentChance(43) && !usedSteal) { alert('You steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!'); kixleyNCo[1].attackPow += 2; fightHandler.notTurn[target].attackPow -= 2; usedSteal = true; } else if(usedSteal) { alert('You\'ve already stolen ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon!'); } else { alert('You fail to steal ' + fightHandler.notTurn[target].calledPlusthe + '\'s weapon.'); }")),new Spec("Shoot", "You drop back and shoot an arrow at the monster, decreasing your enemy's accuracy. However, this attack costs arrows.", Function("target", "usedShot = true; fightHandler.notTurn[target].accuracy -= 30; arrows -= 1; alert('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!'); alert('You have ' + arrows + ' arrows!'); fightHandler.notTurn[target].hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3);"))];
   var spec = []; // special move
+  var actualSpec;
   var usedShot = false;
   var usedSteal = false;
   var flamingSword = false;
@@ -700,19 +696,18 @@ function Kixley() {
       monsterGroup[1].accuracy -= 10
     }
     if(place === "plains") {
-      monsterGroup[1].lev += randomNumber(0, 1)
-      monsterGroup[1].hitPoints = (100 + (monsterGroup[1].lev * randomNumber(0, 3))) * diffSetting
+      monsterGroup[1].lev += randomNumber(0, 1);
+      monsterGroup[1].hitPoints = (100 + (monsterGroup[1].lev * randomNumber(0, 3))) * diffSetting;
+      monsterGroup[1].totalHP = monsterGroup[1].hitPoints;
       monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(4, 8)) * diffSetting;
       if(toMountains) {
-        if(dwNamesB) {
-          if (monsterGroup[1].called !== 'Master') {
-            alert('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
-          } else if (foughtMaster === 0) {
-            alert('You head off towards the mountain, but get accosted by the Master, who is level ' + monsterGroup[1].lev + '.')
-            foughtMaster = 1
-          } else if (foughtMaster === 1) {
-            alert('You head off towards the mountain, but get accosted by a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
-          }
+        if (monsterGroup[1].called !== 'Master') {
+          alert('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
+        } else if (foughtMaster === 0 && monsterGroup[1].called === "Master") {
+          alert('You head off towards the mountain, but get accosted by the Master, who is level ' + monsterGroup[1].lev + '.')
+          foughtMaster = 1
+        } else if (foughtMaster === 1 && monsterGroup[1].called === "Master") {
+          alert('You head off towards the mountain, but get accosted by a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
         } else {
           alert('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
         }
@@ -733,6 +728,7 @@ function Kixley() {
     } else if(place === "swamp") {
       monsterGroup[1].lev *= randomNumber(1, 2);
       monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + Math.pow(monsterGroup[1].lev, 2);
+      monsterGroup[1].totalHP = monsterGroup[1].hitPoints;
       monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(0, 5)) * diffSetting;
       if(dwNamesB) {
         if (monsterGroup[1].called !== 'Master') {
@@ -750,6 +746,7 @@ function Kixley() {
       monsterGroup[1].lev *= randomNumber(1, 2);
       monsterGroup[1].lev += 5;
       monsterGroup[1].hitPoints = (100 + randomNumber(-5, 15)) * diffSetting + Math.pow(monsterGroup[1].lev, 2);
+      monsterGroup[1].totalHP = monsterGroup[1].hitPoints;
       monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(1, 6)) * diffSetting;
       if(dwNamesB) {
         if (monsterGroup[1].called !== 'Master') {
@@ -1076,7 +1073,6 @@ function Kixley() {
     }
     alert('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!')
     totalGold += goldDrops
-    questGoldAmt += goldDrops
     cumulativeGold += goldDrops
     totalExp += expPoints
     questExpAmt += expPoints
@@ -1807,6 +1803,7 @@ function Kixley() {
 
   function ThiefClass() {
     spec = ['Steal', 'A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!']
+    actualSpec = Steal;
     answer = prompt('Thief', 'Inspect, Inspect Special Attack, Choose, Exit').toUpperCase()
     switch (answer) {
       case 'INSPECT':
@@ -1873,6 +1870,7 @@ function Kixley() {
 
   function ArcherClass() {
     spec = ['Shoot', 'You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows']
+    actualSpec = Shoot;
     answer = prompt('Archer', 'Inspect, Choose, Exit').toUpperCase()
     switch (answer) {
       case 'INSPECT':
