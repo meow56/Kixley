@@ -186,15 +186,15 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.determineAction = function() {
     for(var i = 1; i < this.turn.length; i++) {
-      switch(this.action) {
+      switch(this.action[i]) {
         case "Fight":
-          this.turn[i].hitMiss(this.notTurn[this.target]);
+          this.turn[i].hitMiss(this.notTurn[this.target[i]]);
           break;
         case "Health Potion":
           useHealthPotion();
           break;
         case "Fire":
-          this.turn[i].magic("Fire", this.notTurn[this.target]);
+          this.turn[i].magic("Fire", this.notTurn[this.target[i]]);
           break;
         case "Rage":
           this.turn[i].magic("Rage");
@@ -214,7 +214,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           }
           break;
         case spec[0]:
-          actualSpec(this.notTurn[this.target]);
+          actualSpec(this.notTurn[this.target[i]]);
           break;
         default:
           const err = new Error("\"" + this.action + "\" is not a valid command.");
