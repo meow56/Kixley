@@ -159,9 +159,8 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   this.actionChosen = false;
   this.targetChosen = false;
   
-  var i = 1;
   this.chooseAction = function() {
-    for(i = 1; i < this.turn.length; i++) {
+    for(var i = 1; i < this.turn.length; i++) {
       if(this.turn[i].called === "You") {
         FightMenu();
       } else {
@@ -171,16 +170,18 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
   
   this.chooseTarget = function() {
-      if((this.action === "Fight" || this.action === "Fire" || this.action === "Shoot" || this.action === "Steal") && this.notTurn.length > 2) {
+    for(var i = 0; i < this.turn.length; i++) {
+      if((this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
         this.target = ChooseTarget();
         if(this.target === "Cancel") {
           this.actionChosen = false;
           this.fightLoop();
         }
-      } else if (this.action === "Fight" || this.action === "Fire" || this.action === "Shoot" || this.action === "Steal") {
+      } else if (this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
         this.target = 1;
         this.targetChosen = true;
       }
+    }
   }
   
   this.determineAction = function() {
