@@ -155,7 +155,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   this.notTurn = faction2;
   this.action = [""];
   this.endFight = " ";
-  this.target;
+  this.target = [""];
   this.actionChosen = false;
   this.targetChosen = false;
   
@@ -172,13 +172,16 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   this.chooseTarget = function() {
     for(var i = 0; i < this.turn.length; i++) {
       if((this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
-        this.target = ChooseTarget();
+        var temp = ChooseTarget();
         if(this.target === "Cancel") {
           this.actionChosen = false;
           this.fightLoop();
+        } else {
+          this.target.push(temp);
+          this.targetChosen = true;
         }
       } else if (this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
-        this.target = 1;
+        this.target.push(1);
         this.targetChosen = true;
       }
     }
@@ -217,7 +220,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           actualSpec(this.notTurn[this.target[i]]);
           break;
         default:
-          const err = new Error("\"" + this.action + "\" is not a valid command.");
+          const err = new Error("\"" + this.action[i] + "\" is not a valid command.");
           throw err;
           break;
       }
@@ -231,7 +234,9 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     temp = this.turn;
     this.turn = this.notTurn;
     this.notTurn = temp;
+    this.action = [""];
     this.actionChosen = false;
+    this.target = [""];
     this.targetChosen = false;
   }
   
