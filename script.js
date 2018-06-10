@@ -288,14 +288,14 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
               this.determineAction();
               this.checkEnd();
               this.endTurn();
-              setTimeout(function(){this.fightLoop}, 0);
+              setTimeout(function(){fightHandler.fightLoop}, 0);
             }
           }
           
           this.checkEnd();
           this.endTurn();
         } else {
-          setTimeout(function(){this.fightLoop2}, 0);
+          setTimeout(function(){fightHandler.fightLoop2}, 0);
         }
       };
       this.fightLoop2();
