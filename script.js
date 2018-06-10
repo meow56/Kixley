@@ -276,32 +276,32 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   this.fightLoop = function() {
     if(this.endFight === " ") {
       this.chooseAction();
-      
-      this.fightLoop2 = function() {
-        if(this.actionChosen) {
-          this.chooseTarget();
-          
-          this.fightLoop3();
-          
-          this.fightLoop3 = function() {
-            if(this.targetChosen) {
-              this.determineAction();
-              this.checkEnd();
-              this.endTurn();
-              setTimeout(this.fightLoop, 0);
-            }
-          }
-          
-          this.checkEnd();
-          this.endTurn();
-        } else {
-          setTimeout(this.fightLoop2, 0);
-        }
-      };
       this.fightLoop2();
     } else {
-    alert(this.endFight);
+      alert(this.endFight);
       this.determineEnd();
+    }
+  }
+  
+  this.fightLoop2 = function() {
+    if(this.actionChosen) {
+      this.chooseTarget();
+      this.fightLoop3();
+      this.checkEnd();
+      this.endTurn();
+    } else {
+      setTimeout(this.fightLoop2, 0);
+    }
+  }
+  
+  this.fightLoop3 = function() {
+    if(this.targetChosen) {
+      this.determineAction();
+      this.checkEnd();
+      this.endTurn();
+      setTimeout(this.fightLoop, 0);
+    } else {
+      setTimeout(this.fightLoop3, 0);
     }
   }
 }
