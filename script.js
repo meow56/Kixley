@@ -156,6 +156,8 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   this.action = [""];
   this.endFight = " ";
   this.target = [""];
+  this.actionChosen = false;
+  this.targetChosen = false;
   
   this.chooseAction = function() {
     for(var i = 1; i < this.turn.length; i++) {
@@ -172,15 +174,15 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
       if((this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
         var temp = ChooseTarget();
         if(this.target === "Cancel") {
-          actionChosen = false;
+          this.actionChosen = false;
           this.fightLoop();
         } else {
           this.target.push(temp);
-          targetChosen = true;
+          this.targetChosen = true;
         }
       } else if (this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
         this.target.push(1);
-        targetChosen = true;
+        this.targetChosen = true;
       }
     }
   }
@@ -233,9 +235,9 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     this.turn = this.notTurn;
     this.notTurn = temp;
     this.action = [""];
-    actionChosen = false;
+    this.actionChosen = false;
     this.target = [""];
-    targetChosen = false;
+    this.targetChosen = false;
   }
   
   this.checkEnd = function() {
@@ -271,45 +273,49 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     }
   }
   
-  this.fightLoop3 = function() {
-    if(targetChosen) {
-      this.determineAction();
-      this.checkEnd();
-      this.endTurn();
-      setTimeout(this.fightLoop, 0);
-    } else {
-      setTimeout(this.fightLoop3, 0);
-    }
-  }
-  
-  this.fightLoop2 = function() {
-    if(actionChosen) {
-      this.chooseTarget();
-      this.fightLoop3();
-      this.checkEnd();
-      this.endTurn();
-    } else {
-      setTimeout(this.fightLoop2, 0);
-    }
-  }
-  
   this.fightLoop = function() {
     if(this.endFight === " ") {
       this.chooseAction();
+      
+      this.fightLoop2 = function() {
+        if(this.actionChosen) {
+          this.chooseTarget();
+          
+          this.fightLoop3();
+          
+          this.fightLoop3 = function() {
+            if(this.targetChosen) {
+              this.determineAction();
+              this.checkEnd();
+              this.endTurn();
+              setTimeout(function(){this.fightLoop}, 0);
+            }
+          }
+          
+          this.checkEnd();
+          this.endTurn();
+        } else {
+          setTimeout(function(){this.fightLoop2}, 0);
+        }
+      };
       this.fightLoop2();
     } else {
-      alert(this.endFight);
+    alert(this.endFight);
       this.determineEnd();
     }
   }
+}
+
+function Spec(name, desc, func) {
+  this.name = name;
+  this.desc = desc;
+  this.func = func;
 }
 
 var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50)];
 kixleyNCo[1].calledPlusThe = 'You';
 kixleyNCo[1].calledPlusthe = 'you';
 kixleyNCo[1].intializeMagic();
-var actionChosen = false;
-var targetChosen = false;
 var dead = [];
 var monsterGroup = ["Enemy", new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50)];
 var fightHandler = new Fight(kixleyNCo, monsterGroup);
@@ -940,7 +946,6 @@ function FightMenu() {
   }
   function determineAnswer() {
     fightHandler.action.push(answer);
-    actionChosen = true;
     fightHandler.chooseTarget();
     fightHandler.determineAction();
     // Running From Failure is too great a speech to just delete.
