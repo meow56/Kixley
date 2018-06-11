@@ -1101,7 +1101,6 @@ function WonTheFight() {
   if (toMountains) {
     alert("With the monster defeated, you hike back down the mountain.");
     toMountains = false
-    Places();
   }
   goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
   expPoints = randomNumber(50 * numMons, 150 * numMons);
@@ -1336,7 +1335,6 @@ function CheckIfGotAchieve(whichOne) {
         alert('You got the Achievement: Kill 20 Monsters.');
         compAchieve.push('Kill 20 Monsters');
       }
-      Places();
       break;
     case 'Level':
       if (kixleyNCo[1].lev === 5) {
@@ -2718,6 +2716,7 @@ function StatToLevelUp() {
         kixleyNCo[1].totalBlobs += levelUpBlobsOfDoom
         break;
     }
+    Places();
   }
 }
 
