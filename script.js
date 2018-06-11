@@ -2373,35 +2373,37 @@ function InInn() {
   alert('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
   requestInput(["Yes", "Common Room", "Leave"], determineAnswer);
   //answer = prompt('So whadda you say?', 'Yes, No, Common Room').toUpperCase()
-  switch (answer) {
-    case 'Yes':
-      if (totalGold >= 50) {
-        totalGold -= 50;
-        innFloorNumber = randomNumber(1, 2);
-        temp = randomNumber(1, 23);
-        if (temp < 10) {
-          temp.toString(10)
-          temp = '0' + temp
+  function determineAnswer() {
+    switch (answer) {
+      case 'Yes':
+        if (totalGold >= 50) {
+          totalGold -= 50;
+          innFloorNumber = randomNumber(1, 2);
+          temp = randomNumber(1, 23);
+          if (temp < 10) {
+            temp.toString(10)
+            temp = '0' + temp
+          }
+          alert('The man gestures towards a room door. \'There\'s your room, room ' + innFloorNumber.toString(10) + temp + '. Have a good night\'s rest.\'')
+          alert('You wake up fully refreshed, and new vigor fills your heart.')
+          alert('Hit points fully restored!')
+          kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
+          alert('You walk out of the room.')
+          InInn()
+        } else if (totalGold <= 50) {
+          alert('The Inn keeper sighs and says \'You don\'t have enough gold. Sorry, pardner!\'');
+          alert('You go back into town');
+          InTown()
         }
-        alert('The man gestures towards a room door. \'There\'s your room, room ' + innFloorNumber.toString(10) + temp + '. Have a good night\'s rest.\'')
-        alert('You wake up fully refreshed, and new vigor fills your heart.')
-        alert('Hit points fully restored!')
-        kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
-        alert('You walk out of the room.')
-        InInn()
-      } else if (totalGold <= 50) {
-        alert('The Inn keeper sighs and says \'You don\'t have enough gold. Sorry, pardner!\'');
-        alert('You go back into town');
+        break;
+      case 'No':
+        alert('The man sighs as you leave the inn.')
         InTown()
-      }
-      break;
-    case 'No':
-      alert('The man sighs as you leave the inn.')
-      InTown()
-      break;
-    case 'Common Room':
-      inCommonRoom()
-      break;
+        break;
+      case 'Common Room':
+        inCommonRoom()
+        break;
+    }
   }
 }
 
