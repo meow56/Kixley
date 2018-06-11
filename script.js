@@ -942,11 +942,14 @@ function ChooseTarget() {
 
 function FightMenu() {
 // 'What do you do? Health: ' + kixleyNCo[1].hitPoints + '/' + kixleyNCo[1].totalHP + '. ' + monsterGroup[1].called + ' health: ' + FightRound(monsterGroup[1].hitPoints) + '/' + monsterGroup[1].totalHP + '. ' + monsterGroup[1].called + ' type: ' + monsterGroup[1].element + '.'
-  if(hasSpecial) {
-    requestInput(["Fight", "Health Potion", "Magic", "Special Attack", "Run"], determineAnswer);
-  } else {
-    requestInput(["Fight", "Health Potion", "Magic", "Run"], determineAnswer);
+  temp = ["Fight", "Health Potion (" + healthPotion + ")", "Magic", "Special Attack", "Run"];
+  if(!hasSpecial) {
+    temp.splice(temp.indexOf("Special Attack"), 1);
   }
+  if(healthPotion === 0) {
+    temp.splice(temp.indexOf("Health Potion (" + healthPotion + ")"), 1);
+  }
+    requestInput(temp, determineAnswer);
   function determineAnswer() {
     if(answer === "Magic") {
       ChooseSpell();
