@@ -713,7 +713,15 @@ function DevCheats() {
 }
 
 function inTower() {
-  alert('You see this group of prisoners in a dungeon talking about this guy named Balbeag who sent Tivél to destroy Smatino, because this person named Kixley had defeated a lot of his henchmen, the monsters of the Vacant Plains. They say that they hope Tivél tripped over a root in the swamp and drowned in the water.')
+  alert('With the gate shut behind you, you start following Tivél.')
+  alert("Suddenly, you hear footsteps from behind you!");
+  alert("You quickly duck into a nearby room as the group of people passes by.");
+  alert('You can hear someone say, "Ah, Tivél, back from your expedition?"');
+  alert('Tivél says, "Yes, Smatino has been destroyed."');
+  alert('The person says, "Good. Balbeag will be very happy, I\'m sure."');
+  alert('Tivél says, "Yes, yes. I should go though, I need to give him my report."');
+  alert('The person says, "Of course. Good day."');
+  alert('You hear footsteps walking off.');
   hideOrFight()
 }
 
@@ -1024,27 +1032,22 @@ function ChooseSpell() {
 }
 
 function ChooseSpec() {
-  if (specOrNo !== '') {
-    answer = confirm('Would you like to use your special attack? It is ' + spec[0] + '. It\'s decription is \'' + spec[1] + '\'.', 'Yes, No')
+  requestInput(["Yes", "No"], determineAnswer);
+  //answer = confirm('Would you like to use your special attack? It is ' + spec[0] + '. It\'s decription is \'' + spec[1] + '\'.', 'Yes, No')
+  function determineAnswer() {
     switch (answer) {
-      case true:
+      case "Yes":
         if(spec[0] === "Shoot" && arrows === 0) {
           alert("You're out of arrows to shoot!");
-          return ChooseSpec();
+          ChooseSpec();
+        } else {
+          fightHandler.action.push(spec[0].toLowerCase());
         }
-        return spec[0].toLowerCase();
         break;
-      case false:
-        return FightMenu()
-        break;
-      default:
-        NotAnOption()
-        return ChooseSpec()
+      case "No":
+        FightMenu()
         break;
     }
-  } else {
-    alert('This class doesn\'t have a special attack!')
-    return FightMenu()
   }
 }
 
@@ -1127,7 +1130,6 @@ function WonTheFight() {
 }
 
 function hideOrFight() {
-  answer = prompt('Suddenly, you see soldiers talking about how great their master Balbeag is. Do you take them down, or hide from them?', 'Take Them Down, Hide').toLowerCase();
   for(var i = 1; i < 4; i++) {
     monsterGroup[i] = new Fighter(100, 100, 90, 'Balbeag\'s Soldier ' + i, 10, 'Balbeag Worker', 100);
     monsterGroup[i].calledPlusThe = 'Balbeag\'s Soldier ' + i;
@@ -1138,69 +1140,15 @@ function hideOrFight() {
   loc = 3
   numMons = 3;
   fightingGroup = true
-  switch (answer) {
-    case 'hide':
-    case 'hide from them':
-      alert('As they pass your hiding place, they see you and say \'Hey, look at that little rat hiding in a garbage can!\'')
-      fightHandler = new Fight(kixleyNCo, monsterGroup);
-      fightHandler.fightLoop();
-      break;
-    case 'take them down':
-    case 'take':
-    case 'fight':
-    case 'take down':
-      alert('You jump out in front of them and they draw their swords.')
-      fightHandler = new Fight(kixleyNCo, monsterGroup);
-      fightHandler.fightLoop();
-      break;
-    case 'yell ur mom gay':
-    case 'yell "ur mom gay"':
-    case 'yell your mom gay':
-    case 'yell "your mom gay"':
-      alert('The soldiers notice you and they draw their swords.')
-      fightHandler = new Fight(kixleyNCo, monsterGroup);
-      fightHandler.fightLoop();
-      break;
-    case 'commit suicide':
-      alert('You grab a sword from a soldier and lop off your head.')
-      Credits()
-      beatTheGame()
-      break;
-    case 'exist':
-    case 'breathe':
-    case 'stay':
-      alert('You stay where you are and the soldiers find and fight you.')
-      fightHandler = new Fight(kixleyNCo, monsterGroup);
-      fightHandler.fightLoop();
-      break;
-    case 'transform into a dragon':
-      if (percentChance(99.99)) {
-        alert('You attempt to transform into a dragon, but fail, and the soldiers kill you.')
-        Credits()
-        pineapples = bananas
-      } else {
-        kixleyNCo[1].chosenClass = 12
-        kixleyNCo[1].hitPoints = 80000
-        kixleyNCo[1].attackPow = 1000
-        kixleyNCo[1].magicSkillz = 2000000000000
-        kixleyNCo[1].accuracy = 100
-        alert('You transform into a dragon, and kill the soldiers as well as Tivél. You then blast down Balbeag\'s door and fight him too.')
-        fightingGroup = false;
-        finalBossFight()
-      }
-      break;
-    default:
-      alert('That wasn\'t an option. Please fight a group of Balbeag\'s soldiers.')
-      fightHandler = new Fight(kixleyNCo, monsterGroup);
-      fightHandler.fightLoop();
-      break;
-  }
+  alert("With the footsteps gone, you exit your hiding spot and start to follow Tivél. Before you can, you hear a shout from behind! Turning, you see the group of soldiers rushing at you!");
+  fightHandler = new Fight(kixleyNCo, monsterGroup);
+  fightHandler.fightLoop();
 }
 
 function inTowerPostDoomedGroup() {
   loc = 4
   numMons = 1;
-  alert('You climb on up the tower, and meet a trembling Tivél, who has just reported to Balbeag. You then have to fight him.')
+  alert('With the soldiers dispatched, you hurry up the stairs to the top of the tower. As you approach the top, you can see Tivél leave a door. He sees you, a crazy look in his eyes, and shouts "DIE, SCUM!"')
   monsterGroup[1] = new Fighter(100, 100, 90, "Tivél", 25, "Balbeag Assistant", 100);
   monsterGroup[1].calledPlusThe = monsterGroup[1].called
   monsterGroup[1].calledPlusthe = monsterGroup[1].called
@@ -1216,7 +1164,21 @@ function finalBossFight() {
   numMons = 1;
   towerSaveMenu()
   if (kixleyNCo[1].chosenClass !== 12) {
-    alert('You use some blobs of doom that you find in Tivél\'s bag to blast down the door and fight Balbeag!')
+    alert('You use some blobs of doom that you find in Tivél\'s bag to blast down the door.')
+    alert("You are in a large throne room, and at the end of it is a throne. A person is sitting upon it.")
+    alert("The person stands.");
+    alert('"Ah, hello. Kixley, was it?"');
+    alert('You growl, "And I assume you\'re the Balbeag I\'ve heard so much about?"');
+    alert('Balbeag nods.');
+    alert('You say, "Why did you send Tivél to destroy Smatino?"');
+    alert('Balbeag chuckles. "It was you, my boy."');
+    alert('"Don\'t call me that. And what do you mean?"');
+    alert('"You\'ve been destroying all of my minions, of course. I had to stop you."');
+    alert('"...By destroying Smatino."');
+    alert('Balbeag hesitates. "Well, I... didn\'t think Tivél was strong enough to kill you. But uh, that doesn\'t matter! What matters is that you\'re in my throne room, which is unacceptable."');
+    alert('Balbeag smirks. "Are you ready to die?"');
+    alert('You adopt a fighting stance.');
+    alert('"You should be asking yourself that."');
   }
   monsterGroup[1] = new Fighter(100, 100, 90, "Balbeag", 50, "Boss", 100);
   monsterGroup[1].calledPlusThe = monsterGroup[1].called
@@ -1234,152 +1196,124 @@ function finalBossFight() {
 
 function Options() {
   alert('This is the options menu!');
-  answer = prompt('What would you like to do? Volume: ' + volumeSettings, 'Volume, Quality, Text Pace, Leave').toUpperCase();
-  switch (answer) {
-    case 'VOLUME':
-      volumeSettings = prompt('What do you want to set the volume at?', '1 to 10');
-      switch (answer) {
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '10':
-          alert('Volume set! Now just imagine the noises at the appropriate volume.');
-          Options();
-          break;
-        default:
-          alert('It can only be from 1 to 10.');
-          volumeSettings = '';
-          Options();
-      }
-      break;
-    case 'QUALITY':
-      alert('What are you talking about? We don\'t have any pictures, man.');
-      Options();
-      break;
-    case 'TEXT PACE':
-      alert('Hahahahahahahaha. All the text is instant, man.');
-      Options();
-      break;
-    case 'LEAVE':
-      if (from === 'in-game') {
-        Menu();
-      } else {
-        StartUpMenu();
-      }
-      break;
-    case 'DEV CHEATS':
-      alert('Welcome to the secret area, where you can enable developer cheats.');
-      alert('Don\'t use these if you\'re not a dev.');
-      answer = prompt('What is the password?', 'Leave').toLowerCase();
-      switch (answer) {
-        case '65810':
-          alert('Access granted!');
-          DevCheats();
-          break;
-        case 'leave':
-          switch (loc) {
-            case 1:
-              Places()
-              break;
-            case 2:
-              InTown()
-              break;
-            case null:
-              StartUpMenu()
-              break;
-          }
-          break;
-        default:
-          alert('Bad boy. Go sit in an infinite loop.');
-          while (true) {
-            alert('-rAQZdew');
-            alert('That message was brought to you by Murphy, one of the programmer\'s dog.')
-            alert('Also this is an infinite loop')
-          }
-          while (true) {
-            alert('-rAQZdew')
-            alert('That message was brought to you by Murphy, one of the programmer\'s dog.')
-          }
-      }
-      break;
-    default:
-      NotAnOption()
-      Options()
-      break;
+  requestInput(["Volume", "Quality", "Text Pace", "Leave"], determineAnswer);
+  // answer = prompt('What would you like to do? Volume: ' + volumeSettings, 'Volume, Quality, Text Pace, Leave').toUpperCase();
+  function determineAnswer() {
+    switch (answer) {
+      case 'Volume':
+        volumeSettings = prompt('What do you want to set the volume to?', '0 to 10');
+        switch (answer) {
+          case '1':
+          case '2':
+          case '3':
+          case '4':
+          case '5':
+          case '6':
+          case '7':
+          case '8':
+          case '9':
+          case '10':
+            alert('Volume set! Now just imagine the noises at the appropriate volume.');
+            Options();
+            break;
+          case 0:
+            alert("Volume set! Now just play the game normally!");
+            Options();
+            break;
+          case "Dev Cheats":
+            alert('Welcome to the secret area, where you can enable developer cheats.');
+            alert('Don\'t use these if you\'re not a dev.');
+            temp = DevPassAttempt();
+            if(temp === 42) {
+              Options();
+            } else if(temp) {
+              alert("gud");
+              DevCheats();
+            } else {
+              alert('Bad boy. Go sit in an infinite loop.');
+              while (true) {
+                alert('-rAQZdew')
+                alert('That message was brought to you by Murphy, one of the programmer\'s dog.')
+              }
+            }
+            break;
+          default:
+            alert('It can only be from 1 to 10.');
+            volumeSettings = '';
+            Options();
+        }
+        break;
+      case 'Quality':
+        alert('What are you talking about? We don\'t have any pictures.');
+        Options();
+        break;
+      case 'Text Pace':
+        alert('Hahahahahahahaha. All the text is instant.');
+        Options();
+        break;
+      case 'Leave':
+        if (from === 'in-game') {
+          Menu();
+        } else {
+          StartUpMenu();
+        }
+        break;
+    }
   }
 }
 
 function Places() {
   loc = 1
-  if (mountainPass) {
-    answer = prompt('Where do you go now? You have ' + totalGold + ' gold, and ' + kixleyNCo[1].hitPoints + '/' + kixleyNCo[1].totalHP + ' health.', 'Town, Plains, Swamp, Mountains, Menu').toUpperCase()  
-  } else {
-    answer = prompt('Where do you go now? You have ' + totalGold + ' gold, and ' + kixleyNCo[1].hitPoints + '/' + kixleyNCo[1].totalHP + ' health.', 'Town, Plains, Swamp, Menu').toUpperCase()
+  temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
+  if(!swampDiscovery) {
+    temp.splice(temp.indexOf("Swamp"), 1);
   }
-  switch (answer) {
-    case 'TOWN':
-      if (aabeaDestroysTown === false) {
-        alert('You walk into town, where there is a marketplace and an inn.')
-        InTown()
-      } else {
-        alert('As you near the outskirts of town, you notice the stream of people leaving town. Then you notice that the entire place is now just a gigantic blast crater. Somebody blew it up!!! You decide to investigate, and walk over to the stream of people.')
-        alert('When you reach the people, they all say this person named Tivél had just come to town and started fires all over, and then used some weird, magical powers to blow up Smatino.')
-        alert('You are sure this Tivél is the same as the one who you met in the swamp, and wish you had used some \'weird, magical powers\' to blow him up')
-        alert('You race back to the swamp, and see him from a distance. You can\'t, however, blow him up. There are too many vines in the way. So, you follow him. You see a large tower in the distance, and finally, after a few hours, reach it at night. You see Tivél enter, and then, as the gate is clanging down above him, you slide under it and manage to get in.')
-        inTower()
-      }
-      break;
-    case 'PLAINS':
-      if (plainsCounter === 7) {
-        alert('As you are walking through the plains you see a map lying on the ground. It shows a path leading to a nearby swamp.')
-        swampDiscovery = true
-      }
-      monsInitialize("plains");
-      break;
-    case 'SWAMP':
-      if (!swampDiscovery) {
-        alert('You have heard rumors of this place, but have never been able to find out where it is.')
-        Places();
-      } else {
+  if(!mountainPass) {
+    temp.splice(temp.indexOf("Mountains"), 1);
+  }
+  requestInput(temp, determineAnswer);
+  // answer = prompt('Where do you go now? You have ' + totalGold + ' gold, and ' + kixleyNCo[1].hitPoints + '/' + kixleyNCo[1].totalHP + ' health.', 'Town, Plains, Swamp, Mountains, Menu').toUpperCase()  
+  function determineAnswer() {
+    switch (answer) {
+      case 'Town':
+        if (aabeaDestroysTown === false) {
+          alert('You walk into town, where there is a marketplace and an inn.')
+          InTown()
+        } else {
+          alert('As you near the outskirts of town, you notice the stream of people leaving town. Then you notice that the entire place is now just a gigantic blast crater. Somebody blew it up!!! You decide to investigate, and walk over to the stream of people.')
+          alert('When you reach the people, they all say this person named Tivél had just come to town and started fires all over, and then used some weird, magical powers to blow up Smatino.')
+          alert('You are sure this Tivél is the same as the one who you met in the swamp, and wish you had used some \'weird, magical powers\' to blow him up.')
+          alert('You race back to the swamp, and see him from a distance. You can\'t, however, blow him up. There are too many vines in the way. So, you follow him. You see a large tower in the distance, and finally, after a few hours, reach it at night. You see Tivél enter, and then, as the gate is clanging down above him, you slide under it and manage to get in.')
+          inTower()
+        }
+        break;
+      case 'Plains':
+        if (plainsCounter === 7) {
+          alert('As you are walking through the plains you see a map lying on the ground. It shows a path leading to a nearby swamp.')
+          swampDiscovery = true
+        }
+        monsInitialize("plains");
+        break;
+      case 'Swamp':
         if (swampCounter === 7 && killCounter >= 14) {
           alert('As you are walking through the swamp, you meet someone. He says his name is Tivél, and he is heading towards Smatino, but doesn\'t tell why.')
           aabeaDestroysTown = true
         }
         inSwamp = 1;
         monsInitialize("swamp");
-      }
-      break;
-    case 'MOUNTAINS':
-    case 'PASS':
-    case 'MOUNTAIN PASS':
-      if(!mountainPass) {
-        alert("You try and try, but you can't get to the mountain!");
-        Places();
-      } else {
+        break;
+      case 'Mountains':
         toMountains = true
         if(percentChance(50)) {
           monsInitialize("plains");
         } else {
           Mountains()
         }
-      }
-      break;
-    case 'SAVE':
-      savePlaces()
-      break;
-    case 'MENU':
-      Menu()
-      break;
-    default:
-      NotAnOption()
-      Places()
-      break;
+        break;
+      case 'MENU':
+        Menu()
+        break;
+    }
   }
 }
 
@@ -1455,27 +1389,21 @@ function ListingAchievements() {
 function achievementMenu() {
   achieveCompletion = (compAchieve.length / allAchievements.length) * 100;
   alert('This is the achievement menu. Here you can find the list of achievements, both completed and unfinished.');
-  answer = prompt('Achievement completion: ' + achieveCompletion + '%', 'List Achievements, Exit').toUpperCase();
-  switch (answer) {
-    case 'LIST ACHIEVEMENTS':
-      ListingAchievements();
-      break;
-    case 'PINEAPPLES':
-      alert('The mighty pineapple sits on his throne atop the highest mountain of Uruloki. In his slow, booming, voice, he says, \'Whoever has called upon me shall perish!\' Then he turns on you and shoots you with lasers coming from his eyes.')
-      alert('\'GAHHH!!!\' you scream as you wake up. \'Oh,\' you think. \'That was just a dream. Whew!\' You stand up and continue browsing your achievements.');
-      achievementMenu();
-      break;
-    case 'EXIT':
-      if (from !== 'in-game') {
-        StartUpMenu();
-      } else {
-        Menu()
-      }
-      break;
-    default:
-      NotAnOption();
-      achievementMenu();
-      break;
+  requestInput(["List Achievements", "Leave"], determineAnswer);
+  // answer = prompt('Achievement completion: ' + achieveCompletion + '%', 'List Achievements, Exit').toUpperCase();
+  function determineAnswer() {
+    switch (answer) {
+      case 'List Achievements':
+        ListingAchievements();
+        break;
+      case 'Exit':
+        if (from !== 'in-game') {
+          StartUpMenu();
+        } else {
+          Menu()
+        }
+        break;
+    }
   }
 }
 
@@ -1484,10 +1412,11 @@ function StartUpMenu() {
     switch (randomNumber(1, 10000)) {
       case 3141:
         alert('WELCOME TO unnamedTextAdventure!');
+        openingMenu = false;
         break;
       default:
         alert('WELCOME TO KIXLEY!');
-        openingMenu = false
+        openingMenu = false;
     }
   }
 
@@ -1519,6 +1448,7 @@ function StartUpMenu() {
     firefoxWindow()
     chromeWindow()
   }
+  
   username = localStorage.getItem('staySignedInAs')
   if (username !== null) {
     useDefaults = localStorage.getItem('Defaults Used?' + username + 'Kixley@65810')
@@ -1530,128 +1460,100 @@ function StartUpMenu() {
       useDefaultClass = parseBool(useDefaultClass)
     }
   }
-  answer = prompt('Choose an option. (Version: Beta 1.1)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
-  switch (answer) {
-    case 'START':
-      alert('Before you start, please set the difficulty. Easier difficulties have monsters with less health and attack. Harder difficulties have monsters with more health and attack.')
-      openingMenu = 0
-      Difficulty()
-      break;
-    case 'OPTIONS':
-      Options()
-      break;
-    case 'LOAD':
-      load()
-      break;
-    case 'ACHIEVEMENTS':
-      achievementMenu()
-      break;
-    case 'EXIT':
-      alert('Goodbye!')
-      Credits()
-      const err = new Error("Thanks for playing!");
-      throw err;
-      break;
-    case 'CREATE NEW ACCOUNT':
-      alert('WARNING: As of right now, accounts are not yet in working order. As such, use with caution.')
-      MakeNewAccount()
-      break;
-    case 'LOGIN':
-      alert('WARNING: As of right now, accounts are not yet in working order. As such, use with caution.')
-      login()
-      break;
-    case 'YEE':
-      var windowObjectReference;
-      var strWindowFeatures = 'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes';
-      windowObjectReference = window.open('https://www.youtube.com/watch?v=q6EoRBvdVPQ', 'YEE', strWindowFeatures)
-      alert('Did you watch it?')
-      StartUpMenu()
-      break;
-    case 'MOZILLA GEAR STORE':
-      alert('Check out the plush fox in the store!')
-      var windowObjectReference;
-      var strWindowFeatures = 'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes';
-      windowObjectReference = window.open('https://gear.mozilla.org/?utm_source=directory-tiles&utm_medium=tiles&utm_content=GearV2', 'Mozilla_Gear_Store', strWindowFeatures)
-      StartUpMenu()
-      break;
-    case 'GO DIE IN A HOLE':
-      alert('No. Go sit in an infinite loop.')
-      while (true) {
-        alert('-rAQZdew')
-        alert('That message was brought to you by Murphy, one of the programmer\'s dog.')
-      }
-      break;
-    default:
-      NotAnOption()
-      StartUpMenu()
-      break;
+  requestInput(["Start", "Options", "Load", "Achievements", "Create New Account", "Log In", "Exit"], determineAnswer);
+  //answer = prompt('Choose an option. (Version: Beta 1.1)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Start':
+        alert('Before you start, please set the difficulty. Easier difficulties have monsters with less health and attack. Harder difficulties have monsters with more health and attack.')
+        openingMenu = 0
+        Difficulty()
+        break;
+      case 'Options':
+        Options()
+        break;
+      case 'Load':
+        load()
+        break;
+      case 'Achievements':
+        achievementMenu()
+        break;
+      case 'Exit':
+        alert('Goodbye!')
+        Credits()
+        const err = new Error("Thanks for playing!");
+        throw err;
+        break;
+      case 'Create New Account':
+        alert('WARNING: As of right now, accounts are not yet in working order. As such, use with caution.')
+        MakeNewAccount()
+        break;
+      case 'Login':
+        alert('WARNING: As of right now, accounts are not yet in working order. As such, use with caution.')
+        login()
+        break;
+    }
   }
 }
 
 function Menu() {
   from = 'in-game'
-  answer = prompt('Choose an option. (Version: Beta 1.1)', 'Options, Exit, Return, Save, Log In').toLowerCase()
-  switch (answer) {
-    case 'options':
-      Options()
-      break;
-    case 'exit':
-      alert('Adios!')
-      Credits()
-      const e = new Error("Thanks for playing!");
-      throw e;
-      break;
-    case 'return':
-      switch (loc) {
-        case 1:
-          Places()
-          break;
-        case 2:
-          InTown()
-          break;
-      }
-      break;
-    case 'save':
-      saveMenu()
-      break;
-    case 'log in':
-      alert('WARNING: As of right now, accounts are not yet in working order. As such, use with caution.')
-      login()
-      break;
-    default:
-      NotAnOption()
-      Menu()
+  requestInput(["Options", "Exit", "Return", "Save", "Log In"], determineAnswer);
+  // answer = prompt('Choose an option. (Version: Beta 1.1)', 'Options, Exit, Return, Save, Log In').toLowerCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Options':
+        Options()
+        break;
+      case 'Exit':
+        alert('Adios!')
+        Credits()
+        const e = new Error("Thanks for playing!");
+        throw e;
+        break;
+      case 'Return':
+        switch (loc) {
+          case 1:
+            Places()
+            break;
+          case 2:
+            InTown()
+            break;
+        }
+        break;
+      case 'Save':
+        saveMenu()
+        break;
+      case 'Log In':
+        alert('WARNING: As of right now, accounts are not yet in working order. As such, use with caution.')
+        login()
+        break;
+    }
   }
 }
 
 function Difficulty() {
   if (useDefaults === false || useDefaultDiff === false) {
-    answer = prompt('What do you want the difficulty to be?', 'Easy, Normal, Hard, Epic, Legend').toUpperCase()
-    switch (answer) {
-      case 'EASY':
-      case "EZ":
-        diffSetting = 0.5
-        break;
-      case 'NORMAL':
-      case "N":
-        diffSetting = 1
-        break;
-      case 'HARD':
-      case "H":
-        diffSetting = 1.5
-        break;
-      case 'EPIC':
-      case "E":
-        diffSetting = 2
-        break;
-      case 'LEGEND':
-      case "L":
-        diffSetting = 2.5
-        break;
-      default:
-        NotAnOption()
-        Difficulty()
-        break;
+    requestInput(["Easy", "Normal", "Hard", "Epic", "Legend"], determineAnswer);
+    //answer = prompt('What do you want the difficulty to be?', 'Easy, Normal, Hard, Epic, Legend').toUpperCase()
+    function determineAnswer() {
+      switch (answer) {
+        case 'Easy':
+          diffSetting = 0.5
+          break;
+        case 'Normal':
+          diffSetting = 1
+          break;
+        case 'Hard':
+          diffSetting = 1.5
+          break;
+        case 'Epic':
+          diffSetting = 2
+          break;
+        case 'Legend':
+          diffSetting = 2.5
+          break;
+      }
     }
   } else {
     diffSetting = localStorage.getItem(username + 'Difficulty@Kixley@65810')
@@ -1712,222 +1614,210 @@ function Difficulty() {
 
 function KnightClass() {
   resetSpec()
-  answer = prompt('Knight', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Knight is a fierce warrior. He/She knows when to fight and when to block, and trains himself ceaselessly. Attack + 2, Health + 15, Blobs of Doom - 100 (similar to mana or magicka), Spells 50% less effective.')
-      KnightClass()
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      KnightClass()
-      break;
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  // answer = prompt('Knight', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Knight is a fierce warrior. He/She knows when to fight and when to block, and trains him/herself ceaselessly. Attack + 2, Health + 15, Blobs of Doom - 100 (similar to mana or magicka), Spells 50% less effective.')
+        KnightClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function MageClass() {
   resetSpec()
-  answer = prompt('Mage', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Mage does not overuse the fight option. Rather, he/she uses magical attacks that damage the enemy. Attack - 2, Blobs of Doom (similar to mana or magicka) + 100, Health - 15, Spells 50% more effective.')
-      MageClass()
-      break;
-    case 'CHOOSE':
-    case 'INSPECT, CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      MageClass()
-      break;
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Mage', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Mage does not overuse the fight option. Rather, he/she uses magical attacks that damage the enemy. Attack - 2, Blobs of Doom (similar to mana or magicka) + 100, Health - 15, Spells 50% more effective.')
+        MageClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function BarbarianClass() {
   resetSpec()
-  answer = prompt('Barbarian', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Barbarian hits hard, but at the cost of health. With the Rage spell, he/she can knock out enemies with a single hit. Attack + 4, Health - 25')
-      BarbarianClass()
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      BarbarianClass()
-      break;
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Barbarian', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Barbarian hits hard, but at the cost of health. With the Rage spell, he/she can knock out enemies with a single hit. Attack + 4, Health - 25')
+        BarbarianClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function ClericClass() {
   resetSpec()
-  answer = prompt('Cleric', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Cleric would prefer to heal friends than attack foes, but he/she will have to fight now. With the new Heal spell, they can restore some of their health. Attack - 3, Health + 10, Blobs of Doom (similar to mana or magicka) +  50, Spells 25% more effective, Heal spell.')
-      ClericClass()
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      ClericClass()
-      break;
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Cleric', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Cleric would prefer to heal friends than attack foes, but he/she will have to fight now. With the new Heal spell, they can restore some of their health. Attack - 3, Health + 10, Blobs of Doom (similar to mana or magicka) +  50, Spells 25% more effective, Heal spell.')
+        ClericClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function PrinceClass() {
   resetSpec()
-  answer = prompt('Prince', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Prince is like a Knight on steroids. The fight option is definitely the choice for this class. Attack + 4, Health + 30, Blobs of Doom (similar to mana or magicka) - 200, Spells 75% less effective.')
-      PrinceClass()
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      PrinceClass()
-      break;
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Prince', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Prince is like a Knight on steroids. The fight option is definitely the choice for this class. Attack + 4, Health + 30, Blobs of Doom (similar to mana or magicka) - 200, Spells 75% less effective.')
+        PrinceClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function ArchmageClass() {
   resetSpec()
-  answer = prompt('Arch-Mage', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Arch-Mage is like a Mage on steroids. You should definitely use some magic as this class. Attack - 4, Health - 30, Blobs of Doom (similar to mana or magicka) + 200, Spells 75% more effective.')
-      ArchmageClass()
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      ArchmageClass()
-      break;
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Arch-Mage', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Arch-Mage is like a Mage on steroids. You should definitely use some magic as this class. Attack - 4, Health - 30, Blobs of Doom (similar to mana or magicka) + 200, Spells 75% more effective.')
+        ArchmageClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function ThiefClass() {
   spec = ['Steal', 'A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!']
   actualSpec = Steal;
-  answer = prompt('Thief', 'Inspect, Inspect Special Attack, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Thief class has put his/her stealing ability to good use. Now, he/she steals from monsters! Attack - 1, Blobs of Doom (similar to mana or magicka) - 50, Accuracy + 20%, Drops + 50%, Special Attack: Steal.')
-      ThiefClass()
-      break;
-    case 'INSPECT SPECIAL ATTACK':
-    case 'INSPECT SPECIAL':
-      alert(spec[1])
-      ThiefClass()
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      ThiefClass()
-      break;
+  requestInput(["Inspect", "Inspect Special Attack", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Thief', 'Inspect, Inspect Special Attack, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Thief class has put his/her stealing ability to good use. Now, he/she steals from monsters! Attack - 1, Blobs of Doom (similar to mana or magicka) - 50, Accuracy + 20%, Drops + 50%, Special Attack: Steal.')
+        ThiefClass()
+        break;
+      case 'Inspect Special Attack':
+        alert(spec[1])
+        ThiefClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function NinjaClass() {
   resetSpec()
-  answer = prompt('Ninja', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Ninja class is oriented towards hitting more and getting hit less. With higher accuracy, this master of hiding also decreases his/her opponent\'s accuracy. Attack - 2, Blobs of Doom (similar to mana or magicka) - 50, Accuracy + 25%, Monster Accuracy - 35%')
-      NinjaClass()
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      NinjaClass()
-      break;
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Ninja', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Ninja class is oriented towards hitting more and getting hit less. With higher accuracy, this master of hiding also decreases his/her opponent\'s accuracy. Attack - 2, Blobs of Doom (similar to mana or magicka) - 50, Accuracy + 25%, Monster Accuracy - 35%')
+        NinjaClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function CavalryClass() {
   resetSpec()
-  answer = prompt('Cavalry', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Cavalry class is like the Knight, but has a higher crit chance. However, the other advantages are less. Attack + 1, Health + 7, Crit Chance + 10%, Crit Multiplier + 0.5, Blobs of Doom (similar to mana or magicka) - 150, Spells 60% less effective.')
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      CavalryClass()
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Cavalry', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Cavalry class is like the Knight, but has a higher crit chance. However, the other advantages are less. Attack + 1, Health + 7, Crit Chance + 10%, Crit Multiplier + 0.5, Blobs of Doom (similar to mana or magicka) - 150, Spells 60% less effective.')
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function ArcherClass() {
   spec = ['Shoot', 'You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows']
   actualSpec = Shoot;
-  answer = prompt('Archer', 'Inspect, Choose, Exit').toUpperCase()
-  switch (answer) {
-    case 'INSPECT':
-      alert('The Archer class isn\'t the strongest, but they still can fight well. With the Shoot attack, they can inflict damage while making the monster less accurate. Attack - 2, Health - 7, Blobs of Doom (similar to mana or magicka), - 15, Spells 10% more effective, Accuracy + 30%, Special Attack: Shoot.')
-      ArcherClass()
-      break;
-    case 'INSPECT SPECIAL ATTACK':
-    case 'INSPECT SPECIAL':
-      alert(spec[1])
-      ArcherClass()
-      break;
-    case 'CHOOSE':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'EXIT':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      ArcherClass()
-      break;
+  requestInput(["Inspect", "Inspect Special Attack", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Archer', 'Inspect, Choose, Exit').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Archer class isn\'t the strongest, but they still can fight well. With the Shoot attack, they can inflict damage while making the monster less accurate. Attack - 2, Health - 7, Blobs of Doom (similar to mana or magicka), - 15, Spells 10% more effective, Accuracy + 30%, Special Attack: Shoot.')
+        ArcherClass()
+        break;
+      case 'Inspect Special Attack':
+        alert(spec[1])
+        ArcherClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
@@ -1935,141 +1825,145 @@ function ChoosingAClass(chosenClass) {
   if (useDefaults === true) {
     answer = true
     chosenClass = localStorage.getItem(username + 'Class@Kixley@65810')
+    determineAnswer();
   } else {
-    answer = confirm('Are you sure?')
+    requestInput(["Yes", "No"], determineAnswer);
+    //answer = confirm('Are you sure?')
   }
-  switch (answer) {
-    case true:
-      if (useDefaults === false) {
-        alert('You are now a ' + chosenClass + '!')
-      }
-      switch (chosenClass) {
-        case 'knight':
-          kixleyNCo[1].attackPow += 2
-          kixleyNCo[1].hitPoints += 15
-          kixleyNCo[1].totalHP += 15
-          kixleyNCo[1].blobs -= 100
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].magicSkillz -= 0.5
-          kixleyNCo[1].chosenClass = 0
-          break;
-        case 'mage':
-          kixleyNCo[1].attackPow -= 2
-          kixleyNCo[1].hitPoints -= 15
-          kixleyNCo[1].totalHP -= 15
-          kixleyNCo[1].blobs += 100
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].magicSkillz += 0.5
-          kixleyNCo[1].chosenClass = 1
-          break;
-        case 'barbarian':
-          kixleyNCo[1].attackPow += 4
-          kixleyNCo[1].hitPoints -= 25
-          kixleyNCo[1].totalHP -= 25
-          kixleyNCo[1].chosenClass = 2
-          break;
-        case 'cleric':
-          kixleyNCo[1].attackPow -= 3
-          kixleyNCo[1].knownSpells.push("Heal");
-          kixleyNCo[1].spellCosts.push(30);
-          kixleyNCo[1].blobs += 50
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].magicSkillz += 0.25
-          kixleyNCo[1].hitPoints += 15
-          kixleyNCo[1].totalHP += 15
-          kixleyNCo[1].chosenClass = 3
-          break;
-        case 'prince':
-          kixleyNCo[1].attackPow += 4
-          kixleyNCo[1].hitPoints += 30
-          kixleyNCo[1].totalHP += 30
-          kixleyNCo[1].blobs -= 200
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].magicSkillz -= 0.75
-          kixleyNCo[1].chosenClass = 4
-          break;
-        case 'arch-mage':
-          kixleyNCo[1].attackPow -= 4
-          kixleyNCo[1].hitPoints -= 30
-          kixleyNCo[1].totalHP -= 30
-          kixleyNCo[1].blobs += 200
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].magicSkillz += 0.75
-          kixleyNCo[1].chosenClass = 5
-          break;
-        case 'thief':
-          kixleyNCo[1].attackPow -= 1
-          kixleyNCo[1].blobs -= 50
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].accuracy += 15
-          dropMult += 0.5
-          kixleyNCo[1].chosenClass = 6
-          specOrNo = 'Special Attack, '
-          break;
-        case 'ninja':
-          kixleyNCo[1].attackPow -= 2
-          kixleyNCo[1].blobs -= 50
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].accuracy += 20
-          monsterGroup[1].accuracy -= 10
-          kixleyNCo[1].chosenClass = 7
-          hasSpecial = true
-          break;
-        case 'cavalry':
-          kixleyNCo[1].attackPow += 1
-          kixleyNCo[1].hitPoints += 7
-          kixleyNCo[1].totalHP += 7
-          kixleyNCo[1].critChance += 10
-          kixleyNCo[1].blobs -= 150
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].magicSkillz -= 0.6
-          kixleyNCo[1].chosenClass = 8
-          break;
-        case 'archer':
-          kixleyNCo[1].attackPow -= 2
-          kixleyNCo[1].hitPoints -= 7
-          kixleyNCo[1].totalHP -= 7
-          kixleyNCo[1].blobs -= 15
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].magicSkillz += 10
-          kixleyNCo[1].accuracy += 30
-          kixleyNCo[1].chosenClass = 9
-          hasSpecial = true
-          specOrNo = 'Special Attack, '
-          break;
-        case 'super hardcore':
-          kixleyNCo[1].magicSkillz = (1 / temp)
-          kixleyNCo[1].attackPow -= 5
-          kixleyNCo[1].totalHP -= 75
-          kixleyNCo[1].hitPoints -= 75
-          kixleyNCo[1].blobs -= 300
-          kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
-          kixleyNCo[1].chosenClass = 10
-          break;
-        case 'Vala':
-          kixleyNCo[1].magicSkillz /= 0
-          kixleyNCo[1].attackPow /= 0
-          kixleyNCo[1].totalHP /= 0
-          kixleyNCo[1].hitPoints /= 0
-          kixleyNCo[1].blobs /= 0
-          kixleyNCo[1].totalBlobs /= 0
-          kixleyNCo[1].critChance /= 0
-          kixleyNCo[1].accuracy /= 0
-          kixleyNCo[1].chosenClass = 11
-          break;
-      }
-      if (settingDefault === false) {
-        kixleyNCo[1].magicSkillz *= (3 - diffSetting)
-        Story()
-      } else {
-        settingDefault = false
-        localStorage.setItem(username + 'Class@Kixley@65810', chosenClass)
-        inAccount()
-      }
-      break;
-    case false:
-      ChooseClass()
-      break;
+  function determineAnswer() {
+    switch (answer) {
+      case "Yes":
+        if (useDefaults === false) {
+          alert('You are now a ' + chosenClass + '!')
+        }
+        switch (chosenClass) {
+          case 'Knight':
+            kixleyNCo[1].attackPow += 2
+            kixleyNCo[1].hitPoints += 15
+            kixleyNCo[1].totalHP += 15
+            kixleyNCo[1].blobs -= 100
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].magicSkillz -= 0.5
+            kixleyNCo[1].chosenClass = 0
+            break;
+          case 'Mage':
+            kixleyNCo[1].attackPow -= 2
+            kixleyNCo[1].hitPoints -= 15
+            kixleyNCo[1].totalHP -= 15
+            kixleyNCo[1].blobs += 100
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].magicSkillz += 0.5
+            kixleyNCo[1].chosenClass = 1
+            break;
+          case 'Barbarian':
+            kixleyNCo[1].attackPow += 4
+            kixleyNCo[1].hitPoints -= 25
+            kixleyNCo[1].totalHP -= 25
+            kixleyNCo[1].chosenClass = 2
+            break;
+          case 'Cleric':
+            kixleyNCo[1].attackPow -= 3
+            kixleyNCo[1].knownSpells.push("Heal");
+            kixleyNCo[1].spellCosts.push(30);
+            kixleyNCo[1].blobs += 50
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].magicSkillz += 0.25
+            kixleyNCo[1].hitPoints += 15
+            kixleyNCo[1].totalHP += 15
+            kixleyNCo[1].chosenClass = 3
+            break;
+          case 'Prince':
+            kixleyNCo[1].attackPow += 4
+            kixleyNCo[1].hitPoints += 30
+            kixleyNCo[1].totalHP += 30
+            kixleyNCo[1].blobs -= 200
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].magicSkillz -= 0.75
+            kixleyNCo[1].chosenClass = 4
+            break;
+          case 'Arch-Mage':
+            kixleyNCo[1].attackPow -= 4
+            kixleyNCo[1].hitPoints -= 30
+            kixleyNCo[1].totalHP -= 30
+            kixleyNCo[1].blobs += 200
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].magicSkillz += 0.75
+            kixleyNCo[1].chosenClass = 5
+            break;
+          case 'Thief':
+            kixleyNCo[1].attackPow -= 1
+            kixleyNCo[1].blobs -= 50
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].accuracy += 15
+            dropMult += 0.5
+            kixleyNCo[1].chosenClass = 6
+            specOrNo = 'Special Attack, '
+            break;
+          case 'Ninja':
+            kixleyNCo[1].attackPow -= 2
+            kixleyNCo[1].blobs -= 50
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].accuracy += 20
+            monsterGroup[1].accuracy -= 10
+            kixleyNCo[1].chosenClass = 7
+            hasSpecial = true
+            break;
+          case 'Cavalry':
+            kixleyNCo[1].attackPow += 1
+            kixleyNCo[1].hitPoints += 7
+            kixleyNCo[1].totalHP += 7
+            kixleyNCo[1].critChance += 10
+            kixleyNCo[1].blobs -= 150
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].magicSkillz -= 0.6
+            kixleyNCo[1].chosenClass = 8
+            break;
+          case 'Archer':
+            kixleyNCo[1].attackPow -= 2
+            kixleyNCo[1].hitPoints -= 7
+            kixleyNCo[1].totalHP -= 7
+            kixleyNCo[1].blobs -= 15
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].magicSkillz += 10
+            kixleyNCo[1].accuracy += 30
+            kixleyNCo[1].chosenClass = 9
+            hasSpecial = true
+            specOrNo = 'Special Attack, '
+            break;
+          case 'Super Hardcore':
+            kixleyNCo[1].magicSkillz = (1 / temp)
+            kixleyNCo[1].attackPow -= 5
+            kixleyNCo[1].totalHP -= 75
+            kixleyNCo[1].hitPoints -= 75
+            kixleyNCo[1].blobs -= 300
+            kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs;
+            kixleyNCo[1].chosenClass = 10
+            break;
+          case 'Vala':
+            kixleyNCo[1].magicSkillz /= 0
+            kixleyNCo[1].attackPow /= 0
+            kixleyNCo[1].totalHP /= 0
+            kixleyNCo[1].hitPoints /= 0
+            kixleyNCo[1].blobs /= 0
+            kixleyNCo[1].totalBlobs /= 0
+            kixleyNCo[1].critChance /= 0
+            kixleyNCo[1].accuracy /= 0
+            kixleyNCo[1].chosenClass = 11
+            break;
+        }
+        if (settingDefault === false) {
+          kixleyNCo[1].magicSkillz *= (3 - diffSetting)
+          Story()
+        } else {
+          settingDefault = false
+          localStorage.setItem(username + 'Class@Kixley@65810', chosenClass)
+          inAccount()
+        }
+        break;
+      case "No":
+        ChooseClass()
+        break;
+    }
   }
 }
 
@@ -2078,100 +1972,90 @@ function ChooseClass() {
     ChoosingAClass(chosenClass)
   } else {
     alert('Along with difficulty, we need you to choose your class. Please select one now.')
-    chosenClass = prompt('The classes are: Knights, Mages, Barbarians, Clerics, Princes, Arch-Mages, Thieves, Ninjas, Cavalry, and Archers.', 'Knight, Mage, Barbarian, Cleric, Prince, Arch-Mage, Thief, Ninja, Cavalry, and Archer').toLowerCase()
-    switch (chosenClass) {
-      case 'knight':
-        KnightClass()
-        break;
-      case 'mage':
-        MageClass()
-        break;
-      case 'barbarian':
-        BarbarianClass()
-        break;
-      case 'cleric':
-        ClericClass()
-        break;
-      case 'prince':
-        PrinceClass()
-        break;
-      case 'arch-mage':
-      case 'archmage':
-      case 'arch mage':
-        chosenClass = 'arch-mage'
-        ArchmageClass()
-        break;
-      case 'thief':
-        ThiefClass()
-        break;
-      case 'ninja':
-        NinjaClass()
-        break;
-      case 'cavalry':
-        CavalryClass()
-        break;
-      case 'archer':
-        ArcherClass()
-        break;
-      case 'super hardcore':
-        SuperHardcoreClass()
-        break;
-      case 'vala':
-        ValaClass()
-        break;
-      case 'good music':
-        alert('https://www.youtube.com/watch?v=awrzeuTMQfU Watch this!')
-        alert('And while you\'re at it, watch this too!: https://www.youtube.com/watch?v=dQw4w9WgXcQ ')
-        ChooseClass()
-        break;
-      default:
-        NotAnOption()
-        ChooseClass()
-        break;
+    requestInput(["Knight", "Mage", "Barbarian", "Cleric", "Prince", "Arch-Mage", "Thief", "Ninja", "Cavalry", "Archer"], determineAnswer);
+    //chosenClass = prompt('The classes are: Knights, Mages, Barbarians, Clerics, Princes, Arch-Mages, Thieves, Ninjas, Cavalry, and Archers.', 'Knight, Mage, Barbarian, Cleric, Prince, Arch-Mage, Thief, Ninja, Cavalry, and Archer').toLowerCase()
+    function determineAnswer() {
+      chosenClass = answer;
+      switch (answer) {
+        case 'Knight':
+          KnightClass()
+          break;
+        case 'Mage':
+          MageClass()
+          break;
+        case 'Barbarian':
+          BarbarianClass()
+          break;
+        case 'Cleric':
+          ClericClass()
+          break;
+        case 'Prince':
+          PrinceClass()
+          break;
+        case 'Arch-Mage':
+          ArchmageClass()
+          break;
+        case 'Thief':
+          ThiefClass()
+          break;
+        case 'Ninja':
+          NinjaClass()
+          break;
+        case 'Cavalry':
+          CavalryClass()
+          break;
+        case 'Archer':
+          ArcherClass()
+          break;
+        /*case 'super hardcore':
+          SuperHardcoreClass()
+          break;
+        case 'vala':
+          ValaClass()
+          break;*/
+      }
     }
   }
 }
 
 function SuperHardcoreClass() {
   temp = randomNumber(80, 100)
-  answer = prompt('Super Hardcore', 'Inspect, Choose, Exit').toLowerCase()
-  switch (answer) {
-    case 'inspect':
-      alert('The Super Hardcore is for the hardcore fans, the ones who think that the Legend difficulty is too easy. Attack - 5, BoD - 300, Health - 75, Spells effects / ' + temp + '.')
-      SuperHardcoreClass()
-      break;
-    case 'choose':
-      ChoosingAClass(chosenClass)
-      break;
-    case 'exit':
-      ChooseClass()
-      break;
-    default:
-      NotAnOption()
-      SuperHardcoreClass()
-      break;
+  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  //answer = prompt('Super Hardcore', 'Inspect, Choose, Exit').toLowerCase()
+  alert("Congratulations on getting here.");
+  function determineAnswer() {
+    switch (answer) {
+      case 'Inspect':
+        alert('The Super Hardcore is for the hardcore fans, the ones who think that the Legend difficulty is too easy. Attack - 5, BoD - 300, Health - 75, Spells effects / ' + temp + '.')
+        SuperHardcoreClass()
+        break;
+      case 'Choose':
+        ChoosingAClass(chosenClass)
+        break;
+      case 'Exit':
+        ChooseClass()
+        break;
+    }
   }
 }
 
 function ValaClass() {
   if (PassOrNot === true) {
-    answer = prompt('Vala', 'Inspect, Choose, Exit').toUpperCase()
-    switch (answer) {
-      case 'INSPECT':
-        alert('The Vala class is super cheaty. Everything * INFINITY')
-        SuperHardcoreClass()
-        break;
-      case 'CHOOSE':
-        chosenClass = 'Vala'
-        ChoosingAClass(chosenClass)
-        break;
-      case 'EXIT':
-        ChooseClass()
-        break;
-      default:
-        NotAnOption()
-        SuperHardcoreClass()
-        break;
+    requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+    //answer = prompt('Vala', 'Inspect, Choose, Exit').toUpperCase()
+    function determineAnswer() {
+      switch (answer) {
+        case 'Inspect':
+          alert('The Vala class is super cheaty. Everything * INFINITY')
+          SuperHardcoreClass()
+          break;
+        case 'Choose':
+          ChoosingAClass(chosenClass)
+          break;
+        case 'Exit':
+          ChooseClass()
+          break;
+      }
     }
   } else if (PassOrNot === 42) {
     ChooseClass()
@@ -2189,42 +2073,24 @@ function ValaClass() {
 
 function InTown() {
   loc = 2
-  answer = prompt('Where to? You have ' + totalGold + ' gold and ' + kixleyNCo[1].hitPoints + ' health.', 'Marketplace, Inn, Leave, Menu')
-  if (answer !== 'the TARDIS') {
-    answer = answer.toUpperCase()
-  }
-  switch (answer) {
-    case 'MARKETPLACE':
-      InShop()
-      break;
-    case 'INN':
-      InInn()
-      break;
-    case 'SAVE':
-      saveTown()
-      break;
-    case 'LEAVE':
-      alert('You leave town.')
-      Places()
-      break;
-    case 'MENU':
-      Menu()
-      break;
-    case 'YOUR MOM':
-    case 'UR MOM':
-      alert('You walk up to your mom. \'Woah, is that you, Kixley? It\'s been so long!\' she says. \'Yeah, yeah, mom. I gotta go save the world.\' you say. \'Ok then! Come see me soon!\'')
-      InTown()
-      break;
-    case 'the TARDIS':
-      alert('A blue police box shows up out of thin air, making a weird whooshing noise as it does. As the door opens, you walk in, and find yourself in a large box that is much smaller on the outside.')
-      alert('A strange man says \'What are you doing in my TARDIS?!?!?!?!?!?!?!\' after the box makes the weird whooshing noise again. He drops you back off at Smatino.')
-      dwNamesB = !dwNamesB
-      InTown()
-      break;
-    default:
-      NotAnOption()
-      InTown()
-      break;
+  requestInput(["Market", "Inn", "Leave", "Menu"], determineAnswer);
+  //answer = prompt('Where to? You have ' + totalGold + ' gold and ' + kixleyNCo[1].hitPoints + ' health.', 'Marketplace, Inn, Leave, Menu')
+  function determineAnswer() {
+    switch (answer) {
+      case 'Market':
+        InShop()
+        break;
+      case 'Inn':
+        InInn()
+        break;
+      case 'Leave':
+        alert('You leave town.')
+        Places()
+        break;
+      case 'Menu':
+        Menu()
+        break;
+    }
   }
 }
 
@@ -2242,21 +2108,21 @@ function BuyHealthPotion() {
       alert('You don\'t have enough gold to buy that many health potions. At max you could buy ' + Math.floor(totalGold / hpCost) + ' health potion(s).')
       InShop()
     }
-    answer = confirm('Are you sure? You\'re going to buy ' + answer + ' health potions, and you have ' + totalGold + ' gold.', 'Yes, No')
-    switch (answer) {
-      case true:
-        alert('Health potion(s) bought!')
-        healthPotion += howMany
-        answer = 0
-        totalGold -= (hpCost * howMany)
-        InShop()
-        break;
-      case false:
-        InShop()
-        break;
-      default:
-        NotAnOption()
-        BuyHealthPotion()
+    requestInput(["Yes", "No"], determineAnswer);
+    //answer = confirm('Are you sure? You\'re going to buy ' + answer + ' health potions, and you have ' + totalGold + ' gold.', 'Yes, No')
+    function determineAnswer() {
+      switch (answer) {
+        case "Yes":
+          alert('Health potion(s) bought!')
+          healthPotion += howMany
+          answer = 0
+          totalGold -= (hpCost * howMany)
+          InShop()
+          break;
+        case "No":
+          InShop()
+          break;
+      }
     }
   } else {
     alert('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!')
@@ -2267,22 +2133,21 @@ function BuyHealthPotion() {
 function BuyWoodenSword() {
   if (woodenSword === 0) {
     if (totalGold >= wsCost) {
-      answer = prompt('Are you sure?', 'Yes, No').toUpperCase()
-      switch (answer) {
-        case 'YES':
-          alert('Wooden sword bought!')
-          woodenSword++;
-          kixleyNCo[1].attackPow *= (1 + (0.05 * (3 - diffSetting)))
-          totalGold -= wsCost
-          InShop()
-          break;
-        case 'NO':
-          InShop()
-          break;
-        default:
-          NotAnOption()
-          BuyWoodenSword()
-          break;
+      requestInput(["Yes", "No"], determineAnswer);
+      //answer = prompt('Are you sure?', 'Yes, No').toUpperCase()
+      function determineAnswer() {
+        switch (answer) {
+          case 'Yes':
+            alert('Wooden sword bought!')
+            woodenSword++;
+            kixleyNCo[1].attackPow *= (1 + (0.05 * (3 - diffSetting)))
+            totalGold -= wsCost
+            InShop()
+            break;
+          case 'No':
+            InShop()
+            break;
+        }
       }
     } else {
       alert('You don\'t have enough money.')
@@ -2297,21 +2162,21 @@ function BuyWoodenSword() {
 function BuySpeedBoots() {
   if (speedBoots === 0) {
     if (totalGold >= sbCost) {
-      answer = prompt('Are you sure?', 'Yes, No').toUpperCase()
-      switch (answer) {
-        case 'YES':
-          alert('Speed boots bought!')
-          speedBoots++
-          totalGold -= sbCost
-          kixleyNCo[1].accuracy += 5 * (3 - diffSetting)
-          break;
-        case 'NO':
-          InShop()
-          break;
-        default:
-          NotAnOption()
-          BuySpeedBoots()
-          break;
+      requestInput(["Yes", "No"], determineAnswer);
+      // answer = prompt('Are you sure?', 'Yes, No').toUpperCase()
+      function determineAnswer() {
+        switch (answer) {
+          case 'Yes':
+            alert('Speed boots bought!')
+            speedBoots++
+            totalGold -= sbCost
+            kixleyNCo[1].accuracy += 5 * (3 - diffSetting)
+            InShop();
+            break;
+          case 'No':
+            InShop()
+            break;
+        }
       }
     } else {
       alert('You don\'t have enough money.')
@@ -2321,7 +2186,6 @@ function BuySpeedBoots() {
     alert('SOLD OUT.')
     InShop()
   }
-  InShop()
 }
 
 function BuyArrows() {
@@ -2337,21 +2201,21 @@ function BuyArrows() {
       alert('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrows(s).')
       InShop()
     }
-    answer = confirm('Are you sure? You\'re going to buy ' + answer + ' arrows, and you have ' + totalGold + ' gold. This will cost you ' + (aCost * howMany) + ' gold.', 'Yes, No')
-    switch (answer) {
-      case true:
-        alert('Arrow(s) bought!')
-        arrows += howMany
-        answer = 0
-        totalGold -= (aCost * howMany)
-        InShop()
-        break;
-      case false:
-        InShop()
-        break;
-      default:
-        NotAnOption()
-        BuyArrows()
+    requestInput(["Yes", "No"], determineAnswer);
+    //answer = confirm('Are you sure? You\'re going to buy ' + answer + ' arrows, and you have ' + totalGold + ' gold. This will cost you ' + (aCost * howMany) + ' gold.', 'Yes, No')
+    function determineAnswer() {
+      switch (answer) {
+        case "Yes":
+          alert('Arrow(s) bought!')
+          arrows += howMany
+          answer = 0
+          totalGold -= (aCost * howMany)
+          InShop()
+          break;
+        case "No":
+          InShop()
+          break;
+      }
     }
   } else {
     alert('That wasn\'t a number! You can\'t buy ' + answer + ' arrows!')
@@ -2369,155 +2233,137 @@ function BuyArrows() {
        \=========/
         `.     .'
           `~~~`
+          
+          ... This easter egg looks kinda flat. Almost like a football. >.>
  */
 
 function InShop() {
   alert('The marketplace master greets you.')
-  answer = prompt('The marketplace master asks you if you would like to buy, or sell.', 'Buy, Sell, Leave').toUpperCase()
-  switch (answer) {
-    case 'SELL':
-      Sell()
-      break;
-    case 'BUY':
-      Buy()
-      break;
-    case 'LEAVE':
-      InTown()
-      break;
-    default:
-      NotAnOption()
-      InShop()
-      break;
+  temp = ["Buy", "Sell", "Leave"];
+  if(woodenSword === 0 && speedBoots === 0) {
+    temp.splice(temp.indexOf("Sell"), 1);
   }
+  requestInput(temp, determineAnswer);
+  //answer = prompt('The marketplace master asks you if you would like to buy, or sell.', 'Buy, Sell, Leave').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Buy':
+        Buy()
+        break;
+      case 'Sell':
+        Sell()
+        break;
+      case 'Leave':
+        InTown()
+        break;
+    }
+  }
+}
 
 
   function Sell() {
-    if (woodenSword === 1 && speedBoots === 1) {
-      itemSell = 'Wooden Sword, Speed Boots, Cancel'
-    } else if (woodenSword === 1) {
-      itemSell = 'Wooden Sword, Cancel'
-    } else if (speedBoots === 1) {
-      itemSell = 'Speed Boots, Cancel'
-    } else {
-      alert('You have nothing to sell.')
-      InShop()
+    temp = ["Wooden Sword", "Speed Boots", "Leave"];
+    if(woodenSword === 0) {
+      temp.splice(temp.indexOf("Wooden Sword"), 1);
     }
-    answer = prompt('What would you like to sell?', itemSell).toUpperCase()
-    switch (answer) {
-      case 'WOODEN SWORD':
-        if (woodenSword === 1) {
-          alert('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
-          answer = prompt('Are you sure you want to sell your wooden sword?', 'Yes, No').toUpperCase()
-          switch (answer) {
-            case 'YES':
-              totalGold += .9 * wsCost
-              woodenSword = 0
-              kixleyNCo[1].attackPow /= (1 + (0.05 * (3 - diffSetting)))
-              alert('Wooden sword sold!')
-              InShop()
-              break;
-            case 'NO':
-              Sell()
-              break;
+    if(speedBoots === 0) {
+      temp.splice(temp.indexOf("Speed Boots"), 1);
+    }
+    requestInput(temp, determineAnswer);
+    //answer = prompt('What would you like to sell?', itemSell).toUpperCase()
+    function determineAnswer() {
+      switch (answer) {
+        case 'Wooden Sword':
+          if (woodenSword === 1) {
+            alert('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
+            requestInput(["Yes", "No"], determineAnswer2);
+            //answer = prompt('Are you sure you want to sell your wooden sword?', 'Yes, No').toUpperCase()
+            function determineAnswer2() {
+              switch (answer) {
+                case 'Yes':
+                  totalGold += .9 * wsCost
+                  woodenSword = 0
+                  kixleyNCo[1].attackPow /= (1 + (0.05 * (3 - diffSetting)))
+                  alert('Wooden sword sold!')
+                  InShop()
+                  break;
+                case 'No':
+                  Sell()
+                  break;
+              }
+            }
+          } else {
+            alert('You don\'t have one to sell.')
+            Sell()
           }
-        } else {
-          alert('You don\'t have one to sell.')
-          Sell()
-        }
-        break;
-      case 'SPEED BOOTS':
-        if (speedBoots === 1) {
-          alert('A guy shows up and offers ' + .9 * sbCost + ' gold for your speed boots.')
-          answer = prompt('Are you sure you want to sell your speed boots?', 'Yes, No').toUpperCase()
-          switch (answer) {
-            case 'YES':
-              totalGold += .9 * sbCost
-              speedBoots = 0
-              kixleyNCo[1].accuracy -= 5 * (3 - diffSetting)
-              alert('Speed boots sold!')
-              InShop()
-              break;
-            case 'NO':
-              Sell()
-              break;
-            default:
-              NotAnOption()
-              Sell()
-              break;
+          break;
+        case 'Speed Boots':
+          if (speedBoots === 1) {
+            alert('A guy shows up and offers ' + .9 * sbCost + ' gold for your speed boots.')
+            requestInput(["Yes", "No"], determineAnswer2);
+            //answer = prompt('Are you sure you want to sell your speed boots?', 'Yes, No').toUpperCase()
+            function determineAnswer2() {
+              switch (answer) {
+                case 'Yes':
+                  totalGold += .9 * sbCost
+                  speedBoots = 0
+                  kixleyNCo[1].accuracy -= 5 * (3 - diffSetting)
+                  alert('Speed boots sold!')
+                  InShop()
+                  break;
+                case 'No':
+                  Sell()
+                  break;
+              }
+            }
+          } else {
+            alert('You don\'t have one to sell.')
           }
-        } else {
-          alert('You don\'t have one to sell.')
-        }
-        break;
-      case 'CANCEL':
-        InShop()
-        break;
-      case 'NUCLEAR WEAPONS':
-        if (flamingSword) {
-          NotAnOption()
-          Sell()
-        } else {
-          alert('Morgan Freeman shows up and says \'Why are you selling your nuke?\'')
-          alert('You respond by asking \'Why are you here, Morgan?\'')
-          alert('Morgan Freeman tells you, \'To give you a magical flaming sword.\'')
-          alert('Morgan Freeman gives you a magical flaming sword.')
-          kixleyNCo[1].attackPow += 20
-          flamingSword = true
-          alert('You exclaim \'WHOA! It\'s on FIRE!\'')
-          Sell()
-        }
-        break;
-      default:
-        NotAnOption()
-        Sell()
-        break;
+          break;
+        case 'Leave':
+          InShop()
+          break;
+      }
     }
   }
 
   function Buy() {
-    if (woodenSword === 1 && speedBoots === 1) {
-      answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potions, Arrows, Cancel').toUpperCase()
-    } else if (woodenSword === 1) {
-      answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a pair of speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Speed Boots, Arrows, Cancel').toUpperCase()
-    } else if (speedBoots === 1) {
-      answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Arrows, Cancel').toUpperCase()
-    } else {
-      answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, some speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Speed Boots, Arrows, Cancel').toUpperCase()
+    //answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, some speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Speed Boots, Arrows, Cancel').toUpperCase()
+    temp = ["Health Potions", "Wooden Sword", "Speed Boots", "Arrows", "Leave"];
+    if(woodenSword === 1) {
+      temp.splice(temp.indexOf("Wooden Sword"), 1);
     }
-    switch (answer) {
-      case 'HEALTH POTION':
-      case 'HEALTH POTIONS':
-        BuyHealthPotion()
-        break;
-      case 'WOODEN SWORD':
-        BuyWoodenSword()
-        break;
-      case 'SPEED BOOTS':
-        BuySpeedBoots()
-        break;
-      case 'ARROWS':
-        BuyArrows()
-        break;
-      case 'MEOW':
-        alert('https://www.youtube.com/watch?v=QH2-TGUlwu4: Watch this!')
-        Buy()
-        break;
-      case 'CANCEL':
-        InShop()
-        break;
-      default:
-        NotAnOption()
-        Buy()
-        break;
+    if(speedBoots === 1) {
+      temp.splice(temp.indexOf("Speed Boots"), 1);
+    }
+    requestInput(temp, determineAnswer) {
+      switch (answer) {
+        case 'Health Potions':
+          BuyHealthPotion()
+          break;
+        case 'Wooden Sword':
+          BuyWoodenSword()
+          break;
+        case 'Speed Boots':
+          BuySpeedBoots()
+          break;
+        case 'Arrows':
+          BuyArrows()
+          break;
+        case 'Leave':
+          InShop()
+          break;
+      }
     }
   }
 }
 
 function InInn() {
   alert('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
-  answer = prompt('So whadda you say?', 'Yes, No, Common Room').toUpperCase()
+  requestInput(["Yes", "Common Room", "Leave"], determineAnswer);
+  //answer = prompt('So whadda you say?', 'Yes, No, Common Room').toUpperCase()
   switch (answer) {
-    case 'YES':
+    case 'Yes':
       if (totalGold >= 50) {
         totalGold -= 50;
         innFloorNumber = randomNumber(1, 2);
@@ -2538,21 +2384,13 @@ function InInn() {
         InTown()
       }
       break;
-    case 'NO':
+    case 'No':
       alert('The man sighs as you leave the inn.')
       InTown()
       break;
-    case 'COMMON ROOM':
+    case 'Common Room':
       inCommonRoom()
       break;
-    case 'JOHN CENA':
-      alert('And his name is... JOHNNNN CENNNNNNAAAAAAAAAAA!!!!!')
-      alert('DO DO DO DOOOO!!!')
-      InInn()
-      break;
-    default:
-      NotAnOption()
-      InInn()
   }
 }
 
@@ -2701,47 +2539,45 @@ function GettingBlobsOfDoom() {
 }
 
 function wantingMoreBlobs() {
-  answer = prompt('Hey! Ya want some more blobs? Yu\'ll get 7 this time, still fer 10 gold!', 'Yes, No').toUpperCase()
-  switch (answer) {
-    case 'YES':
-      timeGTOne = 1
-      GettingBlobsOfDoom()
-      break;
-    case 'NO':
-      alert('All righty then. See ya later!')
-      InInn()
-      break;
-    default:
-      NotAnOption()
-      wantingMoreBlobs()
-      break;
+  requestInput(["Yes", "No"], determineAnswer);
+  //answer = prompt('Hey! Ya want some more blobs? Yu\'ll get 7 this time, still fer 10 gold!', 'Yes, No').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Yes':
+        timeGTOne = 1
+        GettingBlobsOfDoom()
+        break;
+      case 'No':
+        alert('All righty then. See ya later!')
+        InInn()
+        break;
+    }
   }
 }
 
 function blobsOfDoomShop() {
-  answer = prompt('You walk up to Mithrómen. He says, \'Hey kid. I\'m runnin\' low on money, so I\'m selling my blobs o\' doom. So far there\'s been no buyers. You up for it? Only 10 gold for 6 blobs o\' doom.\'', 'Yes, No').toUpperCase()
-  switch (answer) {
-    case 'YES':
-      GettingBlobsOfDoom()
-      break;
-    case 'NO':
-      alert('Mithrómen sighs as you leave.')
-      InInn()
-      break;
-    default:
-      NotAnOption()
-      blobsOfDoomShop()
-      break;
+  requestInput(["Yes", "No"], determineAnswer);
+  //answer = prompt('You walk up to Mithrómen. He says, \'Hey kid. I\'m runnin\' low on money, so I\'m selling my blobs o\' doom. So far there\'s been no buyers. You up for it? Only 10 gold for 6 blobs o\' doom.\'', 'Yes, No').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Yes':
+        GettingBlobsOfDoom()
+        break;
+      case 'No':
+        alert('Mithrómen sighs as you leave.')
+        InInn()
+        break;
+    }
   }
 }
 
 function questChoiceSwitch() {
   switch (answer) {
-    case 'no':
+    case 'No':
       alert('Galkemen looks like he wants to kill you, so you get away from him and leave the inn, but then decide to go back in and just avoid Galkemen.')
       InInn()
       break;
-    case 'yes':
+    case 'Yes':
       onAQuest = 1
       alert('Galkemen hands you a piece of paper and has you sign it.')
       switch (y) {
@@ -2756,142 +2592,119 @@ function questChoiceSwitch() {
       }
       InInn();
       break;
-    default:
-      switch (y) {
-        case 0:
-          NotAnOption()
-          killQuestChoice()
-          break;
-        case 1:
-          NotAnOption()
-          questGoldChoice()
-          break;
-        case 2:
-          NotAnOption()
-          questExpChoice()
-          break;
-        case 3:
-          NotAnOption()
-          questItemChoice()
-          break;
-      }
-      break;
   }
 }
 
 function killQuestChoice() {
-  answer = (prompt('Galkemen says \'Go kill ' + questKillReq + ' monsters.\'', 'Yes, No').toLowerCase())
-  questChoiceSwitch()
+  requestInput(["Yes", "No"], questChoiceSwitch);
+  //answer = (prompt('Galkemen says \'Go kill ' + questKillReq + ' monsters.\'', 'Yes, No').toLowerCase())
 }
 
 function questGoldChoice() {
-  answer = (prompt('Galkemen says \'Gimme ' + questGoldReq + ' gold. I\'ll give ya exp fer this one, instead o\' gold.\'', 'Yes, No').toLowerCase())
-  questChoiceSwitch()
+  requestInput(["Yes", "No"], questChoiceSwitch);
+  //answer = (prompt('Galkemen says \'Gimme ' + questGoldReq + ' gold. I\'ll give ya exp fer this one, instead o\' gold.\'', 'Yes, No').toLowerCase())
 }
 
 function questItemChoice() {
-  answer = prompt('Galkemen says \'Go gimme a ' + reqItem + ' fer some exp.\'', 'Yes, No').toLowerCase()
-  questChoiceSwitch()
+  requestInput(["Yes", "No"], questChoiceSwitch);
+  //answer = prompt('Galkemen says \'Go gimme a ' + reqItem + ' fer some exp.\'', 'Yes, No').toLowerCase()
 }
 
 function questExpChoice() {
-  answer = prompt('Galkemen says \'Go get ' + questExpReq + ' exp, so you can gi\' my quests done faster.', 'Yes, No').toLowerCase()
-  questChoiceSwitch();
+  requestInput(["Yes", "No"], questChoiceSwitch);
+  //answer = prompt('Galkemen says \'Go get ' + questExpReq + ' exp, so you can gi\' my quests done faster.', 'Yes, No').toLowerCase()
 }
 
 function buySpeedBootsCheaply() {
-  answer = (prompt('Gurthmereth says \'Low on money. Got speed boots. Will sell them real cheap. Only 70 gold.', yesNo).toLowerCase())
-  switch (answer) {
-    case 'yes':
-      if (totalGold >= 70) {
-        alert('Gurthmereth hands you the boots as you hand him the money')
-        totalGold -= 70
-        kixleyNCo[1].accuracy += 5 * (3 - diffSetting)
-        speedBoots = 1
-      } else {
-        alert('Gurthmereth sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
+  requestInput(["Yes", "No"], determineAnswer);
+  //answer = (prompt('Gurthmereth says \'Low on money. Got speed boots. Will sell them real cheap. Only 70 gold.', yesNo).toLowerCase())
+  function determineAnswer() {
+    switch (answer) {
+      case 'Yes':
+        if (totalGold >= 70) {
+          alert('Gurthmereth hands you the boots as you hand him the money')
+          totalGold -= 70
+          kixleyNCo[1].accuracy += 5 * (3 - diffSetting)
+          speedBoots = 1
+        } else {
+          alert('Gurthmereth sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
+          InInn()
+        }
+        break;
+      case 'No':
+        alert('Gurthmereth looks at your receding back as you leave the common room.')
         InInn()
-      }
-      break;
-    case 'no':
-      alert('Gurthmereth looks at your receding back as you leave the common room.')
-      InInn()
-      break;
-    default:
-      NotAnOption()
-      buySpeedBootsCheaply()
-      break;
+        break;
+    }
   }
 }
 
 function buyWoodenSwordsCheap() {
-  answer = (prompt('Maegfin says \'Low on money. Got wooden swords. Will sell them real cheap. Only 35 gold.', yesNo).toLowerCase())
-  switch (answer) {
-    case 'yes':
-      if (totalGold >= 35) {
-        alert('Maegfin hands you the sword, along with a sheath, as you hand him the money')
-        totalGold -= 35
-        woodenSword = 1
-        kixleyNCo[1].attackPow *= 1 + (0.05 * (3 - diffSetting))
-        inCommonRoom()
-      } else {
-        alert('Maegfin sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
+  requestInput(["Yes", "No"], determineAnswer);
+  //answer = (prompt('Maegfin says \'Low on money. Got wooden swords. Will sell them real cheap. Only 35 gold.', yesNo).toLowerCase())
+  function determineAnswer() {
+    switch (answer) {
+      case 'Yes':
+        if (totalGold >= 35) {
+          alert('Maegfin hands you the sword, along with a sheath, as you hand him the money')
+          totalGold -= 35
+          woodenSword = 1
+          kixleyNCo[1].attackPow *= 1 + (0.05 * (3 - diffSetting))
+          inCommonRoom()
+        } else {
+          alert('Maegfin sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
+          InInn()
+        }
+        break;
+      case 'No':
+        alert('Maegfin looks at your receding back as you leave the common room.')
         InInn()
-      }
-      break;
-    case 'no':
-      alert('Maegfin looks at your receding back as you leave the common room.')
-      InInn()
-      break;
-    default:
-      NotAnOption()
-      buyWoodenSwordsCheap()
-      break;
+        break;
+    }
   }
 }
 function beatTheGame() {
-  answer = (prompt('You beat the game! Would you like to continue?', yesNo).toLowerCase())
-  switch (answer) {
-    case 'yes':
-      alert('You return and help rebuild Smatino, ready to fight Balbeag\'s remaining monsters who still are evil, though their master is dead');
-      alert('Mountain Pass discovered!')
-      mountainPass = true
-      aabeaDestroysTown = false
-      InTown()
-      break;
-    case 'no':
-      pineapples = bananas
-      break;
-    default:
-      NotAnOption()
-      beatTheGame()
-      break;
+  requestInput(["Yes", "No"], determineAnswer);
+  //answer = (prompt('You beat the game! Would you like to continue?', yesNo).toLowerCase())
+  function determineAnswer() {
+    switch (answer) {
+      case 'Yes':
+        alert('You return and help rebuild Smatino, ready to fight Balbeag\'s remaining monsters who still are evil, though their master is dead');
+        alert('Mountain Pass discovered!')
+        mountainPass = true
+        aabeaDestroysTown = false
+        InTown()
+        break;
+      case 'No':
+        const err = new Error("Thanks for playing!");
+        throw err;
+        break;
+    }
   }
 }
 
 function StatToLevelUp() {
-  answer = prompt('Please choose a stat to level up: Attack + ' + swordAdjustedTempMinusOne + ', Health + ' + levelUpHealth + ', Blobs of Doom + ' + levelUpBlobsOfDoom + '.', 'Attack, Health, Blobs of Doom').toUpperCase()
-  switch (answer) {
-    case 'ATTACK':
-      alert('You got ' + swordAdjustedTempMinusOne + ' attack!')
-      kixleyNCo[1].attackPow += swordAdjustedTempMinusOne
-      baseAttackPower += temp
-      attLevelUp++
-      break;
-    case 'HEALTH':
-      alert('You got ' + levelUpHealth + ' health!')
-      kixleyNCo[1].hitPoints += levelUpHealth
-      kixleyNCo[1].totalHP += levelUpHealth
-      break;
-    case 'BLOBS OF DOOM':
-      alert('You got ' + levelUpBlobsOfDoom + ' blobs of doom!')
-      kixleyNCo[1].blobs += levelUpBlobsOfDoom
-      kixleyNCo[1].totalBlobs += levelUpBlobsOfDoom
-      break;
-    default:
-      NotAnOption()
-      StatToLevelUp()
-      break;
+  requestInput(["Attack + " + swordAdjustedTempMinusOne, "Health + " + levelUpHealth, "Blobs of Doom + " + levelUpBlobsOfDoom], determineAnswer);
+  //answer = prompt('Please choose a stat to level up: Attack + ' + swordAdjustedTempMinusOne + ', Health + ' + levelUpHealth + ', Blobs of Doom + ' + levelUpBlobsOfDoom + '.', 'Attack, Health, Blobs of Doom').toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Attack + ' + swordAdjustedTempMinusOne:
+        alert('You got ' + swordAdjustedTempMinusOne + ' attack!')
+        kixleyNCo[1].attackPow += swordAdjustedTempMinusOne
+        baseAttackPower += temp
+        attLevelUp++
+        break;
+      case 'Health + ' + levelUpHealth:
+        alert('You got ' + levelUpHealth + ' health!')
+        kixleyNCo[1].hitPoints += levelUpHealth
+        kixleyNCo[1].totalHP += levelUpHealth
+        break;
+      case 'Blobs of Doom + ' + levelUpBlobsOfDoom:
+        alert('You got ' + levelUpBlobsOfDoom + ' blobs of doom!')
+        kixleyNCo[1].blobs += levelUpBlobsOfDoom
+        kixleyNCo[1].totalBlobs += levelUpBlobsOfDoom
+        break;
+    }
   }
 }
 
@@ -2913,29 +2726,27 @@ function checkForLevelUp() {
 }
 
 function inCommonRoom() {
-  answer = prompt('The Innkeeper gestures towards a loud, brightly lit room. It is filled with people. You walk over to a corner of the room, where there are four guys. One is named Mithrómen, another is named Galkemen, another is named Maegfin, and the fourth is named Gurthmereth. All four say \'Hi!\'. Do you run away from them in fear, or talk to one of them? If you talk who do you talk to?', 'Run away in fear, Talk to Mithrómen, talk to Galkemen, talk to Maegfin, talk to Gurthmereth').toLowerCase()
-  switch (answer) {
-    case 'run away in fear':
-      alert('You run away in fear.')
-      InInn()
-      break;
-    case 'talk to mithromen':
-    case 'talk to mithrómen':
-      blobsOfDoomShop()
-      break;
-    case 'talk to galkemen':
-      quest()
-      break;
-    case 'talk to maegfin':
-      buyWoodenSwordsCheap()
-      break;
-    case 'talk to gurthmereth':
-      buySpeedBootsCheaply()
-      break;
-    default:
-      NotAnOption()
-      inCommonRoom()
-      break;
+  requestInput(["Talk to Mithrómen", "Talk to Galkemen", "Talk to Maegfin", "Talk to Gurthmereth", "Leave"], determineAnswer);
+  //answer = prompt('The Innkeeper gestures towards a loud, brightly lit room. It is filled with people. You walk over to a corner of the room, where there are four guys. One is named Mithrómen, another is named Galkemen, another is named Maegfin, and the fourth is named Gurthmereth. All four say \'Hi!\'. Do you run away from them in fear, or talk to one of them? If you talk who do you talk to?', 'Run away in fear, Talk to Mithrómen, talk to Galkemen, talk to Maegfin, talk to Gurthmereth').toLowerCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Talk to Mithrómen':
+        blobsOfDoomShop()
+        break;
+      case 'Talk to Galkemen':
+        quest()
+        break;
+      case 'Talk to Maegfin':
+        buyWoodenSwordsCheap()
+        break;
+      case 'Talk to Gurthmereth':
+        buySpeedBootsCheaply()
+        break;
+      case 'Leave':
+        alert('You leave.')
+        InInn()
+        break;
+    }
   }
 }
 
@@ -2973,7 +2784,7 @@ function login() {
     StartUpMenu()
   } else {
     if (answer === null) {
-      pineapples = bannanas
+      answer = answer.toUpperCase();
     }
     username = answer
     userCheck = localStorage.getItem(username + 'Kixley@65810')
@@ -3009,10 +2820,14 @@ function inAccount() {
     diffSetting = defaultDifficulty
     diffSetting = parseInt(diffSetting, 10)
   } else {
-    if (confirm('We\'ve detected that you do not have a default difficulty. Would you like to set one now?') === true) {
-      settingDefault = true
-      Difficulty()
-      useDefaultDiff = true
+    requestInput(["Yes", "No"], determineAnswer);
+    function determineAnswer() {
+      //confirm('We\'ve detected that you do not have a default difficulty. Would you like to set one now?') === true
+      if (answer === "Yes") {
+        settingDefault = true
+        Difficulty()
+        useDefaultDiff = true
+      }
     }
   }
   defaultClass = localStorage.getItem(username + 'Class@Kixley@65810')
@@ -3020,38 +2835,42 @@ function inAccount() {
     useDefaultClass = true
     chosenClass = defaultClass
   } else {
-    if (confirm('We\'ve detected that you do not have a default class. Would you like to set one now?') === true) {
-      settingDefault = true
-      ChooseClass()
-      useDefaultClass = true
+    requestInput(["Yes", "No"], determineAnswer2);
+    //confirm('We\'ve detected that you do not have a default class. Would you like to set one now?') === true
+    function determineAnswer2() {
+      if (answer === "Yes") {
+        settingDefault = true
+        ChooseClass()
+        useDefaultClass = true
+      }
     }
   }
   if (useDefaultDiff === true && useDefaultClass === true) {
     useDefaults = true
   }
-  answer = prompt('What would you like to do?', 'Set default difficulty, Set default class, Back to menu, Stay Signed In').toLowerCase()
-  switch (answer) {
-    case 'set default difficulty':
-      settingDefault = true
-      Difficulty()
-      break;
-    case 'set default class':
-      settingDefault = true
-      ChooseClass()
-      break;
-    case 'back to menu':
-      if (from === 'in-game') {
-        Menu()
-      } else {
-        StartUpMenu()
-      }
-      break;
-    case 'stay signed in':
-      localStorage.setItem('staySignedInAs', username)
-      break;
-    default:
-      NotAnOption()
-      inAccount()
+  requestInput(["Set Default Difficulty", "Set Default Class", "Stay Signed In", "Back to Menu"], determineAnswer3);
+  //answer = prompt('What would you like to do?', 'Set default difficulty, Set default class, Back to menu, Stay Signed In').toLowerCase()
+  function determineAnswer3() {
+    switch (answer) {
+      case 'Set Default Difficulty':
+        settingDefault = true
+        Difficulty()
+        break;
+      case 'Set Default Class':
+        settingDefault = true
+        ChooseClass()
+        break;
+      case 'Stay Signed In':
+        localStorage.setItem('staySignedInAs', username)
+        break;
+      case 'Back to Menu':
+        if (from === 'in-game') {
+          Menu()
+        } else {
+          StartUpMenu()
+        }
+        break;
+    }
   }
 }
 
@@ -3105,19 +2924,15 @@ function itemQuestEvaluate() {
 }
 
 function towerSaveMenu() {
-  answer = (prompt('Wanna save?', yesNo).toLowerCase())
-  switch (answer) {
-    case 'yes':
-      alert('OK')
-      save()
-      break;
-    case 'no':
-      alert('Too bad. It\'s saving anyway.')
-      save()
-      break;
-    default:
-      NotAnOption()
-      inTowerPostDoomedGroup()
-      break;
+  requestInput(["Yes", "No"], determineAnswer);
+  //answer = (prompt('Wanna save?', yesNo).toLowerCase())
+  function determineAnswer() {
+    switch (answer) {
+      case 'Yes':
+        save()
+        break;
+      case 'No':
+        break;
+    }
   }
 }
