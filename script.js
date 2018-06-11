@@ -183,6 +183,8 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
       } else if (this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
         this.target.push(1);
         this.targetChosen = true;
+      } else {
+        this.targetChosen = true;
       }
     }
   }
