@@ -978,13 +978,13 @@ function FightMenu() {
 function useHealthPotion() {
   if (healthPotion <= 0) {
     alert('You search your backpack, but you don\'t have a health potion!')
-    fightHandler.fightLoop();
     window.clearTimeout(fightLoop2Timeout);
     window.clearTimeour(fightLoop3Timeout);
     fightHandler.actionChosen = false;
     fightHandler.action = [""];
     fightHandler.targetChosen = false;
     fightHandler.target = [""];
+    fightHandler.fightLoop();
   } else {
     alert('You pull a health potion out of your bag and drink it! Yum! It tastes like snickerdoodle cookies!')
     alert(hpEff + ' hit points restored!')
@@ -1531,8 +1531,8 @@ function StartUpMenu() {
   switch (answer) {
     case 'START':
       alert('Before you start, please set the difficulty. Easier difficulties have monsters with less health and attack. Harder difficulties have monsters with more health and attack.')
-      Difficulty()
       openingMenu = 0
+      Difficulty()
       break;
     case 'OPTIONS':
       Options()
@@ -1546,8 +1546,8 @@ function StartUpMenu() {
     case 'EXIT':
       alert('Goodbye!')
       Credits()
-      const e = new Error("Thanks for playing!");
-      throw e;
+      const err = new Error("Thanks for playing!");
+      throw err;
       break;
     case 'CREATE NEW ACCOUNT':
       alert('WARNING: As of right now, accounts are not yet in working order. As such, use with caution.')
