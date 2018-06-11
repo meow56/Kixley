@@ -1396,7 +1396,7 @@ function achievementMenu() {
       case 'List Achievements':
         ListingAchievements();
         break;
-      case 'Exit':
+      case 'Leave':
         if (from !== 'in-game') {
           StartUpMenu();
         } else {
