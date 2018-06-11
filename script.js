@@ -979,7 +979,7 @@ function useHealthPotion() {
   if (healthPotion <= 0) {
     alert('You search your backpack, but you don\'t have a health potion!')
     window.clearTimeout(fightLoop2Timeout);
-    window.clearTimeour(fightLoop3Timeout);
+    window.clearTimeout(fightLoop3Timeout);
     fightHandler.actionChosen = false;
     fightHandler.action = [""];
     fightHandler.targetChosen = false;
