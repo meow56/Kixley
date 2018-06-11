@@ -1120,13 +1120,14 @@ function WonTheFight() {
     questKillAmt += numMons
   }
   if (totalExp >= levelReq) {
+    CheckIfGotAchieve('Kill')
     checkForLevelUp()
   } else {
     expLeft = levelReq - totalExp
     alert('You have ' + expLeft + ' experience to go!')
+    CheckIfGotAchieve('Kill')
     Places();
   }
-  CheckIfGotAchieve('Kill')
 }
 
 function hideOrFight() {
