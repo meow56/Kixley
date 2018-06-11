@@ -941,8 +941,7 @@ function FightMenu() {
   }
   function determineAnswer() {
     fightHandler.action.push(answer);
-    fightHandler.chooseTarget();
-    fightHandler.determineAction();
+    fightHandler.actionChosen = true;
     // Running From Failure is too great a speech to just delete.
     /*
         case 'RUNNING FROM FAILURE':
