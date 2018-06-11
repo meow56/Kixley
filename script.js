@@ -906,6 +906,7 @@ function MonsterAI(monster) {
   } else {
     fightHandler.action.push("Fight");
   }
+  fightHandler.actionChosen = true;
 }
 
 function ChooseTarget() {
@@ -928,7 +929,7 @@ function ChooseTarget() {
         temp2 = i;
       }
     }
-    fightHandler.target =  temp2;
+    fightHandler.target = temp2;
   }
 }
 
