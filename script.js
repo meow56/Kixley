@@ -279,35 +279,38 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     fightLoop();
   }
 }
+
 function fightLoop() {
-    if(fightHandler.endFight === " ") {
-      fightHandler.chooseAction();
-      
-      fightLoop2();
-      
-      function fightLoop2() {
-        if(fightHandler.actionChosen) {
-          fightHandler.chooseTarget();
-          
-          fightLoop3();
-          
-          function fightLoop3() {
-            if(fightHandler.targetChosen) {
-              fightHandler.determineAction();
-              fightHandler.checkEnd();
-              fightHandler.endTurn();
-              setTimeout(fightLoop, 0);
-            }
+  if(fightHandler.endFight === " ") {
+    fightHandler.chooseAction();
+    
+    fightLoop2();
+    
+    function fightLoop2() {
+      if(fightHandler.actionChosen) {
+        fightHandler.chooseTarget();
+        
+        fightLoop3();
+        
+        function fightLoop3() {
+          if(fightHandler.targetChosen) {
+            fightHandler.determineAction();
+            fightHandler.checkEnd();
+            fightHandler.endTurn();
+            setTimeout(fightLoop, 0);
+          } else {
+            fightLoop3Timeout = setTimeout(fightLoop3, 0);
           }
-        } else {
-          setTimeout(fightLoop2, 0);
         }
-      };
-    } else {
-    alert(fightHandler.endFight);
-      fightHandler.determineEnd();
-    }
+      } else {
+        fightLoop2Timeout = setTimeout(fightLoop2, 0);
+      }
+    };
+  } else {
+  alert(fightHandler.endFight);
+    fightHandler.determineEnd();
   }
+}
 
 var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50)];
 kixleyNCo[1].calledPlusThe = 'You';
@@ -383,6 +386,8 @@ var flamingSword = false;
 var baseAttackPower = kixleyNCo[1].attackPow;
 var hasSpecial = false;
 var specOrNo = '';
+var fightLoop2Timeout;
+var fightLoop3Timeout;
 // monster drops
 var goldDrops; // gold dropped by monster
 var dropMult = 1; // multiplier for how much gold the monster drops
@@ -973,7 +978,9 @@ function FightMenu() {
 function useHealthPotion() {
   if (healthPotion <= 0) {
     alert('You search your backpack, but you don\'t have a health potion!')
-    FightMenu();
+    fightHandler.fightLoop();
+    window.clearTimeout(fightLoop2Timeout);
+    window.clearTimeour(fightLoop3Timeout);
     fightHandler.actionChosen = false;
     fightHandler.action = [""];
     fightHandler.targetChosen = false;
@@ -991,7 +998,7 @@ function useHealthPotion() {
 }
 
 function ChooseSpell() {
-  temp = kixleyNCo[1].knownSpells;
+  temp = kixleyNCo[1].knownSpells.slice();
   temp.push("Cancel");
   requestInput(temp, determineAnswer);
   // 'What spell? You have ' + kixleyNCo[1].blobs + ' blobs of doom.'
