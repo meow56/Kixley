@@ -2336,7 +2336,8 @@ function InShop() {
     if(speedBoots === 1) {
       temp.splice(temp.indexOf("Speed Boots"), 1);
     }
-    requestInput(temp, determineAnswer) {
+    requestInput(temp, determineAnswer)
+    function determineAnswer() {
       switch (answer) {
         case 'Health Potions':
           BuyHealthPotion()
