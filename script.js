@@ -943,8 +943,12 @@ function FightMenu() {
     requestInput(["Fight", "Health Potion", "Magic", "Run"], determineAnswer);
   }
   function determineAnswer() {
-    fightHandler.action.push(answer);
-    fightHandler.actionChosen = true;
+    if(answer === "Magic") {
+      ChooseSpell();
+    } else {
+      fightHandler.action.push(answer);
+      fightHandler.actionChosen = true;
+    }
     // Running From Failure is too great a speech to just delete.
     /*
         case 'RUNNING FROM FAILURE':
@@ -969,11 +973,16 @@ function FightMenu() {
 function useHealthPotion() {
   if (healthPotion <= 0) {
     alert('You search your backpack, but you don\'t have a health potion!')
+    FightMenu();
+    fightHandler.actionChosen = false;
+    fightHandler.action = [""];
+    fightHandler.targetChosen = false;
+    fightHandler.target = [""];
   } else {
     alert('You pull a health potion out of your bag and drink it! Yum! It tastes like snickerdoodle cookies!')
     alert(hpEff + ' hit points restored!')
     kixleyNCo[1].hitPoints += hpEff
-    healthPotion -= 1
+    healthPotion--
     if (kixleyNCo[1].hitPoints > kixleyNCo[1].totalHP) {
       kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
     }
@@ -988,20 +997,18 @@ function ChooseSpell() {
   // 'What spell? You have ' + kixleyNCo[1].blobs + ' blobs of doom.'
   function determineAnswer() {
     for(var i = 0; i < kixleyNCo[1].knownSpells.length; i++) {
-      if(kixleyNCo[1].knownSpells[i].toUpperCase() === answer) {
+      if(kixleyNCo[1].knownSpells[i] === answer) {
         if(kixleyNCo[1].blobs < kixleyNCo[1].spellCosts[i]) {
           alert("You don\'t have enough blobs of doom! You need " + kixleyNCo[1].spellCosts[i] + " blobs of doom.");
-          return ChooseSpell();
+          ChooseSpell();
         } else {
-          return answer.toLowerCase();
+          fightHandler.action.push(answer);
+          fightHandler.actionChosen = true;
         }
       }
     }
-    if(answer === "CANCEL") {
-      return FightMenu();
-    } else {
-      NotAnOption();
-      return ChooseSpell();
+    if(answer === "Cancel") {
+      FightMenu();
     }
   }
 }
