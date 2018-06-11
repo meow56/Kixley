@@ -2261,103 +2261,103 @@ function InShop() {
 }
 
 
-  function Sell() {
-    temp = ["Wooden Sword", "Speed Boots", "Leave"];
-    if(woodenSword === 0) {
-      temp.splice(temp.indexOf("Wooden Sword"), 1);
-    }
-    if(speedBoots === 0) {
-      temp.splice(temp.indexOf("Speed Boots"), 1);
-    }
-    requestInput(temp, determineAnswer);
-    //answer = prompt('What would you like to sell?', itemSell).toUpperCase()
-    function determineAnswer() {
-      switch (answer) {
-        case 'Wooden Sword':
-          if (woodenSword === 1) {
-            alert('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
-            requestInput(["Yes", "No"], determineAnswer2);
-            //answer = prompt('Are you sure you want to sell your wooden sword?', 'Yes, No').toUpperCase()
-            function determineAnswer2() {
-              switch (answer) {
-                case 'Yes':
-                  totalGold += .9 * wsCost
-                  woodenSword = 0
-                  kixleyNCo[1].attackPow /= (1 + (0.05 * (3 - diffSetting)))
-                  alert('Wooden sword sold!')
-                  InShop()
-                  break;
-                case 'No':
-                  Sell()
-                  break;
-              }
-            }
-          } else {
-            alert('You don\'t have one to sell.')
-            Sell()
-          }
-          break;
-        case 'Speed Boots':
-          if (speedBoots === 1) {
-            alert('A guy shows up and offers ' + .9 * sbCost + ' gold for your speed boots.')
-            requestInput(["Yes", "No"], determineAnswer2);
-            //answer = prompt('Are you sure you want to sell your speed boots?', 'Yes, No').toUpperCase()
-            function determineAnswer2() {
-              switch (answer) {
-                case 'Yes':
-                  totalGold += .9 * sbCost
-                  speedBoots = 0
-                  kixleyNCo[1].accuracy -= 5 * (3 - diffSetting)
-                  alert('Speed boots sold!')
-                  InShop()
-                  break;
-                case 'No':
-                  Sell()
-                  break;
-              }
-            }
-          } else {
-            alert('You don\'t have one to sell.')
-          }
-          break;
-        case 'Leave':
-          InShop()
-          break;
-      }
-    }
+function Sell() {
+  temp = ["Wooden Sword", "Speed Boots", "Leave"];
+  if(woodenSword === 0) {
+    temp.splice(temp.indexOf("Wooden Sword"), 1);
   }
-
-  function Buy() {
-    //answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, some speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Speed Boots, Arrows, Cancel').toUpperCase()
-    temp = ["Health Potions", "Wooden Sword", "Speed Boots", "Arrows", "Leave"];
-    if(woodenSword === 1) {
-      temp.splice(temp.indexOf("Wooden Sword"), 1);
-    }
-    if(speedBoots === 1) {
-      temp.splice(temp.indexOf("Speed Boots"), 1);
-    }
-    requestInput(temp, determineAnswer)
-    function determineAnswer() {
-      switch (answer) {
-        case 'Health Potions':
-          BuyHealthPotion()
-          break;
-        case 'Wooden Sword':
-          BuyWoodenSword()
-          break;
-        case 'Speed Boots':
-          BuySpeedBoots()
-          break;
-        case 'Arrows':
-          BuyArrows()
-          break;
-        case 'Leave':
-          InShop()
-          break;
-      }
+  if(speedBoots === 0) {
+    temp.splice(temp.indexOf("Speed Boots"), 1);
+  }
+  requestInput(temp, determineAnswer);
+  //answer = prompt('What would you like to sell?', itemSell).toUpperCase()
+  function determineAnswer() {
+    switch (answer) {
+      case 'Wooden Sword':
+        if (woodenSword === 1) {
+          alert('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
+          requestInput(["Yes", "No"], determineAnswer2);
+          //answer = prompt('Are you sure you want to sell your wooden sword?', 'Yes, No').toUpperCase()
+          function determineAnswer2() {
+            switch (answer) {
+              case 'Yes':
+                totalGold += .9 * wsCost
+                woodenSword = 0
+                kixleyNCo[1].attackPow /= (1 + (0.05 * (3 - diffSetting)))
+                alert('Wooden sword sold!')
+                InShop()
+                break;
+              case 'No':
+                Sell()
+                break;
+            }
+          }
+        } else {
+          alert('You don\'t have one to sell.')
+          Sell()
+        }
+        break;
+      case 'Speed Boots':
+        if (speedBoots === 1) {
+          alert('A guy shows up and offers ' + .9 * sbCost + ' gold for your speed boots.')
+          requestInput(["Yes", "No"], determineAnswer2);
+          //answer = prompt('Are you sure you want to sell your speed boots?', 'Yes, No').toUpperCase()
+          function determineAnswer2() {
+            switch (answer) {
+              case 'Yes':
+                totalGold += .9 * sbCost
+                speedBoots = 0
+                kixleyNCo[1].accuracy -= 5 * (3 - diffSetting)
+                alert('Speed boots sold!')
+                InShop()
+                break;
+              case 'No':
+                Sell()
+                break;
+            }
+          }
+        } else {
+          alert('You don\'t have one to sell.')
+        }
+        break;
+      case 'Leave':
+        InShop()
+        break;
     }
   }
 }
+
+function Buy() {
+  //answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, some speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Speed Boots, Arrows, Cancel').toUpperCase()
+  temp = ["Health Potions", "Wooden Sword", "Speed Boots", "Arrows", "Leave"];
+  if(woodenSword === 1) {
+    temp.splice(temp.indexOf("Wooden Sword"), 1);
+  }
+  if(speedBoots === 1) {
+    temp.splice(temp.indexOf("Speed Boots"), 1);
+  }
+  requestInput(temp, determineAnswer)
+  function determineAnswer() {
+    switch (answer) {
+      case 'Health Potions':
+        BuyHealthPotion()
+        break;
+      case 'Wooden Sword':
+        BuyWoodenSword()
+        break;
+      case 'Speed Boots':
+        BuySpeedBoots()
+        break;
+      case 'Arrows':
+        BuyArrows()
+        break;
+      case 'Leave':
+        InShop()
+        break;
+    }
+  }
+}
+
 
 function InInn() {
   alert('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
