@@ -1124,6 +1124,7 @@ function WonTheFight() {
   } else {
     expLeft = levelReq - totalExp
     alert('You have ' + expLeft + ' experience to go!')
+    Places();
   }
   CheckIfGotAchieve('Kill')
 }
