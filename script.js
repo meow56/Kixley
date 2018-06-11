@@ -1553,6 +1553,40 @@ function Difficulty() {
         case 'Legend':
           diffSetting = 2.5
           break;
+      } 
+      monsterGroup[1].attackPow *= diffSetting;
+      monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
+      monsterGroup[1].hitPoints = 100 * diffSetting
+      monsterGroup[1].totalHP = 100 * diffSetting
+      hpCost *= diffSetting
+      wsCost *= diffSetting
+      sbCost *= diffSetting
+      aCost *= diffSetting
+      hpEff = 10 + (10 * (3 - diffSetting))
+      kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
+      if(settingDefault) {
+        settingDefault = false
+        switch (diffSetting) {
+          case 0.5:
+            diffSetting = 3;
+            break;
+          case 1:
+            diffSetting = 1;
+            break;
+          case 1.5:
+            diffSetting = 4;
+            break;
+          case 2:
+            diffSetting = 2;
+            break;
+          case 2.5:
+            diffSetting = 5;
+            break;
+        }
+        localStorage.setItem(username + 'Difficulty@Kixley@65810', diffSetting)
+        inAccount() 
+      } else {
+        ChooseClass()
       }
     }
   } else {
@@ -1575,40 +1609,16 @@ function Difficulty() {
         diffSetting = 2.5
         break;
     }
-  }
-  monsterGroup[1].attackPow *= diffSetting;
-  monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
-  monsterGroup[1].hitPoints = 100 * diffSetting
-  monsterGroup[1].totalHP = 100 * diffSetting
-  hpCost *= diffSetting
-  wsCost *= diffSetting
-  sbCost *= diffSetting
-  aCost *= diffSetting
-  hpEff = 10 + (10 * (3 - diffSetting))
-  kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
-  if (settingDefault === false) {
-    ChooseClass()
-  } else {
-    settingDefault = false
-    switch (diffSetting) {
-      case 0.5:
-        diffSetting = 3;
-        break;
-      case 1:
-        diffSetting = 1;
-        break;
-      case 1.5:
-        diffSetting = 4;
-        break;
-      case 2:
-        diffSetting = 2;
-        break;
-      case 2.5:
-        diffSetting = 5;
-        break;
-    }
-    localStorage.setItem(username + 'Difficulty@Kixley@65810', diffSetting)
-    inAccount()
+    monsterGroup[1].attackPow *= diffSetting;
+    monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
+    monsterGroup[1].hitPoints = 100 * diffSetting
+    monsterGroup[1].totalHP = 100 * diffSetting
+    hpCost *= diffSetting
+    wsCost *= diffSetting
+    sbCost *= diffSetting
+    aCost *= diffSetting
+    hpEff = 10 + (10 * (3 - diffSetting))
+    kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
   }
 }
 
