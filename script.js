@@ -532,9 +532,48 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
       while(temp2.firstChild !== null) {
         temp2.removeChild(temp2.firstChild); // remove buttons
       }
+      temp2 = document.getElementById("text");
+      while(temp2.firstChild !== null) {
+        temp2.removeChild(temp2.firstChild); // remove text
+      }
       whenDone(); // run whatever's next
     }
   }
+}
+
+function writeTextWait(text, whenDone) {
+  var temp3 = false;
+  temp = document.getElementById("text");
+  var temp2 = document.createElement("PARAGRAPH");
+  temp2.innerHTML = text;
+  temp.appendChild(temp2);
+  temp = document.getElementById("buttons");
+  temp2 = document.createElement("BUTTON");
+  temp2.innerHTML = "Next";
+  temp2.onclick = Function("temp3 = true;");
+  temp.appendChild(temp2);
+  
+  waitForUserInput(); // wait for the player to select an option
+  
+  function waitForUserInput() {
+    if(temp3) {
+      setTimeout(waitForUserInput, 0);
+    } else {
+      temp.removeChild(temp.firstChild); // remove button
+      temp = document.getElementById("text");
+      while(temp.firstChild !== null) {
+        temp.removeChild(temp.firstChild); // remove text
+      }
+      whenDone(); // run whatever's next
+    }
+  }
+}
+
+function writeText(text) {
+  temp = document.getElementById("text");
+  var temp2 = document.createElement("PARAGRAPH");
+  temp2.innerHTML = text;
+  temp.appendChild(temp2);
 }
 
 function randomNumber(min, max) {
@@ -556,9 +595,7 @@ function resetSpec() {
 }
 
 function Story() {
-  alert('You are a person named Kixley. You live in the land of Nulm. You are in the Vacant Plains, and you know the town called Smatino resides nearby. You know where it is, but there are monsters in the plains, and one has just spotted you.')
-  alert('Your attack power is ' + kixleyNCo[1].attackPow + '.')
-  MonsTypeSwitch()
+  writeTextWait('You are a person named Kixley. You live in the land of Nulm. You are in the Vacant Plains, and you know the town called Smatino resides nearby. You know where it is, but there are monsters in the plains, and one has just spotted you.', writeTextWait('Your attack power is ' + kixleyNCo[1].attackPow + '.', MonsTypeSwitch))
 }
 
 function detectMobileDevice() {
@@ -572,10 +609,9 @@ function detectMobileDevice() {
 function GameOver() {
   for(var i = 0; i < dead.length; i++) {
     if(dead[i].called === "You") {
-    alert('You died with ' + totalGold + ' gold, were level ' + dead[i].lev + ', had ' + dead[i].attackPow + ' power, and had a total of ' + dead[i].totalHP + ' health.')
+      writeTextWait('You died with ' + totalGold + ' gold, were level ' + dead[i].lev + ', had ' + dead[i].attackPow + ' power, and had a total of ' + dead[i].totalHP + ' health.', Credits)
     }
   }
-  Credits()
   const err = new Error("Thanks for playing!");
   throw err;
 }
@@ -586,9 +622,8 @@ function NotAnOption() {
 
 function Credits() {
   for (i = 0; i < theWholeShebang.length; i += 1) {
-    alert(theWholeShebang[i])
+    writeTextWait(theWholeShebang[i], Function("2 === 2"))
   }
-  window.close()
 }
 
 function DevCheats() {
@@ -598,30 +633,30 @@ function DevCheats() {
       case 'Infinite Gold':
         if (goldCheat === 0) {
           totalGold = -(Math.log(0))
-          alert('Cheat successfully activated!')
+          writeText('Cheat successfully activated!')
           goldCheat = 1
           youCheated = true
           DevCheats()
         } else {
-          alert('Deactivating cheat...')
+          writeText('Deactivating cheat...')
           totalGold = 0
           goldCheat = 0
-          alert('You now have 0 gold.')
+          writeText('You now have 0 gold.')
           DevCheats()
         }
         break;
       case 'Infinite EXP':
         if (expCheat === 0) {
           totalExp = -(Math.log(0))
-          alert('Cheat successfully activated!')
+          writeText('Cheat successfully activated!')
           expCheat = 1
           youCheated = true
           DevCheats()
         } else {
-          alert('Deactivating cheat...')
+          writeText('Deactivating cheat...')
           totalExp = 0
           kixleyNCo[1].lev = 1
-          alert('You are now level 1 and have 0 exp.')
+          writeText('You are now level 1 and have 0 exp.')
           DevCheats()
         }
         break;
@@ -629,14 +664,14 @@ function DevCheats() {
         if (attackCheat === 0) {
           baseAttackPower = kixleyNCo[1].attackPow
           kixleyNCo[1].attackPow = -(Math.log(0))
-          alert('Cheat successfully activated!')
+          writeText('Cheat successfully activated!')
           attackCheat = 1
           youCheated = true
           DevCheats()
         } else {
-          alert('Deactivating cheat...')
+          writeText('Deactivating cheat...')
           kixleyNCo[1].attackPow = baseAttackPower
-          alert('You now have ' + kixleyNCo[1].attackPow + ' attack.')
+          writeText('You now have ' + kixleyNCo[1].attackPow + ' attack.')
           DevCheats()
         }
         break;
@@ -644,15 +679,15 @@ function DevCheats() {
         if (healthCheat === 0) {
           kixleyNCo[1].hitPoints = -(Math.log(0))
           kixleyNCo[1].totalHP = kixleyNCo[1].hitPoints
-          alert('Cheat successfully activated!')
+          writeText('Cheat successfully activated!')
           healthCheat = 1
           youCheated = true
           DevCheats()
         } else {
-          alert('Deactivating cheat...')
+          writeText('Deactivating cheat...')
           kixleyNCo[1].hitPoints = 100
           kixleyNCo[1].totalHP = kixleyNCo[1].hitPoints
-          alert('You now have 100 health.')
+          writeText('You now have 100 health.')
           DevCheats()
         }
         break;
@@ -660,30 +695,30 @@ function DevCheats() {
         if (blobOfDoomCheat === 0) {
           kixleyNCo[1].blobs = -(Math.log(0))
           kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs
-          alert('Cheat successfully activated!')
+          writeText('Cheat successfully activated!')
           blobOfDoomCheat = 1
           youCheated = true
           DevCheats()
         } else {
-          alert('Deactivating cheat...')
+          writeText('Deactivating cheat...')
           kixleyNCo[1].blobs = 0
           kixleyNCo[1].totalBlobs = kixleyNCo[1].blobs
-          alert('You now have 0 blobs of doom.')
+          writeText('You now have 0 blobs of doom.')
         }
         break;
       case 'Infinite Accuracy':
         if (accCheat === 0) {
           actualAccuracy = kixleyNCo[1].accuracy
           kixleyNCo[1].accuracy = infinity
-          alert('Cheat successfully activated!')
+          writeText('Cheat successfully activated!')
           accCheat = 1
           youCheated = true
           DevCheats()
         } else {
-          alert('Deactivating cheat...')
+          writeText('Deactivating cheat...')
           accCheat = 0
           kixleyNCo[1].accuracy = actualAccuracy
-          alert('You now have normal accuracy.')
+          writeText('You now have normal accuracy.')
         }
         break;
       case 'Activate All':
@@ -700,7 +735,7 @@ function DevCheats() {
         healthCheat = 1
         blobOfDoomCheat = 1
         youCheated = true
-        alert('All cheats activated!')
+        writeText('All cheats activated!')
         DevCheats()
         break;
       case 'Leave':
@@ -715,16 +750,15 @@ function DevCheats() {
 }
 
 function inTower() {
-  alert('With the gate shut behind you, you start following Tivél.')
-  alert("Suddenly, you hear footsteps from behind you!");
-  alert("You quickly duck into a nearby room as the group of people passes by.");
-  alert('You can hear someone say, "Ah, Tivél, back from your expedition?"');
-  alert('Tivél says, "Yes, Smatino has been destroyed."');
-  alert('The person says, "Good. Balbeag will be very happy, I\'m sure."');
-  alert('Tivél says, "Yes, yes. I should go though, I need to give him my report."');
-  alert('The person says, "Of course. Good day."');
-  alert('You hear footsteps walking off.');
-  hideOrFight()
+  writeText('With the gate shut behind you, you start following Tivél.');
+  writeText("Suddenly, you hear footsteps from behind you!");
+  writeText("You quickly duck into a nearby room as the group of people passes by.");
+  writeText('You can hear someone say, "Ah, Tivél, back from your expedition?"');
+  writeText('Tivél says, "Yes, Smatino has been destroyed."');
+  writeText('The person says, "Good. Balbeag will be very happy, I\'m sure."');
+  writeText('Tivél says, "Yes, yes. I should go though, I need to give him my report."');
+  writeText('The person says, "Of course. Good day."');
+  writeTextNext('You hear footsteps walking off.', hideOrFight);
 }
 
 function DevPassAttempt() {
@@ -787,27 +821,27 @@ function monsInitialize(place) {
     monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(4, 8)) * diffSetting;
     if(toMountains) {
       if (monsterGroup[1].called !== 'Master') {
-        alert('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
+        writeText('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
       } else if (foughtMaster === 0 && monsterGroup[1].called === "Master") {
-        alert('You head off towards the mountain, but get accosted by the Master, who is level ' + monsterGroup[1].lev + '.')
+        writeText('You head off towards the mountain, but get accosted by the Master, who is level ' + monsterGroup[1].lev + '.')
         foughtMaster = 1
       } else if (foughtMaster === 1 && monsterGroup[1].called === "Master") {
-        alert('You head off towards the mountain, but get accosted by a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
+        writeText('You head off towards the mountain, but get accosted by a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
       } else {
-        alert('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
+        writeText('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
       }
     } else {
       if(dwNamesB) {
         if (monsterGroup[1].called !== 'Master') {
-          alert('You head off into the plains, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
+          writeText('You head off into the plains, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
         } else if (foughtMaster === 0) {
-          alert('You head off into the plains, where you find the Master, who is level ' + monsterGroup[1].lev + '.')
+          writeText('You head off into the plains, where you find the Master, who is level ' + monsterGroup[1].lev + '.')
           foughtMaster = 1
         } else if (foughtMaster === 1) {
-          alert('You head off into the plains, where you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
+          writeText('You head off into the plains, where you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
         }
       } else {
-        alert('You head off into the plains, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
+        writeText('You head off into the plains, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
       }
     }
   } else if(place === "swamp") {
@@ -817,15 +851,15 @@ function monsInitialize(place) {
     monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(0, 5)) * diffSetting;
     if(dwNamesB) {
       if (monsterGroup[1].called !== 'Master') {
-        alert('You get lost in the swamp, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
+        writeText('You get lost in the swamp, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
       } else if (foughtMaster === 0) {
-        alert('You get lost in the swamp, where you find the Master, who is level ' + monsterGroup[1].lev + '.')
+        writeText('You get lost in the swamp, where you find the Master, who is level ' + monsterGroup[1].lev + '.')
         foughtMaster = 1
       } else if (foughtMaster === 1) {
-        alert('You get lost in the swamp, where you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
+        writeText('You get lost in the swamp, where you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
       }
     } else {
-      alert('You get lost in the swamp, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
+      writeText('You get lost in the swamp, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
     }
   } else if (place === "mountains") {
     monsterGroup[1].lev *= randomNumber(1, 2);
@@ -835,15 +869,15 @@ function monsInitialize(place) {
     monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(1, 6)) * diffSetting;
     if(dwNamesB) {
       if (monsterGroup[1].called !== 'Master') {
-        alert('Once you get into the mountains, you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
+        writeText('Once you get into the mountains, you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
       } else if (foughtMaster === 0) {
-        alert('Once you get into the mountains, you find the Master, who is level ' + monsterGroup[1].lev + '.')
+        writeText('Once you get into the mountains, you find the Master, who is level ' + monsterGroup[1].lev + '.')
         foughtMaster = 1
       } else if (foughtMaster === 1) {
-        alert('Once you get into the mountains, you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
+        writeText('Once you get into the mountains, you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
       }
     } else {
-      alert('Once you get into the mountains, you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
+      writeText('Once you get into the mountains, you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
     }
   }
   MonsTypeSwitch();
@@ -934,6 +968,7 @@ function ChooseTarget() {
     }
     temp.push("Cancel");
     requestInput(temp, determineAnswer);
+    writeText("Please choose a target.");
     function determineAnswer() {
       fightHandler.target = answer;
     }
@@ -951,7 +986,12 @@ function ChooseTarget() {
 }
 
 function FightMenu() {
-// 'What do you do? Health: ' + kixleyNCo[1].hitPoints + '/' + kixleyNCo[1].totalHP + '. ' + monsterGroup[1].called + ' health: ' + FightRound(monsterGroup[1].hitPoints) + '/' + monsterGroup[1].totalHP + '. ' + monsterGroup[1].called + ' type: ' + monsterGroup[1].element + '.'
+  writeText("What do you want to do?");
+  writeText("Health: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
+  for(var i = 1; i < monsterGroup.length; i++) {
+    writeText(monsterGroup[i].called + " health: " + monsterGroup[i].hitPoints + "/" + monsterGroup[i].totalHP);
+    writeText(monsterGroup[i].called + " type: " + monsterGroup[i].element);
+  }
   temp = ["Fight", "Health Potion (" + healthPotion + ")", "Magic", "Special Attack", "Run"];
   if(!hasSpecial) {
     temp.splice(temp.indexOf("Special Attack"), 1);
@@ -959,7 +999,7 @@ function FightMenu() {
   if(healthPotion === 0) {
     temp.splice(temp.indexOf("Health Potion (" + healthPotion + ")"), 1);
   }
-    requestInput(temp, determineAnswer);
+  requestInput(temp, determineAnswer);
   function determineAnswer() {
     if(answer === "Magic") {
       ChooseSpell();
@@ -990,7 +1030,7 @@ function FightMenu() {
 
 function useHealthPotion() {
   if (healthPotion <= 0) {
-    alert('You search your backpack, but you don\'t have a health potion!')
+    writeText('You search your backpack, but you don\'t have a health potion!')
     window.clearTimeout(fightLoop2Timeout);
     window.clearTimeout(fightLoop3Timeout);
     fightHandler.actionChosen = false;
@@ -999,48 +1039,49 @@ function useHealthPotion() {
     fightHandler.target = [""];
     fightHandler.fightLoop();
   } else {
-    alert('You pull a health potion out of your bag and drink it! Yum! It tastes like snickerdoodle cookies!')
-    alert(hpEff + ' hit points restored!')
+    writeText('You pull a health potion out of your bag and drink it! Yum! It tastes like snickerdoodle cookies!')
+    writeText(hpEff + ' hit points restored!')
     kixleyNCo[1].hitPoints += hpEff
     healthPotion--
     if (kixleyNCo[1].hitPoints > kixleyNCo[1].totalHP) {
       kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
     }
-    alert('You now have ' + kixleyNCo[1].hitPoints + ' health!')
   }
 }
 
 function ChooseSpell() {
+  writeText("What spell?");
+  writeText("You have " + kixleyNCo[1].blobs + " blobs of doom.");
   temp = kixleyNCo[1].knownSpells.slice();
+  for(var i = 0; i < temp.length; i++) {
+    if(kixleyNCo[1].spellCosts[i] > kixleyNCo[1].blobs) {
+      temp.splice(i, 1);
+    } else {
+      temp[i] += " (" + kixleyNCo[1].spellCosts[i] + " blobs)"
+    }
+  }
   temp.push("Cancel");
   requestInput(temp, determineAnswer);
-  // 'What spell? You have ' + kixleyNCo[1].blobs + ' blobs of doom.'
   function determineAnswer() {
-    for(var i = 0; i < kixleyNCo[1].knownSpells.length; i++) {
-      if(kixleyNCo[1].knownSpells[i] === answer) {
-        if(kixleyNCo[1].blobs < kixleyNCo[1].spellCosts[i]) {
-          alert("You don\'t have enough blobs of doom! You need " + kixleyNCo[1].spellCosts[i] + " blobs of doom.");
-          ChooseSpell();
-        } else {
-          fightHandler.action.push(answer);
-          fightHandler.actionChosen = true;
-        }
-      }
-    }
     if(answer === "Cancel") {
       FightMenu();
+    } else {
+      fightHandler.action.push(answer);
+      fightHandler.actionChosen = true;
     }
   }
 }
 
 function ChooseSpec() {
+  writeText("Would you like to use your special attack?");
+  writeText(spec[0] + ":");
+  writeText(spec[1]);
   requestInput(["Yes", "No"], determineAnswer);
-  //answer = confirm('Would you like to use your special attack? It is ' + spec[0] + '. It\'s decription is \'' + spec[1] + '\'.', 'Yes, No')
   function determineAnswer() {
     switch (answer) {
       case "Yes":
         if(spec[0] === "Shoot" && arrows === 0) {
-          alert("You're out of arrows to shoot!");
+          writeText("You're out of arrows to shoot!");
           ChooseSpec();
         } else {
           fightHandler.action.push(spec[0].toLowerCase());
@@ -1057,35 +1098,35 @@ function Shoot(target) {
   usedShot = true
   target.accuracy -= 30
   arrows -= 1
-  alert('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!')
-  alert('You have ' + arrows + ' arrows!')
+  writeText('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!')
+  writeText('You have ' + arrows + ' arrows!')
   target.hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3)
 }
 
 function Steal(target) {
   if (percentChance(43) && !usedSteal) {
-    alert('You steal ' + target.calledPlusthe + '\'s weapon!')
+    writeText('You steal ' + target.calledPlusthe + '\'s weapon!')
     kixleyNCo[1].attackPow += 2
     target.attackPow -= 2;
     usedSteal = true;
   } else if(usedSteal) {
-    alert('You\'ve already stolen ' + target.calledPlusthe + '\'s weapon!');
+    writeText('You\'ve already stolen ' + target.calledPlusthe + '\'s weapon!');
   } else {
-    alert('You fail to steal ' + target.calledPlusthe + '\'s weapon.')
+    writeText('You fail to steal ' + target.calledPlusthe + '\'s weapon.')
   }
 }
 
 function WonTheFight() {
   if (inSwamp === 1) {
-    alert('As the monster dies, you get teleported out of the swamp.')
+    writeText('As the monster dies, you get teleported out of the swamp.')
     inSwamp = 0
     swampCounter++
   } else if (fightingGroup) {
-    alert('Balbeag\'s soldiers are defeated!')
+    writeText('Balbeag\'s soldiers are defeated!')
     fightingGroup = false
     inTowerPostDoomedGroup()
   } else if (fightingAAbea) {
-    alert('Tivél is defeated!')
+    writeText('Tivél is defeated!')
     fightingAAbea = false
     finalBossFight()
   } else if (fightingBalbeag) {
@@ -1094,30 +1135,29 @@ function WonTheFight() {
     beatTheGame()
   } else {
     if(numMons === 1) {
-      alert('The monster is defeated!')
+      writeText('The monster is defeated!')
     } else {
-      alert("The monsters are defeated!");
+      writeText("The monsters are defeated!");
     }
     plainsCounter++
   }
   if (toMountains) {
-    alert("With the monster defeated, you hike back down the mountain.");
+    writeText("With the monster defeated, you hike back down the mountain.");
     toMountains = false
   }
   goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
   expPoints = randomNumber(50 * numMons, 150 * numMons);
   killCounter += numMons;
   if (kixleyNCo[1].rageEffect !== 1) {
-    alert('You calm down.')
+    writeText('You calm down.')
     kixleyNCo[1].rageEffect = 1;
   }
-  alert('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!')
+  writeText('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!')
   totalGold += goldDrops
   cumulativeGold += goldDrops
   totalExp += expPoints
   questExpAmt += expPoints
   CheckIfGotAchieve('Gold')
-  alert('You now have ' + totalGold + ' gold and ' + totalExp + ' experience points.')
   if (onAQuest === 1 && y === 1) {
     questKillAmt += numMons
   }
@@ -1126,7 +1166,7 @@ function WonTheFight() {
     checkForLevelUp()
   } else {
     expLeft = levelReq - totalExp
-    alert('You have ' + expLeft + ' experience to go!')
+    writeText('You have ' + expLeft + ' experience before you level up!')
     CheckIfGotAchieve('Kill')
     Places();
   }
@@ -1143,7 +1183,7 @@ function hideOrFight() {
   loc = 3
   numMons = 3;
   fightingGroup = true
-  alert("With the footsteps gone, you exit your hiding spot and start to follow Tivél. Before you can, you hear a shout from behind! Turning, you see the group of soldiers rushing at you!");
+  writeText("With the footsteps gone, you exit your hiding spot and start to follow Tivél. Before you can, you hear a shout from behind! Turning, you see the group of soldiers rushing at you!");
   fightHandler = new Fight(kixleyNCo, monsterGroup);
   fightHandler.fightLoop();
 }
@@ -1151,7 +1191,7 @@ function hideOrFight() {
 function inTowerPostDoomedGroup() {
   loc = 4
   numMons = 1;
-  alert('With the soldiers dispatched, you hurry up the stairs to the top of the tower. As you approach the top, you can see Tivél leave a door. He sees you, a crazy look in his eyes, and shouts "DIE, SCUM!"')
+  writeText('With the soldiers dispatched, you hurry up the stairs to the top of the tower. As you approach the top, you can see Tivél leave a door. He sees you, a crazy look in his eyes, and shouts "DIE, SCUM!"')
   monsterGroup[1] = new Fighter(100, 100, 90, "Tivél", 25, "Balbeag Assistant", 100);
   monsterGroup[1].calledPlusThe = monsterGroup[1].called
   monsterGroup[1].calledPlusthe = monsterGroup[1].called
@@ -1167,30 +1207,32 @@ function finalBossFight() {
   numMons = 1;
   towerSaveMenu()
   if (kixleyNCo[1].chosenClass !== 12) {
-    alert('You use some blobs of doom that you find in Tivél\'s bag to blast down the door.')
-    alert("You are in a large throne room, and at the end of it is a throne. A person is sitting upon it.")
-    alert("The person stands.");
-    alert('"Ah, hello. Kixley, was it?"');
-    alert('You growl, "And I assume you\'re the Balbeag I\'ve heard so much about?"');
-    alert('Balbeag nods.');
-    alert('You say, "Why did you send Tivél to destroy Smatino?"');
-    alert('Balbeag chuckles. "It was you, my boy."');
-    alert('"Don\'t call me that. And what do you mean?"');
-    alert('"You\'ve been destroying all of my minions, of course. I had to stop you."');
-    alert('"...By destroying Smatino."');
-    alert('Balbeag hesitates. "Well, I... didn\'t think Tivél was strong enough to kill you. But uh, that doesn\'t matter! What matters is that you\'re in my throne room, which is unacceptable."');
-    alert('Balbeag smirks. "Are you ready to die?"');
-    alert('You adopt a fighting stance.');
-    alert('"You should be asking yourself that."');
+    writeText('You use some blobs of doom that you find in Tivél\'s bag to blast down the door.')
+    writeText("You are in a large throne room, and at the end of it is a throne. A person is sitting upon it.")
+    writeText("The person stands.");
+    writeText('"Ah, hello. Kixley, was it?"');
+    writeText('You growl, "And I assume you\'re the Balbeag I\'ve heard so much about?"');
+    writeText('Balbeag nods.');
+    writeText('You say, "Why did you send Tivél to destroy Smatino?"');
+    writeText('Balbeag chuckles. "It was you, my boy."');
+    writeText('"Don\'t call me that. And what do you mean?"');
+    writeText('"You\'ve been destroying all of my minions, of course. I had to stop you."');
+    writeText('"...By destroying Smatino."');
+    writeText('Balbeag hesitates. "Well, I... didn\'t think Tivél was strong enough to kill you. But uh, that doesn\'t matter! What matters is that you\'re in my throne room, which is unacceptable."');
+    writeText('Balbeag smirks. "Are you ready to die?"');
+    writeText('You adopt a fighting stance.');
+    writeTextNext('"You should be asking yourself that." (Writer\'s Note: Sorry about the terrible line but I couldn\'t think of anything better o3o)', startFight);
   }
-  monsterGroup[1] = new Fighter(100, 100, 90, "Balbeag", 50, "Boss", 100);
-  monsterGroup[1].calledPlusThe = monsterGroup[1].called
-  monsterGroup[1].calledPlusthe = monsterGroup[1].called
-  fightingBalbeag = true
-  monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + monsterGroup[1].lev + Math.pow(kixleyNCo[1].lev, 2);
-  monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(5, 10)) * diffSetting;
-  fightHandler = new Fight(kixleyNCo, monsterGroup);
-  fightHandler.fightLoop();
+  function startFight() {
+    monsterGroup[1] = new Fighter(100, 100, 90, "Balbeag", 50, "Boss", 100);
+    monsterGroup[1].calledPlusThe = monsterGroup[1].called
+    monsterGroup[1].calledPlusthe = monsterGroup[1].called
+    fightingBalbeag = true
+    monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + monsterGroup[1].lev + Math.pow(kixleyNCo[1].lev, 2);
+    monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(5, 10)) * diffSetting;
+    fightHandler = new Fight(kixleyNCo, monsterGroup);
+    fightHandler.fightLoop();
+  }
 }
 
 /**********************\
@@ -1198,14 +1240,14 @@ function finalBossFight() {
 \**********************/
 
 function Options() {
-  alert('This is the options menu!');
+  writeText('This is the options menu!');
+  writeText("Volume: " + volumeSettings);
   requestInput(["Volume", "Quality", "Text Pace", "Leave"], determineAnswer);
-  // answer = prompt('What would you like to do? Volume: ' + volumeSettings, 'Volume, Quality, Text Pace, Leave').toUpperCase();
   function determineAnswer() {
     switch (answer) {
       case 'Volume':
         volumeSettings = prompt('What do you want to set the volume to?', '0 to 10');
-        switch (answer) {
+        switch (volumeSettings) {
           case '1':
           case '2':
           case '3':
@@ -1216,14 +1258,15 @@ function Options() {
           case '8':
           case '9':
           case '10':
-            alert('Volume set! Now just imagine the noises at the appropriate volume.');
+            writeText('Volume set! Now just imagine the noises at the appropriate volume.');
             Options();
             break;
-          case 0:
-            alert("Volume set! Now just play the game normally!");
+          case '0':
+            writeText("Volume set! Now just play the game normally!");
             Options();
             break;
           case "Dev Cheats":
+            volumeSettings = "0";
             alert('Welcome to the secret area, where you can enable developer cheats.');
             alert('Don\'t use these if you\'re not a dev.');
             temp = DevPassAttempt();
@@ -1241,17 +1284,17 @@ function Options() {
             }
             break;
           default:
-            alert('It can only be from 1 to 10.');
-            volumeSettings = '';
+            writeText('It can only be from 1 to 10.');
+            volumeSettings = "0";
             Options();
         }
         break;
       case 'Quality':
-        alert('What are you talking about? We don\'t have any pictures.');
+        writeText('What are you talking about? We don\'t have any pictures.');
         Options();
         break;
       case 'Text Pace':
-        alert('Hahahahahahahaha. All the text is instant.');
+        writeText('Hahahahahahahaha. All the text is instant.');
         Options();
         break;
       case 'Leave':
@@ -1266,6 +1309,10 @@ function Options() {
 }
 
 function Places() {
+  writeText("Where do you go now?");
+  writeText("Gold: " + totalGold);
+  writeText("HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
+  writeText("Blobs: " + kixleyNCo[1].blobs + "/" + kixleyNCo[1].totalBlobs);
   loc = 1
   temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
   if(!swampDiscovery) {
@@ -1274,32 +1321,30 @@ function Places() {
   if(!mountainPass) {
     temp.splice(temp.indexOf("Mountains"), 1);
   }
-  requestInput(temp, determineAnswer);
-  // answer = prompt('Where do you go now? You have ' + totalGold + ' gold, and ' + kixleyNCo[1].hitPoints + '/' + kixleyNCo[1].totalHP + ' health.', 'Town, Plains, Swamp, Mountains, Menu').toUpperCase()  
+  requestInput(temp, determineAnswer); 
   function determineAnswer() {
     switch (answer) {
       case 'Town':
         if (aabeaDestroysTown === false) {
-          alert('You walk into town, where there is a marketplace and an inn.')
+          writeText('You walk into town, where there is a marketplace and an inn.')
           InTown()
         } else {
-          alert('As you near the outskirts of town, you notice the stream of people leaving town. Then you notice that the entire place is now just a gigantic blast crater. Somebody blew it up!!! You decide to investigate, and walk over to the stream of people.')
-          alert('When you reach the people, they all say this person named Tivél had just come to town and started fires all over, and then used some weird, magical powers to blow up Smatino.')
-          alert('You are sure this Tivél is the same as the one who you met in the swamp, and wish you had used some \'weird, magical powers\' to blow him up.')
-          alert('You race back to the swamp, and see him from a distance. You can\'t, however, blow him up. There are too many vines in the way. So, you follow him. You see a large tower in the distance, and finally, after a few hours, reach it at night. You see Tivél enter, and then, as the gate is clanging down above him, you slide under it and manage to get in.')
-          inTower()
+          writeText('As you near the outskirts of town, you notice the stream of people leaving town. Then you notice that the entire place is now just a gigantic blast crater. Somebody blew it up!!! You decide to investigate, and walk over to the stream of people.')
+          writeText('When you reach the people, they all say this person named Tivél had just come to town and started fires all over, and then used some weird, magical powers to blow up Smatino.')
+          writeText('You are sure this Tivél is the same as the one who you met in the swamp, and wish you had used some \'weird, magical powers\' to blow him up.')
+          writeTextNext('You race back to the swamp, and see him from a distance. You can\'t, however, blow him up. There are too many vines in the way. So, you follow him. You see a large tower in the distance, and finally, after a few hours, reach it at night. You see Tivél enter, and then, as the gate is clanging down above him, you slide under it and manage to get in.', inTower)
         }
         break;
       case 'Plains':
         if (plainsCounter === 7) {
-          alert('As you are walking through the plains you see a map lying on the ground. It shows a path leading to a nearby swamp.')
+          writeText('As you are walking through the plains you see a map lying on the ground. It shows a path leading to a nearby swamp.')
           swampDiscovery = true
         }
         monsInitialize("plains");
         break;
       case 'Swamp':
         if (swampCounter === 7 && killCounter >= 14) {
-          alert('As you are walking through the swamp, you meet someone. He says his name is Tivél, and he is heading towards Smatino, but doesn\'t tell why.')
+          writeText('As you are walking through the swamp, you meet someone. He says his name is Tivél, and he is heading towards Smatino, but doesn\'t tell why.')
           aabeaDestroysTown = true
         }
         inSwamp = 1;
@@ -1321,7 +1366,7 @@ function Places() {
 }
 
 function Mountains() {
-  alert('You make it through the plains and head off into the mountains.')
+  writeText('You make it through the plains and head off into the mountains.')
   loc = 3;
   monsInitialize("mountains");
 }
@@ -1330,41 +1375,40 @@ function CheckIfGotAchieve(whichOne) {
   switch (whichOne) {
     case 'Kill':
       if (killCounter === 5) {
-        alert('You got the Achievement: Kill 5 Monsters.');
+        writeText('You got the Achievement: Kill 5 Monsters.');
         compAchieve.push('Kill 5 Monsters');
       } else if (killCounter === 10) {
-        alert('You got the Achievement: Kill 10 Monsters.');
+        writeText('You got the Achievement: Kill 10 Monsters.');
         compAchieve.push('Kill 10 Monsters');
       } else if (killCounter === 20) {
-        alert('You got the Achievement: Kill 20 Monsters.');
+        writeText('You got the Achievement: Kill 20 Monsters.');
         compAchieve.push('Kill 20 Monsters');
       }
       break;
     case 'Level':
       if (kixleyNCo[1].lev === 5) {
-        alert('You got the Achievement: Reach Level 5.');
+        writeText('You got the Achievement: Reach Level 5.');
         compAchieve.push('Reach Level 5');
       } else if (kixleyNCo[1].lev === 10) {
-        alert('You got the Achievement: Reach Level 10.');
+        writeText('You got the Achievement: Reach Level 10.');
         compAchieve.push('Reach Level 10');
       } else if (kixleyNCo[1].lev === 20) {
-        alert('You got the Achievement: Reach Level 20.');
+        writeText('You got the Achievement: Reach Level 20.');
         compAchieve.push('Reach Level 20');
       }
       break;
     case 'Gold':
       if (cumulativeGold >= 1000 && getGoldAchieve === 0) {
-        alert('You got the Achievement: Get 1000 cumulative gold.');
+        writeText('You got the Achievement: Get 1000 cumulative gold.');
         compAchieve.push('Get 1000 cumulative gold');
-        alert('You have ' + 9 - compAchieve.length + ' achievements left!');
         getGoldAchieve = 1;
       } else if (cumulativeGold >= 2000 && getGoldAchieve === 1) {
-        alert('You got the Achievement: Get 2000 cumulative gold.');
+        writeText('You got the Achievement: Get 2000 cumulative gold.');
         compAchieve.push('Get 2000 cumulative gold');
         getGoldAchieve = 2;
         alert('You have ' + 9 - compAchieve.length + ' achievements left!');
       } else if (cumulativeGold >= 5000 && getGoldAchieve === 2) {
-        alert('You got the Achievement: Get 5000 cumulative gold.');
+        writeText('You got the Achievement: Get 5000 cumulative gold.');
         compAchieve.push('Get 5000 cumulative gold');
         getGoldAchieve = -(Math.log(0));
       }
@@ -1373,16 +1417,16 @@ function CheckIfGotAchieve(whichOne) {
 }
 
 function ListingAchievements() {
-  alert('All of the achievements:');
+  writeText('All of the achievements:');
   for (e = 0; e < allAchievements.length; e += 1) {
-    alert(allAchievements[e]);
+    writeText(allAchievements[e]);
   }
-  alert('Completed Achievements:');
+  writeText('Completed Achievements:');
   if (compAchieve.length === 0) {
-    alert('Nothing. :(');
+    writeText('Nothing. :(');
   } else {
     for (e = 0; e < compAchieve.length; e += 1) {
-      alert(compAchieve[e]);
+      writeText(compAchieve[e]);
     }
   }
   achievementMenu();
@@ -1390,7 +1434,8 @@ function ListingAchievements() {
 
 function achievementMenu() {
   achieveCompletion = (compAchieve.length / allAchievements.length) * 100;
-  alert('This is the achievement menu. Here you can find the list of achievements, both completed and unfinished.');
+  writeText('This is the achievement menu. Here you can find the list of achievements, both completed and unfinished.');
+  writeText("Achievement Completion: " + achieveCompletion + "%");
   requestInput(["List Achievements", "Leave"], determineAnswer);
   // answer = prompt('Achievement completion: ' + achieveCompletion + '%', 'List Achievements, Exit').toUpperCase();
   function determineAnswer() {
@@ -1413,11 +1458,11 @@ function StartUpMenu() {
   if (openingMenu === true) {
     switch (randomNumber(1, 10000)) {
       case 3141:
-        alert('WELCOME TO unnamedTextAdventure!');
+        writeText('WELCOME TO unnamedTextAdventure!');
         openingMenu = false;
         break;
       default:
-        alert('WELCOME TO KIXLEY!');
+        writeText('WELCOME TO KIXLEY!');
         openingMenu = false;
     }
   }
@@ -1435,8 +1480,8 @@ function StartUpMenu() {
   }
 
   if (detectIE() !== false) {
-    alert('We noticed that you are using Internet Explorer. Because of this, your Kixley experience will be unsatisfactory. This is because the boxes will change position.');
-    alert('Here are some suggestions for browsers:');
+    writeText('We noticed that you are using Internet Explorer. Because of this, your Kixley experience will be unsatisfactory. This is because the boxes will change position.');
+    writeText('Here are some suggestions for browsers:');
     var windowObjectReference;
     var strWindowFeatures = 'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes';
 
@@ -1462,12 +1507,13 @@ function StartUpMenu() {
       useDefaultClass = parseBool(useDefaultClass)
     }
   }
+  writeText("Kixley Beta 1.1");
   requestInput(["Start", "Options", "Load", "Achievements", "Create New Account", "Log In", "Exit"], determineAnswer);
   //answer = prompt('Choose an option. (Version: Beta 1.1)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
   function determineAnswer() {
     switch (answer) {
       case 'Start':
-        alert('Before you start, please set the difficulty. Easier difficulties have monsters with less health and attack. Harder difficulties have monsters with more health and attack.')
+        writeText('Before you start, please set the difficulty. Easier difficulties have monsters with less health and attack. Harder difficulties have monsters with more health and attack.')
         openingMenu = 0
         Difficulty()
         break;
@@ -1500,6 +1546,7 @@ function StartUpMenu() {
 
 function Menu() {
   from = 'in-game'
+  writeText("Kixley Beta 1.1");
   requestInput(["Options", "Exit", "Return", "Save", "Log In"], determineAnswer);
   // answer = prompt('Choose an option. (Version: Beta 1.1)', 'Options, Exit, Return, Save, Log In').toLowerCase()
   function determineAnswer() {
@@ -1508,7 +1555,7 @@ function Menu() {
         Options()
         break;
       case 'Exit':
-        alert('Adios!')
+        writeText("Bye!");
         Credits()
         const e = new Error("Thanks for playing!");
         throw e;
@@ -1536,8 +1583,8 @@ function Menu() {
 
 function Difficulty() {
   if (useDefaults === false || useDefaultDiff === false) {
+    writeText("What difficulty?");
     requestInput(["Easy", "Normal", "Hard", "Epic", "Legend"], determineAnswer);
-    //answer = prompt('What do you want the difficulty to be?', 'Easy, Normal, Hard, Epic, Legend').toUpperCase()
     function determineAnswer() {
       switch (answer) {
         case 'Easy':
@@ -1568,23 +1615,6 @@ function Difficulty() {
       kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
       if(settingDefault) {
         settingDefault = false
-        switch (diffSetting) {
-          case 0.5:
-            diffSetting = 3;
-            break;
-          case 1:
-            diffSetting = 1;
-            break;
-          case 1.5:
-            diffSetting = 4;
-            break;
-          case 2:
-            diffSetting = 2;
-            break;
-          case 2.5:
-            diffSetting = 5;
-            break;
-        }
         localStorage.setItem(username + 'Difficulty@Kixley@65810', diffSetting)
         inAccount() 
       } else {
@@ -1594,23 +1624,6 @@ function Difficulty() {
   } else {
     diffSetting = localStorage.getItem(username + 'Difficulty@Kixley@65810')
     diffSetting = parseInt(diffSetting, 10)
-    switch (diffSetting) {
-      case 3:
-        diffSetting = 0.5
-        break;
-      case 3.5:
-        diffSetting = 1
-        break;
-      case 4:
-        diffSetting = 1.5
-        break;
-      case 4.5:
-        diffSetting = 2
-        break;
-      case 5:
-        diffSetting = 2.5
-        break;
-    }
     monsterGroup[1].attackPow *= diffSetting;
     monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
     monsterGroup[1].hitPoints = 100 * diffSetting
@@ -1626,14 +1639,14 @@ function Difficulty() {
 
 function KnightClass() {
   resetSpec()
-  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
-  // answer = prompt('Knight', 'Inspect, Choose, Exit').toUpperCase()
+  writeText("The Knight is a fierce warrior. He/She knows when to fight and when to block, and trains him/herself ceaselessly.");
+  writeText("Attack + 2");
+  writeText("Health + 15");
+  writeText("Blobs of Doom (mana) - 100");
+  writeText("Spells 50% effective");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Knight is a fierce warrior. He/She knows when to fight and when to block, and trains him/herself ceaselessly. Attack + 2, Health + 15, Blobs of Doom - 100 (similar to mana or magicka), Spells 50% less effective.')
-        KnightClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1646,14 +1659,14 @@ function KnightClass() {
 
 function MageClass() {
   resetSpec()
-  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
-  //answer = prompt('Mage', 'Inspect, Choose, Exit').toUpperCase()
+  writeText("The Mage does not overuse the fight option. Rather, he/she uses magical attacks that damage the enemy.");
+  writeText("Attack - 2");
+  writeText("Blobs of Doom (mana) + 100");
+  writeText("Health - 15");
+  writeText("Spells 150% effective");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Mage does not overuse the fight option. Rather, he/she uses magical attacks that damage the enemy. Attack - 2, Blobs of Doom (similar to mana or magicka) + 100, Health - 15, Spells 50% more effective.')
-        MageClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1666,14 +1679,12 @@ function MageClass() {
 
 function BarbarianClass() {
   resetSpec()
-  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
-  //answer = prompt('Barbarian', 'Inspect, Choose, Exit').toUpperCase()
+  writeText("The Barbarian hits hard, but at the cost of health. With the Rage spell, he/she can knock out enemies with a single hit.");
+  writeText("Attack + 4");
+  writeText("Health - 25");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Barbarian hits hard, but at the cost of health. With the Rage spell, he/she can knock out enemies with a single hit. Attack + 4, Health - 25')
-        BarbarianClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1686,14 +1697,15 @@ function BarbarianClass() {
 
 function ClericClass() {
   resetSpec()
-  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
-  //answer = prompt('Cleric', 'Inspect, Choose, Exit').toUpperCase()
+  writeText("The Cleric would prefer to heal friends than attack foes, but he/she will have to fight now. With the new Heal spell, they can restore some of their health.");
+  writeText("Attack - 3");
+  writeText("Health + 10");
+  writeText("Blobs of Doom (mana) + 50");
+  writeText("Spells 125% effective");
+  writeText("Heal Spell");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Cleric would prefer to heal friends than attack foes, but he/she will have to fight now. With the new Heal spell, they can restore some of their health. Attack - 3, Health + 10, Blobs of Doom (similar to mana or magicka) +  50, Spells 25% more effective, Heal spell.')
-        ClericClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1706,14 +1718,14 @@ function ClericClass() {
 
 function PrinceClass() {
   resetSpec()
-  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
-  //answer = prompt('Prince', 'Inspect, Choose, Exit').toUpperCase()
+  writeText("The Prince is like a Knight on steroids. The fight option is definitely the choice for this class.");
+  writeText("Attack + 4");
+  writeText("Health + 30");
+  writeText("Blobs of Doom (mana) - 200");
+  writeText("Spells 25% effective");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Prince is like a Knight on steroids. The fight option is definitely the choice for this class. Attack + 4, Health + 30, Blobs of Doom (similar to mana or magicka) - 200, Spells 75% less effective.')
-        PrinceClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1726,14 +1738,15 @@ function PrinceClass() {
 
 function ArchmageClass() {
   resetSpec()
-  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
+  writeText("The Arch-Mage is like a Mage on steroids. You should definitely use some magic as this class.");
+  writeText("Attack - 4");
+  writeText("Health - 30");
+  writeText("Blobs of Doom (mana) + 200");
+  writeText("Spells 175% effective");
+  requestInput(["Choose", "Exit"], determineAnswer);
   //answer = prompt('Arch-Mage', 'Inspect, Choose, Exit').toUpperCase()
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Arch-Mage is like a Mage on steroids. You should definitely use some magic as this class. Attack - 4, Health - 30, Blobs of Doom (similar to mana or magicka) + 200, Spells 75% more effective.')
-        ArchmageClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1747,18 +1760,16 @@ function ArchmageClass() {
 function ThiefClass() {
   spec = ['Steal', 'A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!']
   actualSpec = Steal;
-  requestInput(["Inspect", "Inspect Special Attack", "Choose", "Exit"], determineAnswer);
-  //answer = prompt('Thief', 'Inspect, Inspect Special Attack, Choose, Exit').toUpperCase()
+  writeText("The Thief class has put his/her stealing ability to good use. Now, he/she steals from monsters!");
+  writeText("Attack - 1");
+  writeText("Blobs of Doom (mana) - 50");
+  writeText("Accuracy + 20%");
+  writeText("50% more drops");
+  writeText("Special Attack: Steal");
+  writeText("    A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Thief class has put his/her stealing ability to good use. Now, he/she steals from monsters! Attack - 1, Blobs of Doom (similar to mana or magicka) - 50, Accuracy + 20%, Drops + 50%, Special Attack: Steal.')
-        ThiefClass()
-        break;
-      case 'Inspect Special Attack':
-        alert(spec[1])
-        ThiefClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1771,14 +1782,14 @@ function ThiefClass() {
 
 function NinjaClass() {
   resetSpec()
-  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
-  //answer = prompt('Ninja', 'Inspect, Choose, Exit').toUpperCase()
+  writeText("The Ninja class is oriented towards hitting more and getting hit less. With higher accuracy, this master of hiding also decreases his/her opponent\'s accuracy.");
+  writeText("Attack - 2");
+  writeText("Blobs of Doom (mana) - 50");
+  writeText("Accuracy + 25%");
+  writeText("Monster Accuracy - 35%");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Ninja class is oriented towards hitting more and getting hit less. With higher accuracy, this master of hiding also decreases his/her opponent\'s accuracy. Attack - 2, Blobs of Doom (similar to mana or magicka) - 50, Accuracy + 25%, Monster Accuracy - 35%')
-        NinjaClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1791,13 +1802,16 @@ function NinjaClass() {
 
 function CavalryClass() {
   resetSpec()
-  requestInput(["Inspect", "Choose", "Exit"], determineAnswer);
-  //answer = prompt('Cavalry', 'Inspect, Choose, Exit').toUpperCase()
+  writeText("The Cavalry class is like the Knight, but has a higher crit chance. However, the other advantages are less.");
+  writeText("Attack + 1");
+  writeText("Health + 7"); // stop it no
+  writeText("Crit Chance + 10%");
+  writeText("Crit Multiplier + 0.5");
+  writeText("Blobs of Doom (mana) - 150");
+  writeText("Spells 40% effective");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Cavalry class is like the Knight, but has a higher crit chance. However, the other advantages are less. Attack + 1, Health + 7, Crit Chance + 10%, Crit Multiplier + 0.5, Blobs of Doom (similar to mana or magicka) - 150, Spells 60% less effective.')
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1811,18 +1825,17 @@ function CavalryClass() {
 function ArcherClass() {
   spec = ['Shoot', 'You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows']
   actualSpec = Shoot;
-  requestInput(["Inspect", "Inspect Special Attack", "Choose", "Exit"], determineAnswer);
-  //answer = prompt('Archer', 'Inspect, Choose, Exit').toUpperCase()
+  writeText("The Archer class isn't the strongest, but they still can fight well. With the Shoot attack, they can inflict damage while making the monster less accurate.");
+  writeText("Attack - 2");
+  writeText("Health - 7"); // ah god why
+  writeText("Blobs of Doom (mana) - 15");
+  writeText("Spells 110% effective");
+  writeText("Accuracy + 30%");
+  writeText("Special Attack: Shoot");
+  writeText("    You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows.");
+  requestInput(["Choose", "Exit"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
-      case 'Inspect':
-        alert('The Archer class isn\'t the strongest, but they still can fight well. With the Shoot attack, they can inflict damage while making the monster less accurate. Attack - 2, Health - 7, Blobs of Doom (similar to mana or magicka), - 15, Spells 10% more effective, Accuracy + 30%, Special Attack: Shoot.')
-        ArcherClass()
-        break;
-      case 'Inspect Special Attack':
-        alert(spec[1])
-        ArcherClass()
-        break;
       case 'Choose':
         ChoosingAClass(chosenClass)
         break;
@@ -1835,19 +1848,16 @@ function ArcherClass() {
 
 function ChoosingAClass(chosenClass) {
   if (useDefaults === true) {
-    answer = true
+    answer = "Yes"
     chosenClass = localStorage.getItem(username + 'Class@Kixley@65810')
     determineAnswer();
   } else {
+    writeText("Are you sure?");
     requestInput(["Yes", "No"], determineAnswer);
-    //answer = confirm('Are you sure?')
   }
   function determineAnswer() {
     switch (answer) {
       case "Yes":
-        if (useDefaults === false) {
-          alert('You are now a ' + chosenClass + '!')
-        }
         switch (chosenClass) {
           case 'Knight':
             kixleyNCo[1].attackPow += 2
@@ -1965,7 +1975,9 @@ function ChoosingAClass(chosenClass) {
         }
         if (settingDefault === false) {
           kixleyNCo[1].magicSkillz *= (3 - diffSetting)
-          Story()
+          if (useDefaults === false) {
+            writeTextWait('You are now a ' + chosenClass + '!', Story)
+          }
         } else {
           settingDefault = false
           localStorage.setItem(username + 'Class@Kixley@65810', chosenClass)
@@ -1983,9 +1995,8 @@ function ChooseClass() {
   if (useDefaultClass === true || useDefaults === true) {
     ChoosingAClass(chosenClass)
   } else {
-    alert('Along with difficulty, we need you to choose your class. Please select one now.')
+    writeText('Along with difficulty, we need you to choose your class. Please select one now.')
     requestInput(["Knight", "Mage", "Barbarian", "Cleric", "Prince", "Arch-Mage", "Thief", "Ninja", "Cavalry", "Archer"], determineAnswer);
-    //chosenClass = prompt('The classes are: Knights, Mages, Barbarians, Clerics, Princes, Arch-Mages, Thieves, Ninjas, Cavalry, and Archers.', 'Knight, Mage, Barbarian, Cleric, Prince, Arch-Mage, Thief, Ninja, Cavalry, and Archer').toLowerCase()
     function determineAnswer() {
       chosenClass = answer;
       switch (answer) {
@@ -2085,8 +2096,10 @@ function ValaClass() {
 
 function InTown() {
   loc = 2
+  writeText("Where to?");
+  writeText("Gold: " + totalGold);
+  writeText("Health: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
   requestInput(["Market", "Inn", "Leave", "Menu"], determineAnswer);
-  //answer = prompt('Where to? You have ' + totalGold + ' gold and ' + kixleyNCo[1].hitPoints + ' health.', 'Marketplace, Inn, Leave, Menu')
   function determineAnswer() {
     switch (answer) {
       case 'Market':
@@ -2096,7 +2109,7 @@ function InTown() {
         InInn()
         break;
       case 'Leave':
-        alert('You leave town.')
+        writeText('You leave town.')
         Places()
         break;
       case 'Menu':
@@ -2117,27 +2130,30 @@ function BuyHealthPotion() {
     answer = parseInt(answer, 10)
     howMany = answer
     if (totalGold < (hpCost * howMany)) {
-      alert('You don\'t have enough gold to buy that many health potions. At max you could buy ' + Math.floor(totalGold / hpCost) + ' health potion(s).')
+      writeText('You don\'t have enough gold to buy that many health potions. At max you could buy ' + Math.floor(totalGold / hpCost) + ' health potion(s).')
       InShop()
-    }
-    requestInput(["Yes", "No"], determineAnswer);
-    //answer = confirm('Are you sure? You\'re going to buy ' + answer + ' health potions, and you have ' + totalGold + ' gold.', 'Yes, No')
-    function determineAnswer() {
-      switch (answer) {
-        case "Yes":
-          alert('Health potion(s) bought!')
-          healthPotion += howMany
-          answer = 0
-          totalGold -= (hpCost * howMany)
-          InShop()
-          break;
-        case "No":
-          InShop()
-          break;
+    } else {
+      writeText("Are you sure?");
+      writeText("You're going to buy " + answer + " health potions.");
+      writeText("Gold: " + totalGold);
+      requestInput(["Yes", "No"], determineAnswer);
+      function determineAnswer() {
+        switch (answer) {
+          case "Yes":
+            writeText('Health potion(s) bought!')
+            healthPotion += howMany
+            answer = 0
+            totalGold -= (hpCost * howMany)
+            InShop()
+            break;
+          case "No":
+            InShop()
+            break;
+        }
       }
     }
   } else {
-    alert('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!')
+    writeText('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!')
     BuyHealthPotion()
   }
 }
@@ -2145,12 +2161,12 @@ function BuyHealthPotion() {
 function BuyWoodenSword() {
   if (woodenSword === 0) {
     if (totalGold >= wsCost) {
+      writeText("Are you sure?");
       requestInput(["Yes", "No"], determineAnswer);
-      //answer = prompt('Are you sure?', 'Yes, No').toUpperCase()
       function determineAnswer() {
         switch (answer) {
           case 'Yes':
-            alert('Wooden sword bought!')
+            writeText('Wooden sword bought!')
             woodenSword++;
             kixleyNCo[1].attackPow *= (1 + (0.05 * (3 - diffSetting)))
             totalGold -= wsCost
@@ -2162,11 +2178,11 @@ function BuyWoodenSword() {
         }
       }
     } else {
-      alert('You don\'t have enough money.')
+      writeText('You don\'t have enough money.')
       InShop()
     }
   } else {
-    alert('SOLD OUT.')
+    writeText('SOLD OUT.')
     InShop()
   }
 }
@@ -2174,12 +2190,13 @@ function BuyWoodenSword() {
 function BuySpeedBoots() {
   if (speedBoots === 0) {
     if (totalGold >= sbCost) {
+      writeText("Are you sure?");
       requestInput(["Yes", "No"], determineAnswer);
       // answer = prompt('Are you sure?', 'Yes, No').toUpperCase()
       function determineAnswer() {
         switch (answer) {
           case 'Yes':
-            alert('Speed boots bought!')
+            writeText('Speed boots bought!')
             speedBoots++
             totalGold -= sbCost
             kixleyNCo[1].accuracy += 5 * (3 - diffSetting)
@@ -2191,11 +2208,11 @@ function BuySpeedBoots() {
         }
       }
     } else {
-      alert('You don\'t have enough money.')
+      writeText('You don\'t have enough money.')
       InShop()
     }
   } else {
-    alert('SOLD OUT.')
+    writeText('SOLD OUT.')
     InShop()
   }
 }
@@ -2205,33 +2222,35 @@ function BuyArrows() {
   if (answer === '') {
     NotAnOption()
     BuyArrows()
-  }
-  firstChar = answer.charAt(0)
-  if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
-    howMany = parseInt(answer, 10)
-    if (totalGold < (aCost * howMany)) {
-      alert('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrows(s).')
-      InShop()
-    }
-    requestInput(["Yes", "No"], determineAnswer);
-    //answer = confirm('Are you sure? You\'re going to buy ' + answer + ' arrows, and you have ' + totalGold + ' gold. This will cost you ' + (aCost * howMany) + ' gold.', 'Yes, No')
-    function determineAnswer() {
-      switch (answer) {
-        case "Yes":
-          alert('Arrow(s) bought!')
-          arrows += howMany
-          answer = 0
-          totalGold -= (aCost * howMany)
-          InShop()
-          break;
-        case "No":
-          InShop()
-          break;
-      }
-    }
   } else {
-    alert('That wasn\'t a number! You can\'t buy ' + answer + ' arrows!')
-    BuyArrows()
+    firstChar = answer.charAt(0)
+    if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
+      howMany = parseInt(answer, 10)
+      if (totalGold < (aCost * howMany)) {
+        writeText('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrows(s).')
+        InShop()
+      }
+      writeText();
+      requestInput(["Yes", "No"], determineAnswer);
+      //answer = confirm('Are you sure? You\'re going to buy ' + answer + ' arrows, and you have ' + totalGold + ' gold. This will cost you ' + (aCost * howMany) + ' gold.', 'Yes, No')
+      function determineAnswer() {
+        switch (answer) {
+          case "Yes":
+            alert('Arrow(s) bought!')
+            arrows += howMany
+            answer = 0
+            totalGold -= (aCost * howMany)
+            InShop()
+            break;
+          case "No":
+            InShop()
+            break;
+        }
+      }
+    } else {
+      alert('That wasn\'t a number! You can\'t buy ' + answer + ' arrows!')
+      BuyArrows()
+    }
   }
 }
 
