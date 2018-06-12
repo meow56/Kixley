@@ -547,6 +547,8 @@ function writeTextWait(text, whenDone) {
   var temp2 = document.createElement("PARAGRAPH");
   temp2.innerHTML = text;
   temp.appendChild(temp2);
+  temp2 = document.createElement("BR");
+  temp.appendChild(temp2);
   temp = document.getElementById("buttons");
   temp2 = document.createElement("BUTTON");
   temp2.innerHTML = "Next";
@@ -573,6 +575,8 @@ function writeText(text) {
   temp = document.getElementById("text");
   var temp2 = document.createElement("PARAGRAPH");
   temp2.innerHTML = text;
+  temp.appendChild(temp2);
+  temp2 = document.createElement("BR");
   temp.appendChild(temp2);
 }
 
