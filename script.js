@@ -176,7 +176,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.chooseTarget = function() {
     for(var i = 1; i < this.turn.length; i++) {
-      if((this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
+      if((this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
         var temp = ChooseTarget();
         if(this.target === "Cancel") {
           this.actionChosen = false;
@@ -185,7 +185,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           this.target.push(temp);
           this.targetChosen = true;
         }
-      } else if (this.action[i] === "Fight" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
+      } else if (this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
         this.target.push(1);
         this.targetChosen = true;
       } else {
