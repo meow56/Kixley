@@ -204,9 +204,11 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           useHealthPotion();
           break;
         case "Fire (20 blobs)":
+        case "Fire":
           this.turn[i].magic("Fire", this.notTurn[this.target[i]]);
           break;
         case "Rage (40 blobs)":
+        case "Rage":
           this.turn[i].magic("Rage");
           break;
         case "Heal (30 blobs)":
