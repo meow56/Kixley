@@ -49,7 +49,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
     } else {
       this.streak = 0; // reset missed in a row
       this.cChance = percentChance(this.critChance); // do you crit?
-      this.finalDamage = (this.attackPow * this.rageEffect) + randomNumber(-2, 2); // final damage
+      this.finalDamage = (this.attackPow * (1 + (0.05 * (3 - diffSetting) * woodenSword)) * this.rageEffect) + randomNumber(-2, 2); // final damage
       if (this.cChance) {
         if (this.chosenClass === 8) {
           this.finalDamage *= 2; // cavalry has double damage crit
@@ -335,7 +335,7 @@ var monsName = [
   'Velociraptor'
 ];
 var aabeaDestroysTown = false;
-var dwNamesB = false; // using Doctor Who names?
+var dwNamesB = false; // MARKED FOR DELETION
 var dwNames = [
   'Hey wait a minute, that was a bug',
   'Dalek',
@@ -346,7 +346,7 @@ var dwNames = [
   'Silent',
   'Master',
   'Special Weapons Dalek'
-];
+]; // MARKED FOR DELETION
 var mountainNames = [
   'Lolnope',
   'Rock Giant',
@@ -371,7 +371,7 @@ var allAchievements = [
   'Get 5000 cumulative gold'
 ];
 var compAchieve = []; // completed achievements
-var achieveCompletion; // percentage of achievements completed
+var achieveCompletion; // percentage of achievements completed. MARKED FOR DELETION
 var killCounter = 0; // how many monsters killed
 var cumulativeGold = 0; // total gold earned
 var getGoldAchieve = 0;
@@ -386,7 +386,7 @@ var spec = []; // special move
 var actualSpec;
 var usedShot = false;
 var usedSteal = false;
-var flamingSword = false;
+var flamingSword = false; // MARKED FOR DELETION
 var baseAttackPower = kixleyNCo[1].attackPow;
 var hasSpecial = false;
 var specOrNo = '';
@@ -511,28 +511,30 @@ var reward; // how much gold/exp you get when you finish a quest
 \*******************/
 
 function showHealth() {
-  if(temp !== kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP) {
-    temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
-    temp *= 100;
-    temp = Math.round(temp);
-    if(temp !== 0) {
-      document.getElementById("current_hp").innerHTML = ".";
-      document.getElementById("current_hp").style.width = temp;
-      document.getElementById("current_hp").style.float = "left";
-    } else {
-      document.getElementById("current_hp").innerHTML = "";
-      document.getElementById("current_hp").style.width = 0;
+  if(kixleyNCo[1] !== undefined) {
+    if(temp !== kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP) {
+      temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
+      temp *= 100;
+      temp = Math.round(temp);
+      if(temp !== 0) {
+        document.getElementById("current_hp").innerHTML = ".";
+        document.getElementById("current_hp").style.width = temp;
+        document.getElementById("current_hp").style.float = "left";
+      } else {
+        document.getElementById("current_hp").innerHTML = "";
+        document.getElementById("current_hp").style.width = 0;
+      }
+      if(temp !== 100) {
+        document.getElementById("total_hp").innerHTML = ".";
+        document.getElementById("total_hp").style.width = 100 - temp;
+        document.getElementById("total_hp").style.marginLeft = temp;
+      } else {
+        document.getElementById("total_hp").innerHTML = "";
+        document.getElementById("total_hp").style.width = 0;
+      }
+      document.getElementById("hp_nums").innerHTML = "HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP;
+      temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
     }
-    if(temp !== 100) {
-      document.getElementById("total_hp").innerHTML = ".";
-      document.getElementById("total_hp").style.width = 100 - temp;
-      document.getElementById("total_hp").style.marginLeft = temp;
-    } else {
-      document.getElementById("total_hp").innerHTML = "";
-      document.getElementById("total_hp").style.width = 0;
-    }
-    document.getElementById("hp_nums").innerHTML = "HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP;
-    temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
   }
 }
 
@@ -2204,7 +2206,7 @@ function BuyWoodenSword() {
           case 'Yes':
             writeText('Wooden sword bought!')
             woodenSword++;
-            kixleyNCo[1].attackPow *= (1 + (0.05 * (3 - diffSetting)))
+            //kixleyNCo[1].attackPow *= (1 + (0.05 * (3 - diffSetting)))
             totalGold -= wsCost
             InShop()
             break;
@@ -2341,27 +2343,21 @@ function Sell() {
   function determineAnswer() {
     switch (answer) {
       case 'Wooden Sword':
-        if (woodenSword === 1) {
-          alert('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
-          requestInput(["Yes", "No"], determineAnswer2);
-          //answer = prompt('Are you sure you want to sell your wooden sword?', 'Yes, No').toUpperCase()
-          function determineAnswer2() {
-            switch (answer) {
-              case 'Yes':
-                totalGold += .9 * wsCost
-                woodenSword = 0
-                kixleyNCo[1].attackPow /= (1 + (0.05 * (3 - diffSetting)))
-                alert('Wooden sword sold!')
-                InShop()
-                break;
-              case 'No':
-                Sell()
-                break;
-            }
+        alert('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
+        requestInput(["Yes", "No"], determineAnswer2);
+        //answer = prompt('Are you sure you want to sell your wooden sword?', 'Yes, No').toUpperCase()
+        function determineAnswer2() {
+          switch (answer) {
+            case 'Yes':
+              totalGold += .9 * wsCost
+              woodenSword = 0
+              alert('Wooden sword sold!')
+              InShop()
+              break;
+            case 'No':
+              Sell()
+              break;
           }
-        } else {
-          alert('You don\'t have one to sell.')
-          Sell()
         }
         break;
       case 'Speed Boots':
@@ -2718,8 +2714,7 @@ function buyWoodenSwordsCheap() {
         if (totalGold >= 35) {
           alert('Maegfin hands you the sword, along with a sheath, as you hand him the money')
           totalGold -= 35
-          woodenSword = 1
-          kixleyNCo[1].attackPow *= 1 + (0.05 * (3 - diffSetting))
+          woodenSword = 1;
           inCommonRoom()
         } else {
           alert('Maegfin sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
@@ -2754,13 +2749,13 @@ function beatTheGame() {
 }
 
 function StatToLevelUp() {
-  requestInput(["Attack + " + swordAdjustedTempMinusOne, "Health + " + levelUpHealth, "Blobs of Doom + " + levelUpBlobsOfDoom], determineAnswer);
+  requestInput(["Base Attack + " + temp, "Health + " + levelUpHealth, "Blobs of Doom + " + levelUpBlobsOfDoom], determineAnswer);
   //answer = prompt('Please choose a stat to level up: Attack + ' + swordAdjustedTempMinusOne + ', Health + ' + levelUpHealth + ', Blobs of Doom + ' + levelUpBlobsOfDoom + '.', 'Attack, Health, Blobs of Doom').toUpperCase()
   function determineAnswer() {
     switch (answer) {
-      case 'Attack + ' + swordAdjustedTempMinusOne:
-        alert('You got ' + swordAdjustedTempMinusOne + ' attack!')
-        kixleyNCo[1].attackPow += swordAdjustedTempMinusOne
+      case 'Base Attack + ' + temp:
+        alert('You got ' + temp + ' base attack!')
+        kixleyNCo[1].attackPow += temp
         baseAttackPower += temp
         attLevelUp++
         break;
@@ -2783,7 +2778,6 @@ function checkForLevelUp() {
   if (totalExp >= levelReq) {
     kixleyNCo[1].lev += 1
     temp = Math.floor(1.2 * kixleyNCo[1].lev) - 1
-    swordAdjustedTempMinusOne = temp * (1 + (0.05 * woodenSword * (3 - diffSetting)));
     levelUpHealth = 50
     levelUpHealth += classHealthChanges[kixleyNCo[1].chosenClass]
     levelUpHealth *= kixleyNCo[1].lev - 1
