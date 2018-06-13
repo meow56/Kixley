@@ -45,7 +45,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.hitMiss = function(fighter) { // general fight command: accuracy check, damage calculation, effects
     if (!percentChance(this.accuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
       this.streak++ // num times missed in a row plus one
-      alert(this.calledPlusThe + " missed.");
+      writeText(this.calledPlusThe + " missed.");
     } else {
       this.streak = 0; // reset missed in a row
       this.cChance = percentChance(this.critChance); // do you crit?
@@ -59,9 +59,9 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       }
       this.finalDamage = Math.round(10 * this.finalDamage) / 10; // round damage to tenth position
       if (this.cChance) {
-        alert(this.calledPlusThe + " did " + FightRound(this.finalDamage) + " CRITICAL damage.");
+        writeText(this.calledPlusThe + " did " + FightRound(this.finalDamage) + " CRITICAL damage.");
       } else {
-        alert(this.calledPlusThe + " did " + FightRound(this.finalDamage) + " damage.");
+        writeText(this.calledPlusThe + " did " + FightRound(this.finalDamage) + " damage.");
       }
       fighter.hitPoints -= this.finalDamage; // actual damage calculation
       if(this.element === "Poison") {
@@ -98,25 +98,25 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.magic = function(spell, fighter) {
     switch(spell) {
       case "Fire":
-        alert(fighter.calledPlusThe + " took " + 20 * this.magicSkillz + " damage.");
+        writeText(fighter.calledPlusThe + " took " + 20 * this.magicSkillz + " damage.");
         fighter.hitPoints -= 20 * this.magicSkillz;
         this.blobs -= 20;
         if(percentChance(10)) {
           fighter.statusEffects.push(["Burned", 5]);
-          alert(fighter.calledPlusThe + " caught on fire!");
+          writeText(fighter.calledPlusThe + " caught on fire!");
         }
         break;
       case "Rage":
         if(this.called === "You") {
-          alert("You raise your attack power by " + (1 + (0.2 * this.magicSkillz)) + ".");
+          writeText("You raise your attack power by " + (1 + (0.2 * this.magicSkillz)) + ".");
         } else {
-          alert(this.calledPlusThe + " raises their attack power by " + (1 + (0.2 * this.magicSkillz)) + ".");
+          writeText(this.calledPlusThe + " raises their attack power by " + (1 + (0.2 * this.magicSkillz)) + ".");
         }
         this.rageEffect = 1 + (0.2 * this.magicSkillz);
         this.blobs -= 40;
         break;
       case "Heal":
-        alert("You heal 60 hitpoints!");
+        writeText("You heal 60 hitpoints!");
         this.hitPoints += 60;
         if(this.hitPoints > this.totalHP) {
           this.hitPoints = this.totalHP;
@@ -145,9 +145,9 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       this.statusEffects[i][1]--;
       if(this.statusEffects[i][1] === 0) {
         if(this.called === "You") {
-          alert("You are no longer " + this.statusEffects[i][0]);
+          writeText("You are no longer " + this.statusEffects[i][0]);
         } else {
-          alert(this.calledPlusThe + " is no longer " + this.statusEffects[i][0]);
+          writeText(this.calledPlusThe + " is no longer " + this.statusEffects[i][0]);
         }
         this.statusEffects.splice(i, 1);
       }
@@ -176,7 +176,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.chooseTarget = function() {
     for(var i = 1; i < this.turn.length; i++) {
-      if((this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
+      if((this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
         var temp = ChooseTarget();
         if(this.target === "Cancel") {
           this.actionChosen = false;
@@ -185,7 +185,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           this.target.push(temp);
           this.targetChosen = true;
         }
-      } else if (this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
+      } else if (this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
         this.target.push(1);
         this.targetChosen = true;
       } else {
@@ -216,12 +216,12 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           break;
         case "Run":
           if(this.notTurn[0].called === "Group of Balbeag's Soldiers" || this.notTurn[0].called === "Tivél" || this.notTurn[0].called === "Balbeag") {
-            alert(this.notTurn.calledPlusThe + " got to you before you could get away.");
+            writeText(this.notTurn.calledPlusThe + " got to you before you could get away.");
           } else {
             if(percentChance(90 - (10 * diffSetting))) {
               this.endFight = "run";
             } else {
-              alert(this.notTurn.calledPlusThe + " got to you before you could get away.");
+              writeText(this.notTurn.calledPlusThe + " got to you before you could get away.");
             }
           }
           break;
@@ -266,12 +266,10 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   this.determineEnd = function() {
     switch(this.endFight) {
       case "run":
-        alert("You got away safely.");
-        Places();
+        writeTextNext("You got away safely.", Places);
         break;
       case "game over":
-        alert("You died.");
-        GameOver();
+        writeTextNext("You died.", GameOver);
         break;
       case "monster dead":
         WonTheFight();
