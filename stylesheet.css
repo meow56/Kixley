@@ -13,13 +13,13 @@
   background: #0F0;
   color: #0F0;
   width: 100px;
+  float: left;
 }
 
 .total_hp {
   background: #F00;
   color: #F00;
   width: 0px;
-  margin-left: 100px;
 }
 
 .main {
