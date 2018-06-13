@@ -532,7 +532,6 @@ function showHealth() {
       document.getElementById("total_hp").style.width = 0;
     }
     document.getElementById("hp_nums").innerHTML = "HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP;
-    document.getElementById("hp_nums").style.float = "left";
     temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
   }
 }
