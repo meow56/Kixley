@@ -526,6 +526,7 @@ function showHealth() {
     if(temp !== 100) {
       document.getElementById("total_hp").innerHTML = ".";
       document.getElementById("total_hp").style.width = 100 - temp;
+      document.getElementById("total_hp").style.marginLeft = temp;
     } else {
       document.getElementById("total_hp").innerHTML = "";
       document.getElementById("total_hp").style.width = 0;
