@@ -510,6 +510,27 @@ var reward; // how much gold/exp you get when you finish a quest
 |      UTILITY      |
 \*******************/
 
+function showHealth() {
+  var temp2 = "";
+  var temp3 = "";
+  if(temp !== kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP) {
+    temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
+    temp *= 20;
+    temp = Math.round(temp);
+    for(var i = 0; i < temp; i++) {
+      temp2 += " ";
+    }
+    for(var i = 0; i < 20 - temp; i++) {
+      temp3 += " ";
+    }
+    temp = document.getElementById("current_hp");
+    temp.innerHTML = temp2;
+    temp = document.getElementById("total_hp");
+    temp.innerHTML = temp3;
+    temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
+  }
+}
+
 function requestInput(options, whenDone) { // IMPORTANT: don't put anything that runs directly after this function. (ie don't call requestInput and follow it with an if statement, cuz the if statement will run even if there hasn't been an input yet. Put the if statement in requestInput() as whenDone, using function notation (function() {...}))
   answer = " ";
   var temp2 = document.getElementById("buttons"); // find the div for buttons
@@ -526,6 +547,7 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   
   function waitForUserInput() {
     if(answer === " ") {
+      showHealth();
       setTimeout(waitForUserInput, 0);
     } else {
       while(temp2.firstChild !== null) {
@@ -558,6 +580,7 @@ function writeTextWait(text, whenDone) {
   
   function waitForUserInput() {
     if(!temp) {
+      showHealth();
       setTimeout(waitForUserInput, 0);
     } else {
       temp = document.getElementById("buttons");
