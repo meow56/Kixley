@@ -517,12 +517,19 @@ function showHealth() {
     temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
     temp *= 20;
     temp = Math.round(temp);
-    for(var i = 0; i < temp; i++) {
-      temp2 += " ";
+    if(temp !== 0) {
+      temp2 = ".";
+      for(var i = 1; i < temp; i++) {
+        temp2 += " ";
+      }
     }
-    for(var i = 0; i < 20 - temp; i++) {
-      temp3 += " ";
+    if(temp !== 1) {
+      temp3 = ".";
+      for(var i = 1; i < 20 - temp; i++) {
+        temp3 += " ";
+      }
     }
+    
     temp = document.getElementById("current_hp");
     temp.innerHTML = temp2;
     temp = document.getElementById("total_hp");
