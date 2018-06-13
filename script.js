@@ -542,7 +542,6 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
 }
 
 function writeTextWait(text, whenDone) {
-  var temp3 = false;
   temp = document.getElementById("text");
   var temp2 = document.createElement("PARAGRAPH");
   temp2.innerHTML = text;
@@ -552,15 +551,17 @@ function writeTextWait(text, whenDone) {
   temp = document.getElementById("buttons");
   temp2 = document.createElement("BUTTON");
   temp2.innerHTML = "Next";
-  temp2.onclick = Function("temp3 = true;");
+  temp2.onclick = Function("temp = true;");
   temp.appendChild(temp2);
+  temp = false;
   
   waitForUserInput(); // wait for the player to select an option
   
   function waitForUserInput() {
-    if(!temp3) {
+    if(!temp) {
       setTimeout(waitForUserInput, 0);
     } else {
+      temp = document.getElementById("buttons");
       temp.removeChild(temp.firstChild); // remove button
       clearText();
       whenDone(); // run whatever's next
