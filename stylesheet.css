@@ -8,6 +8,8 @@
   left: 0;
   overflow-x: hidden;
   border: solid;
-  padding-top: 20px;
-  margin-right: 10px;
+}
+
+.main {
+  margin-left: 300px;
 }
