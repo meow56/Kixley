@@ -528,6 +528,8 @@ function showHealth() {
     temp = document.getElementById("total_hp");
     temp.innerHTML = temp3;
     temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
+    temp2 = document.getElementById("hp_nums");
+    temp2.innerHTML = temp;
   }
 }
 
