@@ -511,32 +511,25 @@ var reward; // how much gold/exp you get when you finish a quest
 \*******************/
 
 function showHealth() {
-  var temp2 = "";
-  var temp3 = "";
   if(temp !== kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP) {
     temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
-    temp *= 20;
+    temp *= 100;
     temp = Math.round(temp);
     if(temp !== 0) {
-      temp2 = ".";
-      for(var i = 1; i < temp; i++) {
-        temp2 += " ";
-      }
+      document.getElementById("current_hp").innerHTML = ".";
+      document.getElementById("current_hp").style.width = temp;
+    } else {
+      document.getElementById("current_hp").innerHTML = "";
+      document.getElementById("current_hp").style.width = 0;
     }
     if(temp !== 1) {
-      temp3 = ".";
-      for(var i = 1; i < 20 - temp; i++) {
-        temp3 += " ";
-      }
+      document.getElementById("total_hp").innerHTML = ".";
+      document.getElementById("total_hp").style.width = 100 - temp;
+    } else {
+      document.getElementById("total_hp").innerHTML = "";
+      document.getElementById("total_hp").style.width = 0;
     }
-    
-    temp = document.getElementById("current_hp");
-    temp.innerHTML = temp2;
-    temp = document.getElementById("total_hp");
-    temp.innerHTML = temp3;
-    temp = "HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP;
-    temp2 = document.getElementById("hp_nums");
-    temp2.innerHTML = temp;
+    document.getElementById("hp_nums").innerHTML = "HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP;
     temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
   }
 }
