@@ -200,7 +200,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
         case "Fight":
           this.turn[i].hitMiss(this.notTurn[this.target[i]]);
           break;
-        case "Health Potion":
+        case "Health Potion (" + healthPotion + ")":
           useHealthPotion();
           break;
         case "Fire (20 blobs)":
