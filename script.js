@@ -98,7 +98,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.magic = function(spell, fighter) {
     switch(spell) {
       case "Fire":
-        writeText(fighter.calledPlusThe + " took " + 20 * this.magicSkillz + " damage.");
+        writeText(this.calledPlusThe + " dealt " + 20 * this.magicSkillz + " damage.");
         fighter.hitPoints -= 20 * this.magicSkillz;
         this.blobs -= 20;
         if(percentChance(10)) {
@@ -312,7 +312,6 @@ function fightLoop() {
       }
     };
   } else {
-  alert(fightHandler.endFight);
     fightHandler.determineEnd();
   }
 }
@@ -995,6 +994,7 @@ function ChooseTarget() {
 }
 
 function FightMenu() {
+  writeText("");
   writeText("What do you want to do?");
   writeText("Health: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
   for(var i = 1; i < monsterGroup.length; i++) {
@@ -1127,57 +1127,56 @@ function Steal(target) {
 
 function WonTheFight() {
   if (inSwamp === 1) {
-    writeText('As the monster dies, you get teleported out of the swamp.')
+    writeTextNext('As the monster dies, you get teleported out of the swamp.', goldAndEXP)
     inSwamp = 0
     swampCounter++
   } else if (fightingGroup) {
-    writeText('Balbeag\'s soldiers are defeated!')
     fightingGroup = false
-    inTowerPostDoomedGroup()
+    writeTextNext('Balbeag\'s soldiers are defeated!', inTowerPostDoomedGroup)
   } else if (fightingAAbea) {
-    writeText('Tivél is defeated!')
     fightingAAbea = false
-    finalBossFight()
+    writeText('Tivél is defeated!', finalBossFight)
   } else if (fightingBalbeag) {
     fightingBalbeag = false
     Credits()
     beatTheGame()
+  } else if (toMountains) {
+    writeTextNext("With the monster defeated, you hike back down the mountain.", goldAndEXP);
+    toMountains = false
   } else {
     if(numMons === 1) {
-      writeText('The monster is defeated!')
+      writeTextNext('The monster is defeated!', goldAndEXP);
     } else {
-      writeText("The monsters are defeated!");
+      writeTextNext("The monsters are defeated!", goldAndEXP);
     }
     plainsCounter++
   }
-  if (toMountains) {
-    writeText("With the monster defeated, you hike back down the mountain.");
-    toMountains = false
-  }
-  goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
-  expPoints = randomNumber(50 * numMons, 150 * numMons);
-  killCounter += numMons;
-  if (kixleyNCo[1].rageEffect !== 1) {
-    writeText('You calm down.')
-    kixleyNCo[1].rageEffect = 1;
-  }
-  writeText('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!')
-  totalGold += goldDrops
-  cumulativeGold += goldDrops
-  totalExp += expPoints
-  questExpAmt += expPoints
-  CheckIfGotAchieve('Gold')
-  if (onAQuest === 1 && y === 1) {
-    questKillAmt += numMons
-  }
-  if (totalExp >= levelReq) {
-    CheckIfGotAchieve('Kill')
-    checkForLevelUp()
-  } else {
-    expLeft = levelReq - totalExp
-    writeText('You have ' + expLeft + ' experience before you level up!')
-    CheckIfGotAchieve('Kill')
-    Places();
+  function goldAndEXP() {
+    goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
+    expPoints = randomNumber(50 * numMons, 150 * numMons);
+    killCounter += numMons;
+    if (kixleyNCo[1].rageEffect !== 1) {
+      writeText('You calm down.')
+      kixleyNCo[1].rageEffect = 1;
+    }
+    writeText('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!')
+    totalGold += goldDrops
+    cumulativeGold += goldDrops
+    totalExp += expPoints
+    questExpAmt += expPoints
+    CheckIfGotAchieve('Gold')
+    if (onAQuest === 1 && y === 1) {
+      questKillAmt += numMons
+    }
+    if (totalExp >= levelReq) {
+      CheckIfGotAchieve('Kill')
+      checkForLevelUp()
+    } else {
+      expLeft = levelReq - totalExp
+      writeText('You have ' + expLeft + ' experience before you level up!')
+      CheckIfGotAchieve('Kill')
+      Places();
+    }
   }
 }
 
