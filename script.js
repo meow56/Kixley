@@ -558,14 +558,11 @@ function writeTextWait(text, whenDone) {
   waitForUserInput(); // wait for the player to select an option
   
   function waitForUserInput() {
-    if(temp3) {
+    if(!temp3) {
       setTimeout(waitForUserInput, 0);
     } else {
       temp.removeChild(temp.firstChild); // remove button
-      temp = document.getElementById("text");
-      while(temp.firstChild !== null) {
-        temp.removeChild(temp.firstChild); // remove text
-      }
+      clearText();
       whenDone(); // run whatever's next
     }
   }
@@ -578,6 +575,13 @@ function writeText(text) {
   temp.appendChild(temp2);
   temp2 = document.createElement("BR");
   temp.appendChild(temp2);
+}
+
+function clearText() {
+  temp = document.getElementById("text");
+  while(temp.firstChild !== null) {
+    temp.removeChild(temp.firstChild);
+  }
 }
 
 function randomNumber(min, max) {
