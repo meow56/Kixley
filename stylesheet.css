@@ -1,4 +1,11 @@
 /* Cannot think of anything to add so empty commit */
-html {
-  background: #00FF00;
+.sidebar {
+  height: 100%;
+  width: 300px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  border: solid;
 }
