@@ -1127,12 +1127,12 @@ function Steal(target) {
 
 function WonTheFight() {
   if (inSwamp === 1) {
-    writeTextNext('As the monster dies, you get teleported out of the swamp.', goldAndEXP)
+    writeTextWait('As the monster dies, you get teleported out of the swamp.', goldAndEXP)
     inSwamp = 0
     swampCounter++
   } else if (fightingGroup) {
     fightingGroup = false
-    writeTextNext('Balbeag\'s soldiers are defeated!', inTowerPostDoomedGroup)
+    writeTextWait('Balbeag\'s soldiers are defeated!', inTowerPostDoomedGroup)
   } else if (fightingAAbea) {
     fightingAAbea = false
     writeText('Tivél is defeated!', finalBossFight)
@@ -1141,13 +1141,13 @@ function WonTheFight() {
     Credits()
     beatTheGame()
   } else if (toMountains) {
-    writeTextNext("With the monster defeated, you hike back down the mountain.", goldAndEXP);
+    writeTextWait("With the monster defeated, you hike back down the mountain.", goldAndEXP);
     toMountains = false
   } else {
     if(numMons === 1) {
-      writeTextNext('The monster is defeated!', goldAndEXP);
+      writeTextWait('The monster is defeated!', goldAndEXP);
     } else {
-      writeTextNext("The monsters are defeated!", goldAndEXP);
+      writeTextWait("The monsters are defeated!", goldAndEXP);
     }
     plainsCounter++
   }
