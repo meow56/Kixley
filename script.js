@@ -7,7 +7,7 @@ window.onerror = function(message, source, lineno, colno, error) {
     temp.onclick = Function("openingMenu = true; StartUpMenu();");
     temp2.appendChild(temp);
   } else if(error.message === "Cannot read property 'toUpperCase' of null" || error.message === "Cannot read property 'toLowerCase' of null"){
-    alert("You just pressed the \"Cancel\" button. Don't do that.");
+    alert("You just pressed the \"Cancel\" button. That causes the game to end.");
   } else if (error.message === "Cannot read property 'appendChild' of null"){
     alert("You baka! You forgot to add <div id=\"buttons\"></div>!");
   } else {
@@ -64,6 +64,11 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         writeText(this.calledPlusThe + " did " + FightRound(this.finalDamage) + " damage.");
       }
       fighter.hitPoints -= this.finalDamage; // actual damage calculation
+      if (fighter != kixleyNCo) {
+        x = randomNumber(1, 5)
+        kixleyNCo.blobs += x
+        alert("You got " + x + " blobs of doom.")
+      }
       if(this.element === "Poison") {
         if(randomNumber(1, 3) === 1) {
           fighter.statusEffects.push(["Poisoned", 10])
