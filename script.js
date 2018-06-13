@@ -266,10 +266,10 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   this.determineEnd = function() {
     switch(this.endFight) {
       case "run":
-        writeTextNext("You got away safely.", Places);
+        writeTextWait("You got away safely.", Places);
         break;
       case "game over":
-        writeTextNext("You died.", GameOver);
+        writeTextWait("You died.", GameOver);
         break;
       case "monster dead":
         WonTheFight();
@@ -518,11 +518,12 @@ function showHealth() {
     if(temp !== 0) {
       document.getElementById("current_hp").innerHTML = ".";
       document.getElementById("current_hp").style.width = temp;
+      document.getElementById("current_hp").style.float = "left";
     } else {
       document.getElementById("current_hp").innerHTML = "";
       document.getElementById("current_hp").style.width = 0;
     }
-    if(temp !== 1) {
+    if(temp !== 100) {
       document.getElementById("total_hp").innerHTML = ".";
       document.getElementById("total_hp").style.width = 100 - temp;
     } else {
@@ -530,6 +531,7 @@ function showHealth() {
       document.getElementById("total_hp").style.width = 0;
     }
     document.getElementById("hp_nums").innerHTML = "HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP;
+    document.getElementById("hp_nums").style.float = "left";
     temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
   }
 }
