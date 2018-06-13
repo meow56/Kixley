@@ -12,11 +12,13 @@
 .current_hp {
   background: #0F0;
   color: #0F0;
+  width: 100px;
 }
 
 .total_hp {
   background: #F00;
   color: #F00;
+  width: 0px;
 }
 
 .main {
