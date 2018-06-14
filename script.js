@@ -561,6 +561,7 @@ function showHealth(fighter) {
     } else {
       temp4.innerHTML = fighter.called + "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
     }
+    temp3.appendChild(document.createElement("BR"));
   }
 }
 
