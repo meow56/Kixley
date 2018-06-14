@@ -41,6 +41,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.statusEffects = []; // 2D: [[effect, turns], [effect, turns]]
   this.magicSkillz = 1;
   this.rageEffect = 1;
+  this.hpRatio;
 
   this.hitMiss = function(fighter) { // general fight command: accuracy check, damage calculation, effects
     if (!percentChance(this.accuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
@@ -156,6 +157,47 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         }
         this.statusEffects.splice(i, 1);
       }
+    }
+  }
+  
+  this.showHealth = function() {
+    if(this.hpRatio !== this.hitPoints / this.totalHP) {
+      var temp3 = document.getElementById("hp");
+      var temp4 = document.createElement("DIV");
+      var temp5 = document.createElement("DIV");
+      var temp6 = document.createElement("DIV");
+      temp4.class = "hp_nums";
+      temp5.class = "current_hp";
+      temp6.class = "total_hp";
+      temp3.appendChild(temp4);
+      temp3.appendChild(temp5);
+      temp3.appendChild(temp6);
+      var temp2 = this.hitPoints / this.totalHP;
+      temp2 *= 100;
+      temp2 = Math.round(temp2);
+      if(temp2 !== 0) {
+        temp5.innerHTML = ".";
+        temp5.style.width = temp2;
+        temp5.style.float = "left";
+      } else {
+        temp5.innerHTML = "";
+        temp5.style.width = 0;
+      }
+      if(temp2 !== 100) {
+        temp6.innerHTML = ".";
+        temp6.style.width = 100 - temp2;
+        temp6.style.marginLeft = temp2;
+      } else {
+        temp6.innerHTML = "";
+        temp6.style.width = 0;
+      }
+      if(this.called === "You") {
+        temp4.innerHTML = "HP: " + FightRound(this.hitPoints) + "/" + this.totalHP;
+      } else {
+        temp4.innerHTML = this.called + "'s HP: " + FightRound(this.hitPoints) + "/" + this.totalHP;
+      }
+      temp3.appendChild(document.createElement("BR"));
+      this.hpRatio = this.hitPoints / this.totalHP;
     }
   }
 }
@@ -290,6 +332,15 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.fightLoop = function() {
     fightLoop();
+  }
+  
+  this.showHealth = function() {
+    for(var i = 1; i < faction1.length; i++) {
+      faction1[i].showHealth();
+    }
+    for(var i = 1; i < faction2.length; i++) {
+      faction2[i].showHealth();
+    }
   }
 }
 
@@ -518,53 +569,6 @@ var reward; // how much gold/exp you get when you finish a quest
 |      UTILITY      |
 \*******************/
 
-function deleteHealth() {
-  temp = document.getElementById("hp");
-  while(temp.firstChild !== null) {
-    temp.removeChild(temp.firstChild);
-  }
-}
-
-function showHealth(fighter) {
-  if(fighter !== undefined) {
-    var temp3 = document.getElementById("hp");
-    var temp4 = document.createElement("DIV");
-    var temp5 = document.createElement("DIV");
-    var temp6 = document.createElement("DIV");
-    temp4.class = "hp_nums";
-    temp5.class = "current_hp";
-    temp6.class = "total_hp";
-    temp3.appendChild(temp4);
-    temp3.appendChild(temp5);
-    temp3.appendChild(temp6);
-    var temp2 = fighter.hitPoints / fighter.totalHP;
-    temp2 *= 100;
-    temp2 = Math.round(temp2);
-    if(temp2 !== 0) {
-      temp5.innerHTML = ".";
-      temp5.style.width = temp2;
-      temp5.style.float = "left";
-    } else {
-      temp5.innerHTML = "";
-      temp5.style.width = 0;
-    }
-    if(temp2 !== 100) {
-      temp6.innerHTML = ".";
-      temp6.style.width = 100 - temp2;
-      temp6.style.marginLeft = temp2;
-    } else {
-      temp6.innerHTML = "";
-      temp6.style.width = 0;
-    }
-    if(fighter.called === "You") {
-      temp4.innerHTML = "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
-    } else {
-      temp4.innerHTML = fighter.called + "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
-    }
-    temp3.appendChild(document.createElement("BR"));
-  }
-}
-
 function requestInput(options, whenDone) { // IMPORTANT: don't put anything that runs directly after this function. (ie don't call requestInput and follow it with an if statement, cuz the if statement will run even if there hasn't been an input yet. Put the if statement in requestInput() as whenDone, using function notation (function() {...}))
   answer = " ";
   var temp2 = document.getElementById("buttons"); // find the div for buttons
@@ -581,13 +585,7 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   
   function waitForUserInput() {
     if(answer === " ") {
-      deleteHealth();
-      for(var i = 1; i < kixleyNCo.length; i++) {
-        showHealth(kixleyNCo[i]);
-      }
-      for(var i = 1; i < monsterGroup.length; i++) {
-        showHealth(monsterGroup[i]);
-      }
+      fightHandler.showHealth();
       setTimeout(waitForUserInput, 0);
     } else {
       while(temp2.firstChild !== null) {
@@ -620,13 +618,7 @@ function writeTextWait(text, whenDone) {
   
   function waitForUserInput() {
     if(!temp) {
-      deleteHealth();
-      for(var i = 1; i < kixleyNCo.length; i++) {
-        showHealth(kixleyNCo[i]);
-      }
-      for(var i = 1; i < monsterGroup.length; i++) {
-        showHealth(monsterGroup[i]);
-      }
+      fightHandler.showHealth();
       setTimeout(waitForUserInput, 0);
     } else {
       temp = document.getElementById("buttons");
