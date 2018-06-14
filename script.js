@@ -41,9 +41,10 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.statusEffects = []; // 2D: [[effect, turns], [effect, turns]]
   this.magicSkillz = 1;
   this.rageEffect = 1;
-  this.hpRatio;
   this.prevTotalHP;
   this.prevHP;
+  this.prevTotalBlobs;
+  this.prevBlobs;
 
   this.hitMiss = function(fighter) { // general fight command: accuracy check, damage calculation, effects
     if (!percentChance(this.accuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
@@ -241,6 +242,77 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp.removeChild(document.getElementById("total_hp_" + this.called));
     }
   }
+  
+  this.showBlobs = function() {
+    if(this.prevTotalBlobs !== this.totalBlobs || this.prevBlobs !== this.blobs) {
+      this.deleteBlobs();
+      var temp3;
+      if(this.called === "You") {
+        temp3 = document.getElementById("kix_blobs");
+      } else {
+        temp3 = document.getElementById("mons_blobs");
+      }
+      var temp4 = document.createElement("DIV");
+      var temp5 = document.createElement("DIV");
+      var temp6 = document.createElement("DIV");
+      temp4.class = "blobs_nums_" + this.called;
+      temp5.class = "current_blobs_" + this.called;
+      temp6.class = "total_blobs_" + this.called;
+      temp4.id = "blobs_nums_" + this.called;
+      temp5.id = "current_blobs_" + this.called;
+      temp6.id = "total_blobs_" + this.called;
+      temp3.appendChild(temp4);
+      temp3.appendChild(temp5);
+      temp3.appendChild(temp6);
+      var temp2 = this.blobs / this.totalBlobs;
+      temp2 *= 100;
+      temp2 = Math.round(temp2);
+      if(temp2 !== 0) {
+        temp5.innerHTML = "|";
+        temp5.style.background = "#00F"; // oof
+        temp5.style.color = "#00F";
+        temp5.style.width = temp2;
+        temp5.style.float = "left";
+      } else {
+        temp5.innerHTML = "";
+        temp5.style.width = 0;
+      }
+      if(temp2 !== 100) {
+        temp6.innerHTML = "|";
+        temp6.style.background = "#F00";
+        temp6.style.color = "#F00";
+        temp6.style.width = 100 - temp2;
+        temp6.style.marginLeft = temp2;
+      } else {
+        temp6.innerHTML = "";
+        temp6.style.width = 0;
+      }
+      if(this.called === "You") {
+        temp4.innerHTML = "Blobs of Doom: " + this.blobs + "/" + this.totalBlobs;
+      } else {
+        temp4.innerHTML = this.called + "'s Blobs: " + this.blobs + "/" + this.totalBlobs;
+      }
+      var temp7 = document.createElement("BR");
+      temp7.id = "br_blobs_" + this.called;
+      temp3.appendChild(temp7);
+      this.prevTotalBlobs = this.totalBlobs;
+      this.prevBlobs = this.blobs;
+    }
+  }
+  
+  this.deleteBlobs = function() {
+    if(document.getElementById("blobs_nums_" + this.called) !== null) {
+      if(this.called === "You") {
+        temp = document.getElementById("kix_blobs");
+      } else {
+        temp = document.getElementById("mons_blobs"); 
+      }
+      temp.removeChild(document.getElementById("br_blobs_" + this.called));
+      temp.removeChild(document.getElementById("blobs_nums_" + this.called));
+      temp.removeChild(document.getElementById("current_blobs_" + this.called));
+      temp.removeChild(document.getElementById("total_blobs_" + this.called));
+    }
+  }
 }
 
 function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighter2, etc.] faction 2: [faction name, mons1, mons2, etc.]
@@ -382,6 +454,15 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     }
     for(var i = 1; i < faction2.length; i++) {
       faction2[i].showHealth();
+    }
+  }
+  
+  this.showBlobs = function() {
+    for(var i = 1; i < faction1.length; i++) {
+      faction1[i].showBlobs();
+    }
+    for(var i = 1; i < faction2.length; i++) {
+      faction2[i].showBlobs();
     }
   }
 }
@@ -626,6 +707,7 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   function waitForUserInput() {
     if(answer === " ") {
       fightHandler.showHealth();
+      fightHandler.showBlobs();
       setTimeout(waitForUserInput, 0);
     } else {
       while(temp2.firstChild !== null) {
@@ -659,6 +741,7 @@ function writeTextWait(text, whenDone) {
   function waitForUserInput() {
     if(!temp) {
       fightHandler.showHealth();
+      fightHandler.showBlobs();
       setTimeout(waitForUserInput, 0);
     } else {
       temp = document.getElementById("buttons");
