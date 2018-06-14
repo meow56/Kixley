@@ -210,10 +210,12 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   }
   
   this.deleteHealth = function() {
-    temp = document.getElementById("hp");
-    temp.removeChild(document.getElementById("hp_nums_" + this.called));
-    temp.removeChild(document.getElementById("current_hp_" + this.called));
-    temp.removeChild(document.getElementById("total_hp_" + this.called));
+    if(document.getElementById("hp").removeChild(document.getElementById("hp_nums_" + this.called)) !== null) {
+      temp = document.getElementById("hp");
+      temp.removeChild(document.getElementById("hp_nums_" + this.called));
+      temp.removeChild(document.getElementById("current_hp_" + this.called));
+      temp.removeChild(document.getElementById("total_hp_" + this.called));
+    }
   }
 }
 
