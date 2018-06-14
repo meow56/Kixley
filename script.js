@@ -210,7 +210,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   }
   
   this.deleteHealth = function() {
-    if(document.getElementById("hp").removeChild(document.getElementById("hp_nums_" + this.called)) !== null) {
+    if(document.getElementById("hp_nums_" + this.called) !== null) {
       temp = document.getElementById("hp");
       temp.removeChild(document.getElementById("hp_nums_" + this.called));
       temp.removeChild(document.getElementById("current_hp_" + this.called));
