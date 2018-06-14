@@ -811,7 +811,7 @@ function inTower() {
   writeText('The person says, "Good. Balbeag will be very happy, I\'m sure."');
   writeText('Tivél says, "Yes, yes. I should go though, I need to give him my report."');
   writeText('The person says, "Of course. Good day."');
-  writeTextNext('You hear footsteps walking off.', hideOrFight);
+  writeTextWait('You hear footsteps walking off.', hideOrFight);
 }
 
 function DevPassAttempt() {
@@ -1274,7 +1274,7 @@ function finalBossFight() {
     writeText('Balbeag hesitates. "Well, I... didn\'t think Tivél was strong enough to kill you. But uh, that doesn\'t matter! What matters is that you\'re in my throne room, which is unacceptable."');
     writeText('Balbeag smirks. "Are you ready to die?"');
     writeText('You adopt a fighting stance.');
-    writeTextNext('"You should be asking yourself that." (Writer\'s Note: Sorry about the terrible line but I couldn\'t think of anything better o3o)', startFight);
+    writeTextWait('"You should be asking yourself that." (Writer\'s Note: Sorry about the terrible line but I couldn\'t think of anything better o3o)', startFight);
   }
   function startFight() {
     monsterGroup[1] = new Fighter(100, 100, 90, "Balbeag", 50, "Boss", 100);
@@ -1385,7 +1385,7 @@ function Places() {
           writeText('As you near the outskirts of town, you notice the stream of people leaving town. Then you notice that the entire place is now just a gigantic blast crater. Somebody blew it up!!! You decide to investigate, and walk over to the stream of people.')
           writeText('When you reach the people, they all say this person named Tivél had just come to town and started fires all over, and then used some weird, magical powers to blow up Smatino.')
           writeText('You are sure this Tivél is the same as the one who you met in the swamp, and wish you had used some \'weird, magical powers\' to blow him up.')
-          writeTextNext('You race back to the swamp, and see him from a distance. You can\'t, however, blow him up. There are too many vines in the way. So, you follow him. You see a large tower in the distance, and finally, after a few hours, reach it at night. You see Tivél enter, and then, as the gate is clanging down above him, you slide under it and manage to get in.', inTower)
+          writeTextWait('You race back to the swamp, and see him from a distance. You can\'t, however, blow him up. There are too many vines in the way. So, you follow him. You see a large tower in the distance, and finally, after a few hours, reach it at night. You see Tivél enter, and then, as the gate is clanging down above him, you slide under it and manage to get in.', inTower)
         }
         break;
       case 'Plains':
