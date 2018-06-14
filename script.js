@@ -67,10 +67,10 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       fighter.hitPoints -= this.finalDamage; // actual damage calculation
       if (this.called === "You" && this.totalBlobs > 0) {
         x = randomNumber(1, 5)
-        kixleyNCo[1].blobs += x
         if(this.totalBlobs - this.blobs < x) {
           x = this.totalBlobs - this.blobs;
         }
+        kixleyNCo[1].blobs += x
         writeText("You got " + x + " blobs of doom.")
       }
       if(this.element === "Poison") {
