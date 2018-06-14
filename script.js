@@ -166,9 +166,12 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       var temp4 = document.createElement("DIV");
       var temp5 = document.createElement("DIV");
       var temp6 = document.createElement("DIV");
-      temp4.class = "hp_nums";
-      temp5.class = "current_hp";
-      temp6.class = "total_hp";
+      temp4.class = "hp_nums_" + this.called;
+      temp5.class = "current_hp_" + this.called;
+      temp6.class = "total_hp_" + this.called;
+      temp4.id = "hp_nums_" + this.called;
+      temp5.id = "current_hp_" + this.called;
+      temp6.id = "total_hp_" + this.called;
       temp3.appendChild(temp4);
       temp3.appendChild(temp5);
       temp3.appendChild(temp6);
@@ -177,6 +180,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp2 = Math.round(temp2);
       if(temp2 !== 0) {
         temp5.innerHTML = ".";
+        temp5.style.background = "#0F0";
+        temp5.style.color = "#0F0";
         temp5.style.width = temp2;
         temp5.style.float = "left";
       } else {
@@ -185,6 +190,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       }
       if(temp2 !== 100) {
         temp6.innerHTML = ".";
+        temp6.style.background = "#F00";
+        temp6.style.background = "#F00";
         temp6.style.width = 100 - temp2;
         temp6.style.marginLeft = temp2;
       } else {
@@ -199,6 +206,13 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp3.appendChild(document.createElement("BR"));
       this.hpRatio = this.hitPoints / this.totalHP;
     }
+  }
+  
+  this.deleteHealth = function() {
+    temp = document.getElementById("hp");
+    temp.removeChild(document.getElementById("hp_nums_" + this.called));
+    temp.removeChild(document.getElementById("current_hp_" + this.called));
+    temp.removeChild(document.getElementById("total_hp_" + this.called));
   }
 }
 
