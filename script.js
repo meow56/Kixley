@@ -65,7 +65,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         writeText(this.calledPlusThe + " did " + FightRound(this.finalDamage) + " damage.");
       }
       fighter.hitPoints -= this.finalDamage; // actual damage calculation
-      if (this.called === "You") {
+      if (this.called === "You" && this.totalBlobs > 0) {
         x = randomNumber(1, 5)
         kixleyNCo[1].blobs += x
         if(this.totalBlobs - this.blobs < x) {
@@ -1412,7 +1412,7 @@ function Places() {
   writeText("Where do you go now?");
   writeText("Gold: " + totalGold);
   writeText("HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
-  writeText("Blobs: " + kixleyNCo[1].blobs + "/" + kixleyNCo[1].totalBlobs);
+  writeText("Blobs: " + kixleyNCo[1].blobs > 0 ? kixleyNCo[1].blobs : 0 + "/" + kixleyNCo[1].totalBlobs > 0 ? kixleyNCo[1].totalBlobs : 0);
   loc = 1
   temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
   if(!swampDiscovery) {
