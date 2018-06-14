@@ -171,7 +171,12 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.showHealth = function() {
     if(this.hpRatio !== this.hitPoints / this.totalHP) {
       this.deleteHealth();
-      var temp3 = document.getElementById("hp");
+      var temp3;
+      if(this.called === "You") {
+        temp3 = document.getElementById("kix_hp");
+      } else {
+        temp3 = document.getElementById("mons_hp");
+      }
       var temp4 = document.createElement("DIV");
       var temp5 = document.createElement("DIV");
       var temp6 = document.createElement("DIV");
