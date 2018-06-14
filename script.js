@@ -204,7 +204,9 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       } else {
         temp4.innerHTML = this.called + "'s HP: " + FightRound(this.hitPoints) + "/" + this.totalHP;
       }
-      temp3.appendChild(document.createElement("BR"));
+      var temp7 = document.createElement("BR");
+      temp7.id = "br_" + this.called;
+      temp3.appendChild(temp7);
       this.hpRatio = this.hitPoints / this.totalHP;
     }
   }
@@ -212,6 +214,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.deleteHealth = function() {
     if(document.getElementById("hp_nums_" + this.called) !== null) {
       temp = document.getElementById("hp");
+      temp.removeChild(document.getElementById("br_" + this.called));
       temp.removeChild(document.getElementById("hp_nums_" + this.called));
       temp.removeChild(document.getElementById("current_hp_" + this.called));
       temp.removeChild(document.getElementById("total_hp_" + this.called));
@@ -317,6 +320,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     for(var i = 0; i < this.notTurn.length; i++) {
       if(this.notTurn[i].hitPoints < 0) {
         dead.push(this.notTurn[i]);
+        this.notTurn[i].deleteHealth();
         this.notTurn.splice(i, 1);
       }
     }
