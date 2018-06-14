@@ -65,7 +65,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         writeText(this.calledPlusThe + " did " + FightRound(this.finalDamage) + " damage.");
       }
       fighter.hitPoints -= this.finalDamage; // actual damage calculation
-      if (this.called === "You" && this.totalBlobs > 0) {
+      if (this.called === "You" && this.totalBlobs > 0 && this.totalBlobs !== this.blobs) {
         x = randomNumber(1, 5)
         if(this.totalBlobs - this.blobs < x) {
           x = this.totalBlobs - this.blobs;
