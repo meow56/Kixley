@@ -568,7 +568,12 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   
   function waitForUserInput() {
     if(answer === " ") {
-      showHealth();
+      for(var i = 1; i < kixleyNCo.length; i++) {
+        showHealth(kixleyNCo[i]);
+      }
+      for(var i = 1; i < monsterGroup.length; i++) {
+        showHealth(monsterGroup[i]);
+      }
       setTimeout(waitForUserInput, 0);
     } else {
       while(temp2.firstChild !== null) {
