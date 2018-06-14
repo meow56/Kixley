@@ -1420,7 +1420,11 @@ function Places() {
   writeText("Where do you go now?");
   writeText("Gold: " + totalGold);
   writeText("HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
-  writeText("Blobs: " + kixleyNCo[1].blobs > 0 ? kixleyNCo[1].blobs : 0 + "/" + kixleyNCo[1].totalBlobs > 0 ? kixleyNCo[1].totalBlobs : 0);
+  if(kixleyNCo[1].totalBlobs > 0) {
+    writeText("Blobs: " + kixleyNCo[1].blobs + "/" + kixleyNCo[1].totalBlobs);
+  } else {
+    writeText("Blobs: 0/0");
+  }
   loc = 1
   temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
   if(!swampDiscovery) {
