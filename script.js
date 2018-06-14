@@ -635,7 +635,7 @@ function writeTextWait(text, whenDone) {
   temp.appendChild(temp2);
   temp = false;
   
-  waitForUserInput(); // wait for the player to select an option
+  waitForUserInput(); // wait for the player to select next
   
   function waitForUserInput() {
     if(!temp) {
