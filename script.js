@@ -42,6 +42,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.magicSkillz = 1;
   this.rageEffect = 1;
   this.hpRatio;
+  this.prevTotalHP;
+  this.prevHP;
 
   this.hitMiss = function(fighter) { // general fight command: accuracy check, damage calculation, effects
     if (!percentChance(this.accuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
@@ -169,7 +171,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   }
   
   this.showHealth = function() {
-    if(this.hpRatio !== this.hitPoints / this.totalHP) {
+    if(this.prevTotalHP !== this.totalHP || this.prevHP !== this.hitPoints) {
       this.deleteHealth();
       var temp3;
       if(this.called === "You") {
@@ -221,6 +223,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp7.id = "br_" + this.called;
       temp3.appendChild(temp7);
       this.hpRatio = this.hitPoints / this.totalHP;
+      this.prevTotalHP = this.totalHP;
+      this.prevHP = this.hitPoints;
     }
   }
   
