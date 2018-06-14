@@ -532,7 +532,7 @@ function showHealth() {
         document.getElementById("total_hp").innerHTML = "";
         document.getElementById("total_hp").style.width = 0;
       }
-      document.getElementById("hp_nums").innerHTML = "HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP;
+      document.getElementById("hp_nums").innerHTML = "HP: " + FightRound(kixleyNCo[1].hitPoints) + "/" + kixleyNCo[1].totalHP;
       temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
     }
   }
@@ -659,8 +659,9 @@ function NotAnOption() {
 }
 
 function Credits() {
-  for (i = 0; i < theWholeShebang.length; i += 1) {
-    writeTextWait(theWholeShebang[i], Function("2 === 2"))
+  writeTextWait(theWholeShebang[0], Function("2 === 2"));
+  for (i = 1; i < theWholeShebang.length; i += 1) {
+    writeText(theWholeShebang[i])
   }
 }
 
