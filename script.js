@@ -518,37 +518,49 @@ var reward; // how much gold/exp you get when you finish a quest
 |      UTILITY      |
 \*******************/
 
+function deleteHealth() {
+  temp = document.getElementById("hp");
+  while(temp.firstChild !== null) {
+    temp.removeChild(temp.firstChild);
+  }
+}
+
 function showHealth(fighter) {
   if(fighter !== undefined) {
-    var temp2;
     var temp3 = document.getElementById("hp");
     var temp4 = document.createElement("DIV");
-    temp4.class = "current_hp";
-    temp2 = fighter.hitPoints / fighter.totalHP;
+    var temp5 = document.createElement("DIV");
+    var temp6 = document.createElement("DIV");
+    temp4.class = "hp_nums";
+    temp5.class = "current_hp";
+    temp6.class = "total_hp";
+    temp3.appendChild(temp4);
+    temp3.appendChild(temp5);
+    temp3.appendChild(temp6);
+    var temp2 = fighter.hitPoints / fighter.totalHP;
     temp2 *= 100;
     temp2 = Math.round(temp2);
     if(temp2 !== 0) {
-      document.getElementById("current_hp").innerHTML = ".";
-      document.getElementById("current_hp").style.width = temp2;
-      document.getElementById("current_hp").style.float = "left";
+      temp5.innerHTML = ".";
+      temp5.style.width = temp2;
+      temp5.style.float = "left";
     } else {
-      document.getElementById("current_hp").innerHTML = "";
-      document.getElementById("current_hp").style.width = 0;
+      temp5.innerHTML = "";
+      temp5.style.width = 0;
     }
     if(temp2 !== 100) {
-      document.getElementById("total_hp").innerHTML = ".";
-      document.getElementById("total_hp").style.width = 100 - temp2;
-      document.getElementById("total_hp").style.marginLeft = temp2;
+      temp6.innerHTML = ".";
+      temp6.style.width = 100 - temp2;
+      temp6.style.marginLeft = temp2;
     } else {
-      document.getElementById("total_hp").innerHTML = "";
-      document.getElementById("total_hp").style.width = 0;
+      temp6.innerHTML = "";
+      temp6.style.width = 0;
     }
     if(fighter.called === "You") {
-      document.getElementById("hp_nums").innerHTML = "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
+      temp4.innerHTML = "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
     } else {
-      document.getElementById("hp_nums").innerHTML = "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
+      temp4.innerHTML = fighter.called + "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
     }
-    temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
   }
 }
 
@@ -568,6 +580,7 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   
   function waitForUserInput() {
     if(answer === " ") {
+      deleteHealth();
       for(var i = 1; i < kixleyNCo.length; i++) {
         showHealth(kixleyNCo[i]);
       }
@@ -606,7 +619,13 @@ function writeTextWait(text, whenDone) {
   
   function waitForUserInput() {
     if(!temp) {
-      showHealth();
+      deleteHealth();
+      for(var i = 1; i < kixleyNCo.length; i++) {
+        showHealth(kixleyNCo[i]);
+      }
+      for(var i = 1; i < monsterGroup.length; i++) {
+        showHealth(monsterGroup[i]);
+      }
       setTimeout(waitForUserInput, 0);
     } else {
       temp = document.getElementById("buttons");
