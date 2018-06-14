@@ -226,7 +226,11 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   
   this.deleteHealth = function() {
     if(document.getElementById("hp_nums_" + this.called) !== null) {
-      temp = document.getElementById("hp");
+      if(this.called === "You") {
+        temp = document.getElementById("kix_hp");
+      } else {
+        temp = document.getElementById("mons_hp"); 
+      }
       temp.removeChild(document.getElementById("br_" + this.called));
       temp.removeChild(document.getElementById("hp_nums_" + this.called));
       temp.removeChild(document.getElementById("current_hp_" + this.called));
