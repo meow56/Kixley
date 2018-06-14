@@ -68,7 +68,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       if (fighter != kixleyNCo) {
         x = randomNumber(1, 5)
         kixleyNCo.blobs += x
-        alert("You got " + x + " blobs of doom.")
+        writeText("You got " + x + " blobs of doom.")
       }
       if(this.element === "Poison") {
         if(randomNumber(1, 3) === 1) {
@@ -456,11 +456,9 @@ var allAchievements = [
   'Get 5000 cumulative gold'
 ];
 var compAchieve = []; // completed achievements
-var achieveCompletion; // percentage of achievements completed. MARKED FOR DELETION
 var killCounter = 0; // how many monsters killed
 var cumulativeGold = 0; // total gold earned
 var getGoldAchieve = 0;
-var getLevelAchieve = 0;
 // in the fight
 var numMons = monsterGroup.length - 1;
 var fightingGroup = false;
@@ -1090,7 +1088,7 @@ function FightMenu() {
     writeText(monsterGroup[i].called + " type: " + monsterGroup[i].element);
   }
   temp = ["Fight", "Health Potion (" + healthPotion + ")", "Magic", "Special Attack", "Run"];
-  if(!hasSpecial) {
+  if(!hasSpecial || usedShot || usedSteal) {
     temp.splice(temp.indexOf("Special Attack"), 1);
   }
   if(healthPotion === 0) {
@@ -1201,13 +1199,11 @@ function Shoot(target) {
 }
 
 function Steal(target) {
-  if (percentChance(43) && !usedSteal) {
+  if (percentChance(43)) {
     writeText('You steal ' + target.calledPlusthe + '\'s weapon!')
     kixleyNCo[1].attackPow += 2
     target.attackPow -= 2;
     usedSteal = true;
-  } else if(usedSteal) {
-    writeText('You\'ve already stolen ' + target.calledPlusthe + '\'s weapon!');
   } else {
     writeText('You fail to steal ' + target.calledPlusthe + '\'s weapon.')
   }
@@ -1215,9 +1211,9 @@ function Steal(target) {
 
 function WonTheFight() {
   if (inSwamp === 1) {
-    writeTextWait('As the monster dies, you get teleported out of the swamp.', goldAndEXP)
     inSwamp = 0
     swampCounter++
+    writeTextWait('As the monster dies, you get teleported out of the swamp.', goldAndEXP)
   } else if (fightingGroup) {
     fightingGroup = false
     writeTextWait('Balbeag\'s soldiers are defeated!', inTowerPostDoomedGroup)
@@ -1229,15 +1225,15 @@ function WonTheFight() {
     Credits()
     beatTheGame()
   } else if (toMountains) {
-    writeTextWait("With the monster defeated, you hike back down the mountain.", goldAndEXP);
     toMountains = false
+    writeTextWait("With the monster defeated, you hike back down the mountain.", goldAndEXP);
   } else {
+    plainsCounter++
     if(numMons === 1) {
       writeTextWait('The monster is defeated!', goldAndEXP);
     } else {
       writeTextWait("The monsters are defeated!", goldAndEXP);
     }
-    plainsCounter++
   }
   function goldAndEXP() {
     goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
@@ -1529,11 +1525,10 @@ function ListingAchievements() {
 }
 
 function achievementMenu() {
-  achieveCompletion = (compAchieve.length / allAchievements.length) * 100;
+  temp = (compAchieve.length / allAchievements.length) * 100;
   writeText('This is the achievement menu. Here you can find the list of achievements, both completed and unfinished.');
-  writeText("Achievement Completion: " + achieveCompletion + "%");
+  writeText("Achievement Completion: " + temp + "%");
   requestInput(["List Achievements", "Leave"], determineAnswer);
-  // answer = prompt('Achievement completion: ' + achieveCompletion + '%', 'List Achievements, Exit').toUpperCase();
   function determineAnswer() {
     switch (answer) {
       case 'List Achievements':
