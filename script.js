@@ -66,7 +66,12 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       fighter.hitPoints -= this.finalDamage; // actual damage calculation
       if(this.element === "Poison") {
         if(randomNumber(1, 3) === 1) {
-          fighter.statusEffects.push(["Poisoned", 10])
+          fighter.statusEffects.push(["Poisoned", 10]);
+          if(fighter.called === "You") {
+            writeText("You've been poisoned!");
+          } else {
+            writeText(fighter.calledPlusThe + " has been poisoned!");
+          }
         }
       }
       temp = false;
@@ -264,6 +269,9 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
   
   this.determineEnd = function() {
+    if(kixleyNCo[1] !== undefined) {
+      kixleyNCo[1].statusEffects.splice(0, kixleyNCo[1].statusEffects.length);
+    }
     switch(this.endFight) {
       case "run":
         writeTextWait("You got away safely.", Places);
@@ -510,31 +518,37 @@ var reward; // how much gold/exp you get when you finish a quest
 |      UTILITY      |
 \*******************/
 
-function showHealth() {
-  if(kixleyNCo[1] !== undefined) {
-    if(temp !== kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP) {
-      temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
-      temp *= 100;
-      temp = Math.round(temp);
-      if(temp !== 0) {
-        document.getElementById("current_hp").innerHTML = ".";
-        document.getElementById("current_hp").style.width = temp;
-        document.getElementById("current_hp").style.float = "left";
-      } else {
-        document.getElementById("current_hp").innerHTML = "";
-        document.getElementById("current_hp").style.width = 0;
-      }
-      if(temp !== 100) {
-        document.getElementById("total_hp").innerHTML = ".";
-        document.getElementById("total_hp").style.width = 100 - temp;
-        document.getElementById("total_hp").style.marginLeft = temp;
-      } else {
-        document.getElementById("total_hp").innerHTML = "";
-        document.getElementById("total_hp").style.width = 0;
-      }
-      document.getElementById("hp_nums").innerHTML = "HP: " + FightRound(kixleyNCo[1].hitPoints) + "/" + kixleyNCo[1].totalHP;
-      temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
+function showHealth(fighter) {
+  if(fighter !== undefined) {
+    var temp2;
+    var temp3 = document.getElementById("hp");
+    var temp4 = document.createElement("DIV");
+    temp4.class = "current_hp";
+    temp2 = fighter.hitPoints / fighter.totalHP;
+    temp2 *= 100;
+    temp2 = Math.round(temp2);
+    if(temp2 !== 0) {
+      document.getElementById("current_hp").innerHTML = ".";
+      document.getElementById("current_hp").style.width = temp2;
+      document.getElementById("current_hp").style.float = "left";
+    } else {
+      document.getElementById("current_hp").innerHTML = "";
+      document.getElementById("current_hp").style.width = 0;
     }
+    if(temp2 !== 100) {
+      document.getElementById("total_hp").innerHTML = ".";
+      document.getElementById("total_hp").style.width = 100 - temp2;
+      document.getElementById("total_hp").style.marginLeft = temp2;
+    } else {
+      document.getElementById("total_hp").innerHTML = "";
+      document.getElementById("total_hp").style.width = 0;
+    }
+    if(fighter.called === "You") {
+      document.getElementById("hp_nums").innerHTML = "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
+    } else {
+      document.getElementById("hp_nums").innerHTML = "HP: " + FightRound(fighter.hitPoints) + "/" + fighter.totalHP;
+    }
+    temp = kixleyNCo[1].hitPoints / kixleyNCo[1].totalHP;
   }
 }
 
