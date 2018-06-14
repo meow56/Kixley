@@ -1,7 +1,7 @@
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
     alert(error.message);
-    temp2 = document.getElementByID("buttons");
+    var temp2 = document.getElementByID("buttons");
     temp = document.createElement("BUTTON");
     temp.innerHTML = "Run";
     temp.onclick = Function("openingMenu = true; StartUpMenu();");
@@ -162,6 +162,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   
   this.showHealth = function() {
     if(this.hpRatio !== this.hitPoints / this.totalHP) {
+      this.deleteHealth();
       var temp3 = document.getElementById("hp");
       var temp4 = document.createElement("DIV");
       var temp5 = document.createElement("DIV");
