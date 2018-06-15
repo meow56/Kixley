@@ -829,7 +829,7 @@ function Credits() {
 }
 
 function DevCheats() {
-  requestInput(["Infinite Gold", "Infinite EXP", "Infinite Attack", "Infinite Health", "Infinite Blobs of Doom", "Infinite Accuracy", "Activate All", "Leave"], determineAnswer);
+  requestInput(["Infinite Gold", "Infinite EXP", "Infinite Attack", "Infinite Health", "Infinite Blobs of Doom", "Infinite Accuracy", "Activate All", "Command Line", "Leave"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
       case 'Infinite Gold':
@@ -939,6 +939,12 @@ function DevCheats() {
         youCheated = true
         writeText('All cheats activated!')
         DevCheats()
+        break;
+      case "Command Line":
+        answer = prompt("The command line. Type in functions to run.");
+        youCheated = true;
+        var temp2 = Function(answer);
+        temp2();
         break;
       case 'Leave':
         StartUpMenu()
