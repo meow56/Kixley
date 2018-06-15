@@ -333,7 +333,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp3.appendChild(temp7);
       this.prevGold = totalGold;
       this.prevLev = this.lev;
-      this.showHP(true);
+      this.showHealth(true);
     }
   }
   
