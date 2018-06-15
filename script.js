@@ -684,6 +684,107 @@ var possibleItems = [
   'pair of speed boots'
 ];
 var reward; // how much gold/exp you get when you finish a quest
+//music vars & event listener defines
+//Copied from an old Bitbucket commit
+var actuallyDoMusic = true
+ var fightMusic = document.getElementById('FightMusic')
+ fightMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+ var towerMusic = document.getElementById('TowerMusic')
+ towerMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+ var placesMusic = document.getElementById('PlacesMusic')
+ placesMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+ var menuMusic = document.getElementById('MenuMusic')
+ menuMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+ var townMusic = document.getElementById('TownMusic')
+ townMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+ var innMusic = document.getElementById('InnMusic')
+ innMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+ var marketplaceMusic = document.getElementById('MarketplaceMusic')
+ marketplaceMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+ var gameOverMusic = document.getElementById('GameOverMusic')
+ gameOverMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+ var endMusic = document.getElementById('EndMusic')
+ endMusic.addEventListener('ended', function() {
+   this.currentTime = 0;
+   this.play();
+ }, false);
+  //functions
+  function playMusic(which) {
+   if (actuallyDoMusic) {
+     fightMusic.pause()
+     fightMusic.currentTime = 0
+     towerMusic.pause()
+     towerMusic.currentTime = 0
+     placesMusic.pause()
+     placesMusic.currentTime = 0
+     menuMusic.pause()
+     menuMusic.currentTime = 0
+     townMusic.pause()
+     townMusic.currentTime = 0
+     innMusic.pause()
+     innMusic.currentTime = 0
+     marketplaceMusic.pause()
+     marketplaceMusic.currentTime = 0
+     gameOverMusic.pause()
+     gameOverMusic.currentTime = 0
+     endMusic.pause()
+     endMusic.currentTime = 0
+     switch(which){
+       case 'fight':
+         fightMusic.play()
+         break;
+       case 'tower':
+         towerMusic.play()
+         break;
+       case 'places':
+         placesMusic.play()
+         break;
+       case 'menu':
+         menuMusic.play()
+         break;
+       case 'town':
+         townMusic.play()
+         break;
+       case 'inn':
+         innMusic.play()
+         break;
+       case 'marketplace':
+         marketplaceMusic.play()
+         break;
+       case 'game over':
+         gameOverMusic.play()
+         break;
+       case 'beat the game':
+         endMusic.play()
+         break;
+     }
+   }
+ }
+
 
 /*******************\
 |      UTILITY      |
