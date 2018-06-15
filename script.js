@@ -173,6 +173,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   
   this.showHealth = function() {
     if(this.prevTotalHP !== this.totalHP || this.prevHP !== this.hitPoints) {
+      this.showBlobs(true);
       this.deleteHealth();
       var temp2 = document.getElementById("stats");
       if(document.getElementById(this.called + "_stats") === null) {
@@ -237,8 +238,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
     }
   }
   
-  this.showBlobs = function() {
-    if(this.prevTotalBlobs !== this.totalBlobs || this.prevBlobs !== this.blobs) {
+  this.showBlobs = function(foo) {
+    if(this.prevTotalBlobs !== this.totalBlobs || this.prevBlobs !== this.blobs || foo) {
       this.deleteBlobs();
       var temp2 = document.getElementById("stats");
       if(document.getElementById(this.called + "_stats") === null) {
@@ -452,10 +453,10 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.showBlobs = function() {
     for(var i = 1; i < faction1.length; i++) {
-      faction1[i].showBlobs();
+      faction1[i].showBlobs(false);
     }
     for(var i = 1; i < faction2.length; i++) {
-      faction2[i].showBlobs();
+      faction2[i].showBlobs(false);
     }
   }
 }
@@ -700,7 +701,7 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   function waitForUserInput() {
     if(answer === " ") {
       fightHandler.showHealth();
-      fightHandler.showBlobs();
+      fightHandler.showBlobs(false);
       setTimeout(waitForUserInput, 0);
     } else {
       while(temp2.firstChild !== null) {
@@ -734,7 +735,7 @@ function writeTextWait(text, whenDone) {
   function waitForUserInput() {
     if(!temp) {
       fightHandler.showHealth();
-      fightHandler.showBlobs();
+      fightHandler.showBlobs(false);
       setTimeout(waitForUserInput, 0);
     } else {
       temp = document.getElementById("buttons");
