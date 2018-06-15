@@ -290,6 +290,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       }
       this.prevTotalBlobs = this.totalBlobs;
       this.prevBlobs = this.blobs;
+    } else if (this.totalBlobs <= 0) {
+      this.deleteBlobs();
     }
   }
   
