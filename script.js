@@ -325,13 +325,11 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   this.chooseTarget = function() {
     for(var i = 1; i < this.turn.length; i++) {
       if((this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
-        var temp = ChooseTarget();
-        if(temp === "Cancel") {
+        ChooseTarget();
+        if(this.target[i] === "Cancel") {
+          this.target.splice(i, 1);
           this.actionChosen = false;
           this.fightLoop();
-        } else if(temp !== undefined) {
-          this.target.push(temp);
-          this.targetChosen = true;
         }
       } else if (this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") {
         this.target.push(1);
@@ -1178,26 +1176,28 @@ function MonsterAI(monster) {
 
 function ChooseTarget() {
   if(fightHandler.turn[1].called === "You") {
-    temp = [];
+    var temp2 = [];
     for(var i = 1; i < fightHandler.notTurn.length; i++) {
-      temp.push(fightHandler.notTurn[i].calledPlusThe);
+      temp2.push(fightHandler.notTurn[i].calledPlusThe);
     }
-    temp.push("Cancel");
-    requestInput(temp, determineAnswer);
+    temp2.push("Cancel");
     writeText("Please choose a target.");
+    requestInput(temp2, determineAnswer);
     function determineAnswer() {
       fightHandler.target = answer;
+      fightHandler.targetChosen = true;
     }
   } else {
-    temp = 0;
-    var temp2;
+    temp2 = 0;
+    var temp3;
     for(var i = 1; i < fightHandler.notTurn.length; i++) {
       if(fightHandler.notTurn[i].attackPow > temp) {
         temp = fightHandler.notTurn[i].attackPow; // if the player is not attacking, choose the target with the greatest attack
-        temp2 = i;
+        temp3 = i;
       }
     }
-    fightHandler.target = temp2;
+    fightHandler.target = temp3;
+    fightHandler.targetChosen = true;
   }
 }
 
