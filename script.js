@@ -420,8 +420,8 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     switch(this.endFight) {
       case "run":
         for(var i = 1; i < this.notTurn.length; i++) {
-          this.notTurn[i].deleteHealth();
-          this.notTurn[i].deleteBlobs();
+          this.faction2[i].deleteHealth();
+          this.faction2[i].deleteBlobs();
         }
         writeTextWait("You got away safely.", Places);
         break;
