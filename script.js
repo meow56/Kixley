@@ -1578,7 +1578,7 @@ function Places() {
           Mountains()
         }
         break;
-      case 'MENU':
+      case 'Menu':
         Menu()
         break;
     }
