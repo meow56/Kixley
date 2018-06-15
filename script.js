@@ -780,6 +780,22 @@ function resetSpec() {
 }
 
 function Story() {
+  if(monsterGroup.length >= 2) {
+    monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
+  } else {
+    monsterGroup.push(new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50));
+  }
+  numMons = 1;
+  monsterGroup[1].attackPow *= diffSetting;
+  monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
+  monsterGroup[1].hitPoints = 100 * diffSetting
+  monsterGroup[1].totalHP = 100 * diffSetting
+  hpCost *= diffSetting
+  wsCost *= diffSetting
+  sbCost *= diffSetting
+  aCost *= diffSetting
+  hpEff = 10 + (10 * (3 - diffSetting))
+  kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
   writeTextWait('You are a person named Kixley. You live in the land of Nulm. You are in the Vacant Plains, and you know the town called Smatino resides nearby. You know where it is, but there are monsters in the plains, and one has just spotted you.', Function("writeTextWait('Your attack power is ' + kixleyNCo[1].attackPow + '.', MonsTypeSwitch)"))
 }
 
@@ -1799,21 +1815,6 @@ function Difficulty() {
           diffSetting = 2.5
           break;
       }
-      if(monsterGroup.length >= 2) {
-        monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
-      } else {
-        monsterGroup.push(new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50));
-      }
-      monsterGroup[1].attackPow *= diffSetting;
-      monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
-      monsterGroup[1].hitPoints = 100 * diffSetting
-      monsterGroup[1].totalHP = 100 * diffSetting
-      hpCost *= diffSetting
-      wsCost *= diffSetting
-      sbCost *= diffSetting
-      aCost *= diffSetting
-      hpEff = 10 + (10 * (3 - diffSetting))
-      kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
       if(settingDefault) {
         settingDefault = false
         localStorage.setItem(username + 'Difficulty@Kixley@65810', diffSetting)
