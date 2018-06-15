@@ -280,8 +280,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       }
       if(temp2 !== 100) {
         temp6.innerHTML = "|";
-        temp6.style.background = "#F00";
-        temp6.style.color = "#F00";
+        temp6.style.background = "#008";
+        temp6.style.color = "#008";
         temp6.style.width = 100 - temp2;
         temp6.style.marginLeft = temp2;
       } else {
