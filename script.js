@@ -398,7 +398,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
   
   this.checkEnd = function() {
-    for(var i = 0; i < this.notTurn.length; i++) {
+    for(var i = 1; i < this.notTurn.length; i++) {
       if(this.notTurn[i].hitPoints < 0) {
         dead.push(this.notTurn[i]);
         this.notTurn[i].deleteHealth();
@@ -419,6 +419,10 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     }
     switch(this.endFight) {
       case "run":
+        for(var i = 1; i < this.notTurn.length; i++) {
+          this.notTurn[i].deleteHealth();
+          this.notTurn[i].deleteBlobs();
+        }
         writeTextWait("You got away safely.", Places);
         break;
       case "game over":
