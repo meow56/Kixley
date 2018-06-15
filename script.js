@@ -506,6 +506,15 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
       faction2[i].showBlobs(false);
     }
   }
+  
+  this.showInfo = function() {
+    for(var i = 1; i < faction1.length; i++) {
+      faction1[i].showInfo();
+    }
+    for(var i = 1; i < faction2.length; i++) {
+      faction2[i].showInfo();
+    }
+  }
 }
 
 function fightLoop() {
@@ -849,8 +858,8 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   function waitForUserInput() {
     if(answer === " ") {
       fightHandler.showInfo();
-      fightHandler.showHealth(false);
-      fightHandler.showBlobs(false);
+      fightHandler.showHealth();
+      fightHandler.showBlobs();
       setTimeout(waitForUserInput, 0);
     } else {
       while(temp2.firstChild !== null) {
@@ -884,8 +893,8 @@ function writeTextWait(text, whenDone) {
   function waitForUserInput() {
     if(!temp) {
       fightHandler.showInfo();
-      fightHandler.showHealth(false);
-      fightHandler.showBlobs(false);
+      fightHandler.showHealth();
+      fightHandler.showBlobs();
       setTimeout(waitForUserInput, 0);
     } else {
       temp = document.getElementById("buttons");
