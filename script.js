@@ -1189,7 +1189,7 @@ function FightMenu() {
     }
   }
   if(temp2) {
-    temp.splice(temp.indexOf("Magic"));
+    temp.splice(temp.indexOf("Magic"), 1);
   }
   requestInput(temp, determineAnswer);
   function determineAnswer() {
