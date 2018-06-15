@@ -837,6 +837,41 @@ var actuallyDoMusic = true
 |      UTILITY      |
 \*******************/
 
+function requestNumber(whenDone, min, max) {
+  answer = " ";
+  var temp2 = document.getElementById("buttons");
+  var temp3 = document.createElement("INPUT");
+  temp3.id = "number_input";
+  temp3.type = "number";
+  if(min !== undefined) {
+    temp3.min = min;
+  }
+  if(max !== undefined) {
+    temp3.max = max;
+  }
+  temp2.appendChild(temp3);
+  
+  temp3 = document.createElement("BUTTON");
+  temp3.id = "number_submit";
+  temp3.onclick = Function("answer = document.getElementById('number_input').value;");
+  temp2.appendChild(temp3);
+  
+  waitForUserInput();
+  
+  function waitForUserInput() {
+    if(answer === " ") {
+      fightHandler.showInfo();
+      fightHandler.showHealth();
+      fightHandler.showBlobs();
+      setTimeout(waitForUserInput, 0);
+    } else {
+      temp2.removeChild(document.getElementById("number_input"));
+      temp2.removeChild(document.getElementById("number_submit"));
+      whenDone();
+    }
+  }
+}
+
 function requestInput(options, whenDone) { // IMPORTANT: don't put anything that runs directly after this function. (ie don't call requestInput and follow it with an if statement, cuz the if statement will run even if there hasn't been an input yet. Put the if statement in requestInput() as whenDone, using function notation (function() {...}))
   answer = " ";
   var temp2 = document.getElementById("buttons"); // find the div for buttons
