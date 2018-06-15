@@ -174,25 +174,31 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.showHealth = function() {
     if(this.prevTotalHP !== this.totalHP || this.prevHP !== this.hitPoints) {
       this.deleteHealth();
-      var temp3;
-      if(this.called === "You") {
-        temp3 = document.getElementById("kix_hp");
+      var temp2 = document.getElementById("stats");
+      if(document.getElementById(this.called + "_stats") === null) {
+        var temp3 = document.createElement("DIV");
+        temp3.id = this.called + "_stats";
+        temp2.append(temp3);
       } else {
-        temp3 = document.getElementById("mons_hp");
+        var temp3 = document.getElementById(this.called + "_stats");
       }
       var temp4 = document.createElement("DIV");
       var temp5 = document.createElement("DIV");
       var temp6 = document.createElement("DIV");
-      temp4.class = "hp_nums_" + this.called;
-      temp5.class = "current_hp_" + this.called;
-      temp6.class = "total_hp_" + this.called;
+      var temp7 = document.createElement("BR");
+      var temp8 = document.createElement("PARAGRAPH");
       temp4.id = "hp_nums_" + this.called;
       temp5.id = "current_hp_" + this.called;
       temp6.id = "total_hp_" + this.called;
+      temp7.id = "br_" + this.called;
+      temp8.id = this.called + "_info";
+      temp8.innerHTML = this.called + " Level " + this.lev;
+      temp3.appendChild(temp8);
       temp3.appendChild(temp4);
       temp3.appendChild(temp5);
       temp3.appendChild(temp6);
-      var temp2 = this.hitPoints / this.totalHP;
+      temp3.appendChild(temp7);
+      temp2 = this.hitPoints / this.totalHP;
       temp2 *= 100;
       temp2 = Math.round(temp2);
       if(temp2 !== 0) {
@@ -220,9 +226,6 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       } else {
         temp4.innerHTML = this.called + "'s HP: " + FightRound(this.hitPoints) + "/" + this.totalHP;
       }
-      var temp7 = document.createElement("BR");
-      temp7.id = "br_" + this.called;
-      temp3.appendChild(temp7);
       this.hpRatio = this.hitPoints / this.totalHP;
       this.prevTotalHP = this.totalHP;
       this.prevHP = this.hitPoints;
@@ -230,16 +233,9 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   }
   
   this.deleteHealth = function() {
-    if(document.getElementById("hp_nums_" + this.called) !== null) {
-      if(this.called === "You") {
-        temp = document.getElementById("kix_hp");
-      } else {
-        temp = document.getElementById("mons_hp"); 
-      }
-      temp.removeChild(document.getElementById("br_" + this.called));
-      temp.removeChild(document.getElementById("hp_nums_" + this.called));
-      temp.removeChild(document.getElementById("current_hp_" + this.called));
-      temp.removeChild(document.getElementById("total_hp_" + this.called));
+    if(document.getElementById(this.called + "_stats") !== null) {
+      temp = document.getElementById("stats");
+      temp.removeChild(document.getElementById(this.called + "_stats"));
     }
   }
   
@@ -414,6 +410,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
       if(this.notTurn[i].hitPoints < 0) {
         dead.push(this.notTurn[i]);
         this.notTurn[i].deleteHealth();
+        this.notTurn[i].deleteBlobs();
         this.notTurn.splice(i, 1);
       }
     }
@@ -1247,7 +1244,7 @@ function ChooseSpell() {
   writeText("What spell?");
   writeText("You have " + kixleyNCo[1].blobs + " blobs of doom.");
   temp = kixleyNCo[1].knownSpells.slice();
-  for(var i = 0; i < temp.length; i++) {
+  for(var i = 0; i < kixleyNCo[1].knownSpells.length; i++) {
     if(kixleyNCo[1].spellCosts[i] > kixleyNCo[1].blobs) {
       temp.splice(i, 1);
     } else {
