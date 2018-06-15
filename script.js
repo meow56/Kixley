@@ -326,10 +326,10 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     for(var i = 1; i < this.turn.length; i++) {
       if((this.action[i] === "Fight" || this.action[i] === "Fire (20 blobs)" || this.action[i] === "Fire" || this.action[i] === "Shoot" || this.action[i] === "Steal") && this.notTurn.length > 2) {
         var temp = ChooseTarget();
-        if(this.target === "Cancel") {
+        if(temp === "Cancel") {
           this.actionChosen = false;
           this.fightLoop();
-        } else {
+        } else if(temp !== undefined) {
           this.target.push(temp);
           this.targetChosen = true;
         }
