@@ -270,8 +270,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp2 = Math.round(temp2);
       if(temp2 !== 0) {
         temp5.innerHTML = "|";
-        temp5.style.background = "#00F"; // oof
-        temp5.style.color = "#00F";
+        temp5.style.background = "#0072FF";
+        temp5.style.color = "#0072FF";
         temp5.style.width = temp2;
         temp5.style.float = "left";
       } else {
@@ -280,8 +280,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       }
       if(temp2 !== 100) {
         temp6.innerHTML = "|";
-        temp6.style.background = "#008";
-        temp6.style.color = "#008";
+        temp6.style.background = "#003A82";
+        temp6.style.color = "#003A82";
         temp6.style.width = 100 - temp2;
         temp6.style.marginLeft = temp2;
       } else {
