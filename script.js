@@ -269,8 +269,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp2 = Math.round(temp2);
       if(temp2 !== 0) {
         temp5.innerHTML = "|";
-        temp5.style.background = "#0F0";
-        temp5.style.color = "#0F0";
+        temp5.style.background = "#00F"; // oof
+        temp5.style.color = "#00F";
         temp5.style.width = temp2;
         temp5.style.float = "left";
       } else {
