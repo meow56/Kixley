@@ -1169,7 +1169,7 @@ function MonsterAI(monster) {
 }
 
 function ChooseTarget() {
-  if(fighthandler.turn[1].called === "You") {
+  if(fightHandler.turn[1].called === "You") {
     temp = [];
     for(var i = 1; i < fightHandler.notTurn.length; i++) {
       temp.push(fightHandler.notTurn[i].calledPlusThe);
@@ -1393,6 +1393,7 @@ function hideOrFight() {
     monsterGroup[i].calledPlusThe = 'Balbeag\'s Soldier ' + i;
     monsterGroup[i].calledPlusthe = 'Balbeag\'s Soldier ' + i;
     monsterGroup[i].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + Math.pow(kixleyNCo[1].lev, 2) + monsterGroup[i].lev
+    monsterGroup[i].totalHP = monsterGroup[i].hitPoints;
     monsterGroup[i].attackPow = (monsterGroup[i].lev + randomNumber(1, 6)) * diffSetting;
   }
   loc = 3
