@@ -1236,7 +1236,7 @@ function ChooseSpell() {
   writeText("What spell?");
   writeText("You have " + kixleyNCo[1].blobs + " blobs of doom.");
   temp = kixleyNCo[1].knownSpells.slice();
-  for(var i = 0; i < kixleyNCo[1].knownSpells.length; i++) {
+  for(var i = kixleyNCo[1].knownSpells.length - 1; i > -1; i--) {
     if(kixleyNCo[1].spellCosts[i] > kixleyNCo[1].blobs) {
       temp.splice(i, 1);
     } else {
