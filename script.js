@@ -685,7 +685,8 @@ var possibleItems = [
 ];
 var reward; // how much gold/exp you get when you finish a quest
 //music vars & event listener defines
-//Copied from an old Bitbucket commit
+//Copied from an old Bitbucket commit, might not work...
+/*
 var actuallyDoMusic = true
  var fightMusic = document.getElementById('FightMusic')
  fightMusic.addEventListener('ended', function() {
