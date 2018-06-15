@@ -173,7 +173,6 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   
   this.showHealth = function() {
     if(this.prevTotalHP !== this.totalHP || this.prevHP !== this.hitPoints) {
-      this.showBlobs(true);
       this.deleteHealth();
       var temp2 = document.getElementById("stats");
       if(document.getElementById(this.called + "_stats") === null) {
@@ -228,6 +227,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       }
       this.prevTotalHP = this.totalHP;
       this.prevHP = this.hitPoints;
+      this.showBlobs(true);
     }
   }
   
