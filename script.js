@@ -2327,41 +2327,40 @@ function InTown() {
 }
 
 function BuyHealthPotion() {
-  answer = prompt('How many health potions do you want?', '1')
+  answer = prompt('How many health potions do you want? Each one costs ' + hpCost + ' gold.', '1')
   if (answer === '') {
     NotAnOption()
     BuyHealthPotion()
-  }
-  firstChar = answer.charAt(0)
-  if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
-    answer = parseInt(answer, 10)
-    howMany = answer
-    if (totalGold < (hpCost * howMany)) {
-      writeText('You don\'t have enough gold to buy that many health potions. At max you could buy ' + Math.floor(totalGold / hpCost) + ' health potion(s).')
-      InShop()
-    } else {
-      writeText("Are you sure?");
-      writeText("You're going to buy " + answer + " health potions.");
-      writeText("Gold: " + totalGold);
-      requestInput(["Yes", "No"], determineAnswer);
-      function determineAnswer() {
-        switch (answer) {
-          case "Yes":
-            writeText('Health potion(s) bought!')
-            healthPotion += howMany
-            answer = 0
-            totalGold -= (hpCost * howMany)
-            InShop()
-            break;
-          case "No":
-            InShop()
-            break;
+  } else {
+    firstChar = answer.charAt(0)
+    if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
+      answer = parseInt(answer, 10)
+      howMany = answer
+      if (totalGold < (hpCost * howMany)) {
+        writeTextWait('You don\'t have enough gold to buy that many health potions. At max you could buy ' + Math.floor(totalGold / hpCost) + ' health potion(s).', InShop)
+      } else {
+        writeText("Are you sure?");
+        writeText("You're going to buy " + answer + " health potions. This will cost " + (hpCost * howMany) + " gold.");
+        writeText("Gold: " + totalGold);
+        requestInput(["Yes", "No"], determineAnswer);
+        function determineAnswer() {
+          switch (answer) {
+            case "Yes":
+              writeText('Health potion(s) bought!')
+              healthPotion += howMany
+              answer = 0
+              totalGold -= (hpCost * howMany)
+              InShop()
+              break;
+            case "No":
+              InShop()
+              break;
+          }
         }
       }
+    } else {
+      writeTextWait('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!', BuyHealthPotion)
     }
-  } else {
-    writeText('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!')
-    BuyHealthPotion()
   }
 }
 
@@ -2375,7 +2374,6 @@ function BuyWoodenSword() {
           case 'Yes':
             writeText('Wooden sword bought!')
             woodenSword++;
-            //kixleyNCo[1].attackPow *= (1 + (0.05 * (3 - diffSetting)))
             totalGold -= wsCost
             InShop()
             break;
@@ -2399,7 +2397,6 @@ function BuySpeedBoots() {
     if (totalGold >= sbCost) {
       writeText("Are you sure?");
       requestInput(["Yes", "No"], determineAnswer);
-      // answer = prompt('Are you sure?', 'Yes, No').toUpperCase()
       function determineAnswer() {
         switch (answer) {
           case 'Yes':
@@ -2425,7 +2422,7 @@ function BuySpeedBoots() {
 }
 
 function BuyArrows() {
-  answer = prompt('How many arrows do you want?', '1')
+  answer = prompt('How many arrows do you want? Each one costs ' + aCost + " gold.", '1')
   if (answer === '') {
     NotAnOption()
     BuyArrows()
@@ -2434,16 +2431,15 @@ function BuyArrows() {
     if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
       howMany = parseInt(answer, 10)
       if (totalGold < (aCost * howMany)) {
-        writeText('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrows(s).')
-        InShop()
+        writeTextWait('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrows(s).', InShop)
       }
-      writeText();
+      writeText("Are you sure? You're going to buy " + answer + " arrows. This will cost " + (aCost * howMany) + " gold.");
+      writeText("Gold: " + totalGold);
       requestInput(["Yes", "No"], determineAnswer);
-      //answer = confirm('Are you sure? You\'re going to buy ' + answer + ' arrows, and you have ' + totalGold + ' gold. This will cost you ' + (aCost * howMany) + ' gold.', 'Yes, No')
       function determineAnswer() {
         switch (answer) {
           case "Yes":
-            alert('Arrow(s) bought!')
+            writeText('Arrow(s) bought!')
             arrows += howMany
             answer = 0
             totalGold -= (aCost * howMany)
@@ -2455,8 +2451,7 @@ function BuyArrows() {
         }
       }
     } else {
-      alert('That wasn\'t a number! You can\'t buy ' + answer + ' arrows!')
-      BuyArrows()
+      writeTextWait('That wasn\'t a number! You can\'t buy ' + answer + ' arrows!', BuyArrows)
     }
   }
 }
@@ -2476,13 +2471,15 @@ function BuyArrows() {
  */
 
 function InShop() {
-  alert('The marketplace master greets you.')
+  writeText('The marketplace master greets you.')
   temp = ["Buy", "Sell", "Leave"];
   if(woodenSword === 0 && speedBoots === 0) {
     temp.splice(temp.indexOf("Sell"), 1);
+    writeText("The marketplace master asks if you would like to buy anything.");
+  } else {
+    writeText("The marketplace master asks if you would like to buy or sell something.");
   }
   requestInput(temp, determineAnswer);
-  //answer = prompt('The marketplace master asks you if you would like to buy, or sell.', 'Buy, Sell, Leave').toUpperCase()
   function determineAnswer() {
     switch (answer) {
       case 'Buy':
@@ -2507,20 +2504,19 @@ function Sell() {
   if(speedBoots === 0) {
     temp.splice(temp.indexOf("Speed Boots"), 1);
   }
+  writeText("What would you like to sell?");
   requestInput(temp, determineAnswer);
-  //answer = prompt('What would you like to sell?', itemSell).toUpperCase()
   function determineAnswer() {
     switch (answer) {
       case 'Wooden Sword':
-        alert('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
+        writeText('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
         requestInput(["Yes", "No"], determineAnswer2);
-        //answer = prompt('Are you sure you want to sell your wooden sword?', 'Yes, No').toUpperCase()
         function determineAnswer2() {
           switch (answer) {
             case 'Yes':
               totalGold += .9 * wsCost
               woodenSword = 0
-              alert('Wooden sword sold!')
+              writeText('Wooden sword sold!')
               InShop()
               break;
             case 'No':
@@ -2530,30 +2526,25 @@ function Sell() {
         }
         break;
       case 'Speed Boots':
-        if (speedBoots === 1) {
-          alert('A guy shows up and offers ' + .9 * sbCost + ' gold for your speed boots.')
-          requestInput(["Yes", "No"], determineAnswer2);
-          //answer = prompt('Are you sure you want to sell your speed boots?', 'Yes, No').toUpperCase()
-          function determineAnswer2() {
-            switch (answer) {
-              case 'Yes':
-                totalGold += .9 * sbCost
-                speedBoots = 0
-                kixleyNCo[1].accuracy -= 5 * (3 - diffSetting)
-                alert('Speed boots sold!')
-                InShop()
-                break;
-              case 'No':
-                Sell()
-                break;
-            }
+        writeText('A guy shows up and offers ' + .9 * sbCost + ' gold for your speed boots.')
+        requestInput(["Yes", "No"], determineAnswer2);
+        function determineAnswer2() {
+          switch (answer) {
+            case 'Yes':
+              totalGold += .9 * sbCost
+              speedBoots = 0
+              kixleyNCo[1].accuracy -= 5 * (3 - diffSetting)
+              writeText('Speed boots sold!')
+              InShop()
+              break;
+            case 'No':
+              Sell()
+              break;
           }
-        } else {
-          alert('You don\'t have one to sell.')
         }
         break;
       case 'Leave':
-        InShop()
+        InShop();
         break;
     }
   }
@@ -2561,26 +2552,26 @@ function Sell() {
 
 function Buy() {
   //answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, some speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Speed Boots, Arrows, Cancel').toUpperCase()
-  temp = ["Health Potions", "Wooden Sword", "Speed Boots", "Arrows", "Leave"];
+  temp = ["Health Potions (" + hpCost + " gold)", "Wooden Sword (" + wsCost + " gold)", "Speed Boots (" + sbCost + " gold)", "Arrows (" + aCost + " gold)", "Leave"];
   if(woodenSword === 1) {
-    temp.splice(temp.indexOf("Wooden Sword"), 1);
+    temp.splice(temp.indexOf("Wooden Sword (" + wsCost + " gold)"), 1);
   }
   if(speedBoots === 1) {
-    temp.splice(temp.indexOf("Speed Boots"), 1);
+    temp.splice(temp.indexOf("Speed Boots (" + sbCost + " gold)"), 1);
   }
   requestInput(temp, determineAnswer)
   function determineAnswer() {
     switch (answer) {
-      case 'Health Potions':
+      case "Health Potions (" + hpCost + " gold)":
         BuyHealthPotion()
         break;
-      case 'Wooden Sword':
+      case "Wooden Sword (" + wsCost + " gold)":
         BuyWoodenSword()
         break;
-      case 'Speed Boots':
+      case "Speed Boots (" + sbCost + " gold)":
         BuySpeedBoots()
         break;
-      case 'Arrows':
+      case "Arrows (" + aCost + " gold)":
         BuyArrows()
         break;
       case 'Leave':
@@ -2592,7 +2583,8 @@ function Buy() {
 
 
 function InInn() {
-  alert('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
+  writeText('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
+  writeText("So whadda ya say?");
   requestInput(["Yes", "Common Room", "Leave"], determineAnswer);
   //answer = prompt('So whadda you say?', 'Yes, No, Common Room').toUpperCase()
   function determineAnswer() {
@@ -2606,20 +2598,20 @@ function InInn() {
             temp.toString(10)
             temp = '0' + temp
           }
-          alert('The man gestures towards a room door. \'There\'s your room, room ' + innFloorNumber.toString(10) + temp + '. Have a good night\'s rest.\'')
-          alert('You wake up fully refreshed, and new vigor fills your heart.')
-          alert('Hit points fully restored!')
+          writeText('The man gestures towards a room door. \'There\'s your room, room ' + innFloorNumber.toString(10) + temp + '. Have a good night\'s rest.\'')
+          writeText('You wake up fully refreshed, and new vigor fills your heart.')
+          writeText('Hit points fully restored!')
           kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
-          alert('You walk out of the room.')
+          writeText('You walk out of the room.')
           InInn()
         } else if (totalGold <= 50) {
-          alert('The Inn keeper sighs and says \'You don\'t have enough gold. Sorry, pardner!\'');
-          alert('You go back into town');
+          writeText('The Inn keeper sighs and says \'You don\'t have enough gold. Sorry, pardner!\'');
+          writeText('You go back into town.');
           InTown()
         }
         break;
-      case 'No':
-        alert('The man sighs as you leave the inn.')
+      case 'Leave':
+        writeText('The man sighs as you leave the inn.')
         InTown()
         break;
       case 'Common Room':
@@ -2632,7 +2624,7 @@ function InInn() {
 function quest() {
   if (onAQuest === 0) {
     y = randomNumber(0, 3)
-    alert('You got a ' + questType[y] + ' quest!')
+    writeText('You got a ' + questType[y] + ' quest!')
     switch (y) {
       case 0:
         questKillReq = randomNumber(7, 13)
@@ -2654,8 +2646,8 @@ function quest() {
         questItemChoice()
         break;
       default:
-        const e = new Error("Invalid quest type: Quest number " + y + " is not within an acceptable range.");
-        throw e;
+        const err = new Error("Invalid quest type: Quest number " + y + " is not within an acceptable range.");
+        throw err;
     }
   } else {
     switch (y) {
@@ -2762,18 +2754,18 @@ function GettingBlobsOfDoom() {
       kixleyNCo[1].blobs++
       timeGTOne = 0
     }
-    alert('Ther\' ya go, pardner. Nice doin\' business with ya.')
+    writeText('Ther\' ya go, pardner. Nice doin\' business with ya.')
   } else {
-    alert('I\'m not gonna give ya the blobs of doom if ya don\'t give me the monay. Sorry, pardner.')
+    writeText('I\'m not gonna give ya the blobs of doom if ya don\'t give me the monay. Sorry, pardner.')
   }
   if (kixleyNCo[1].blobs > kixleyNCo[1].totalBlobs) {
     kixleyNCo[1].blobs = kixleyNCo[1].totalBlobs
   }
-  alert('You now have ' + kixleyNCo[1].blobs + ' blobs of doom.')
   wantingMoreBlobs()
 }
 
 function wantingMoreBlobs() {
+  writeText("Hey, kid! Ya want some more blobs o' doom? Yu'll get 7 this time, still fer 10 gold!");
   requestInput(["Yes", "No"], determineAnswer);
   //answer = prompt('Hey! Ya want some more blobs? Yu\'ll get 7 this time, still fer 10 gold!', 'Yes, No').toUpperCase()
   function determineAnswer() {
@@ -2783,7 +2775,7 @@ function wantingMoreBlobs() {
         GettingBlobsOfDoom()
         break;
       case 'No':
-        alert('All righty then. See ya later!')
+        writeText('All righty then. See ya later!')
         InInn()
         break;
     }
@@ -2791,15 +2783,17 @@ function wantingMoreBlobs() {
 }
 
 function blobsOfDoomShop() {
+  writeText("You walk up to Mithrómen.");
+  writeText("He looks at you and says, \"Hey kid. I'm runnin' low on money, so I'm sellin' my blobs o' doom. So far there's been no buyers. You up for it? Only 10 gold for 6 blobs o' doom.\"");
   requestInput(["Yes", "No"], determineAnswer);
-  //answer = prompt('You walk up to Mithrómen. He says, \'Hey kid. I\'m runnin\' low on money, so I\'m selling my blobs o\' doom. So far there\'s been no buyers. You up for it? Only 10 gold for 6 blobs o\' doom.\'', 'Yes, No').toUpperCase()
   function determineAnswer() {
     switch (answer) {
       case 'Yes':
+        writeText("Mithrómen's face lights up.");
         GettingBlobsOfDoom()
         break;
       case 'No':
-        alert('Mithrómen sighs as you leave.')
+        writeText('Mithrómen sighs as you leave.')
         InInn()
         break;
     }
@@ -2809,12 +2803,12 @@ function blobsOfDoomShop() {
 function questChoiceSwitch() {
   switch (answer) {
     case 'No':
-      alert('Galkemen looks like he wants to kill you, so you get away from him and leave the inn, but then decide to go back in and just avoid Galkemen.')
+      writeText('Galkemen looks like he wants to kill you, so you get away from him and leave the inn, but then decide to go back in and just avoid Galkemen.')
       InInn()
       break;
     case 'Yes':
       onAQuest = 1
-      alert('Galkemen hands you a piece of paper and has you sign it.')
+      writeText('Galkemen hands you a piece of paper and has you sign it.')
       switch (y) {
         case 0:
         case 2:
@@ -2831,43 +2825,44 @@ function questChoiceSwitch() {
 }
 
 function killQuestChoice() {
+  writeText("Galkemen says \"Go kill " + questKillReq + " monsters.\"");
   requestInput(["Yes", "No"], questChoiceSwitch);
-  //answer = (prompt('Galkemen says \'Go kill ' + questKillReq + ' monsters.\'', 'Yes, No').toLowerCase())
 }
 
 function questGoldChoice() {
+  writeText("Galkemen says \"Gimme " + questgoldReq + " gold fer some exp.\"");
   requestInput(["Yes", "No"], questChoiceSwitch);
-  //answer = (prompt('Galkemen says \'Gimme ' + questGoldReq + ' gold. I\'ll give ya exp fer this one, instead o\' gold.\'', 'Yes, No').toLowerCase())
 }
 
 function questItemChoice() {
+  writeText("Galkemen says \"Go gimme a " + reqItem + " fer some exp.\"");
   requestInput(["Yes", "No"], questChoiceSwitch);
-  //answer = prompt('Galkemen says \'Go gimme a ' + reqItem + ' fer some exp.\'', 'Yes, No').toLowerCase()
 }
 
 function questExpChoice() {
+  writeText("Galkemen says \"Go get " + questExpReq + " exp, so you can gi' my quests done faster.\"");
   requestInput(["Yes", "No"], questChoiceSwitch);
-  //answer = prompt('Galkemen says \'Go get ' + questExpReq + ' exp, so you can gi\' my quests done faster.', 'Yes, No').toLowerCase()
 }
 
 function buySpeedBootsCheaply() {
+  writeText("You walk up to Gurthmereth.");
+  writeText("Gurthmereth says, \"Low on money. Got speed boots. Will sell cheap. Only 70 gold.\"");
   requestInput(["Yes", "No"], determineAnswer);
-  //answer = (prompt('Gurthmereth says \'Low on money. Got speed boots. Will sell them real cheap. Only 70 gold.', yesNo).toLowerCase())
   function determineAnswer() {
     switch (answer) {
       case 'Yes':
         if (totalGold >= 70) {
-          alert('Gurthmereth hands you the boots as you hand him the money')
+          writeText('Gurthmereth hands you the boots as you hand him the money.')
           totalGold -= 70
           kixleyNCo[1].accuracy += 5 * (3 - diffSetting)
           speedBoots = 1
         } else {
-          alert('Gurthmereth sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
+          writeText('Gurthmereth sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
           InInn()
         }
         break;
       case 'No':
-        alert('Gurthmereth looks at your receding back as you leave the common room.')
+        writeText('Gurthmereth looks at your receding back as you leave the common room.')
         InInn()
         break;
     }
@@ -2875,36 +2870,38 @@ function buySpeedBootsCheaply() {
 }
 
 function buyWoodenSwordsCheap() {
+  writeText("You walk up to Maegfin.");
+  writeText("Maegfin says \"Low on money. Got wooden swords. Will sell cheap. Only 35 gold.\"");
   requestInput(["Yes", "No"], determineAnswer);
-  //answer = (prompt('Maegfin says \'Low on money. Got wooden swords. Will sell them real cheap. Only 35 gold.', yesNo).toLowerCase())
   function determineAnswer() {
     switch (answer) {
       case 'Yes':
         if (totalGold >= 35) {
-          alert('Maegfin hands you the sword, along with a sheath, as you hand him the money')
+          writeText('Maegfin hands you the sword, along with a sheath, as you hand him the money.')
           totalGold -= 35
           woodenSword = 1;
           inCommonRoom()
         } else {
-          alert('Maegfin sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
+          writeText('Maegfin sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
           InInn()
         }
         break;
       case 'No':
-        alert('Maegfin looks at your receding back as you leave the common room.')
+        writeText('Maegfin looks at your receding back as you leave the common room.')
         InInn()
         break;
     }
   }
 }
 function beatTheGame() {
+  writeText("You beat the game! Would you like to continue?");
   requestInput(["Yes", "No"], determineAnswer);
   //answer = (prompt('You beat the game! Would you like to continue?', yesNo).toLowerCase())
   function determineAnswer() {
     switch (answer) {
       case 'Yes':
-        alert('You return and help rebuild Smatino, ready to fight Balbeag\'s remaining monsters who still are evil, though their master is dead');
-        alert('Mountain Pass discovered!')
+        writeText('You return and help rebuild Smatino, ready to fight Balbeag\'s remaining monsters who still are evil, though their master is dead');
+        writeText('Mountain Pass discovered!')
         mountainPass = true
         aabeaDestroysTown = false
         InTown()
@@ -2918,23 +2915,23 @@ function beatTheGame() {
 }
 
 function StatToLevelUp() {
+  writeText("Please choose a stat to level up.");
   requestInput(["Base Attack + " + temp, "Health + " + levelUpHealth, "Blobs of Doom + " + levelUpBlobsOfDoom], determineAnswer);
-  //answer = prompt('Please choose a stat to level up: Attack + ' + swordAdjustedTempMinusOne + ', Health + ' + levelUpHealth + ', Blobs of Doom + ' + levelUpBlobsOfDoom + '.', 'Attack, Health, Blobs of Doom').toUpperCase()
   function determineAnswer() {
     switch (answer) {
       case 'Base Attack + ' + temp:
-        alert('You got ' + temp + ' base attack!')
+        writeText('You got ' + temp + ' base attack!')
         kixleyNCo[1].attackPow += temp
         baseAttackPower += temp
         attLevelUp++
         break;
       case 'Health + ' + levelUpHealth:
-        alert('You got ' + levelUpHealth + ' health!')
+        writeText('You got ' + levelUpHealth + ' health!')
         kixleyNCo[1].hitPoints += levelUpHealth
         kixleyNCo[1].totalHP += levelUpHealth
         break;
       case 'Blobs of Doom + ' + levelUpBlobsOfDoom:
-        alert('You got ' + levelUpBlobsOfDoom + ' blobs of doom!')
+        writeText('You got ' + levelUpBlobsOfDoom + ' blobs of doom!')
         kixleyNCo[1].blobs += levelUpBlobsOfDoom
         kixleyNCo[1].totalBlobs += levelUpBlobsOfDoom
         break;
@@ -2952,16 +2949,18 @@ function checkForLevelUp() {
     levelUpHealth *= kixleyNCo[1].lev - 1
     levelUpBlobsOfDoom = 50
     levelUpBlobsOfDoom *= kixleyNCo[1].lev - 1
-    alert('You leveled up!')
+    writeText('You leveled up!')
     levelReq += levelReq
-    StatToLevelUp()
     CheckIfGotAchieve('Level')
+    StatToLevelUp()
   }
 }
 
 function inCommonRoom() {
+  writeText("The Innkeeper gestures towards a loud, brightly lit room filled with people.");
+  writeText("4 people stand out. They introduce themselves as Mithrómen, Galkemen, Maegfin, and Gurthmereth respectively.");
+  writeText("Who would you like to talk to?");
   requestInput(["Talk to Mithrómen", "Talk to Galkemen", "Talk to Maegfin", "Talk to Gurthmereth", "Leave"], determineAnswer);
-  //answer = prompt('The Innkeeper gestures towards a loud, brightly lit room. It is filled with people. You walk over to a corner of the room, where there are four guys. One is named Mithrómen, another is named Galkemen, another is named Maegfin, and the fourth is named Gurthmereth. All four say \'Hi!\'. Do you run away from them in fear, or talk to one of them? If you talk who do you talk to?', 'Run away in fear, Talk to Mithrómen, talk to Galkemen, talk to Maegfin, talk to Gurthmereth').toLowerCase()
   function determineAnswer() {
     switch (answer) {
       case 'Talk to Mithrómen':
@@ -2977,7 +2976,7 @@ function inCommonRoom() {
         buySpeedBootsCheaply()
         break;
       case 'Leave':
-        alert('You leave.')
+        writeText('You leave.')
         InInn()
         break;
     }
@@ -2994,8 +2993,7 @@ function MakeNewAccount() {
       username = answer
       MakePassword()
     } else {
-      alert('That username is already taken. Please try a new username.')
-      MakeNewAccount()
+      writeTextWait('That username is already taken. Please try a new username.', MakeNewAccount)
     }
   }
 }
@@ -3007,7 +3005,7 @@ function MakePassword() {
     StartUpMenu()
   } else {
     localStorage.setItem(username + 'Password@Kixley@65810', answer)
-    alert('Account created!')
+    writeText('Account created!')
     StartUpMenu()
   }
 }
@@ -3023,7 +3021,7 @@ function login() {
     username = answer
     userCheck = localStorage.getItem(username + 'Kixley@65810')
     if (userCheck === null) {
-      alert('That account doesn\'t exist.')
+      writeText('That account doesn\'t exist.')
       login()
     } else {
       passTry()
@@ -3038,7 +3036,7 @@ function passTry() {
     StartUpMenu()
   } else {
     if (userCheck !== answer) {
-      alert('You messed up your password!')
+      writeText('You messed up your password!')
       passTry()
     } else {
       inAccount()
@@ -3054,9 +3052,9 @@ function inAccount() {
     diffSetting = defaultDifficulty
     diffSetting = parseInt(diffSetting, 10)
   } else {
+    writeText("We've detected that you do not have a default difficulty. Would you like to set one now?");
     requestInput(["Yes", "No"], determineAnswer);
     function determineAnswer() {
-      //confirm('We\'ve detected that you do not have a default difficulty. Would you like to set one now?') === true
       if (answer === "Yes") {
         settingDefault = true
         Difficulty()
@@ -3069,8 +3067,8 @@ function inAccount() {
     useDefaultClass = true
     chosenClass = defaultClass
   } else {
+    writeText("We've detected that you do not have a default class. Would you like to set one now?");
     requestInput(["Yes", "No"], determineAnswer2);
-    //confirm('We\'ve detected that you do not have a default class. Would you like to set one now?') === true
     function determineAnswer2() {
       if (answer === "Yes") {
         settingDefault = true
@@ -3082,8 +3080,8 @@ function inAccount() {
   if (useDefaultDiff === true && useDefaultClass === true) {
     useDefaults = true
   }
+  writeText("What would you like to do?");
   requestInput(["Set Default Difficulty", "Set Default Class", "Stay Signed In", "Back to Menu"], determineAnswer3);
-  //answer = prompt('What would you like to do?', 'Set default difficulty, Set default class, Back to menu, Stay Signed In').toLowerCase()
   function determineAnswer3() {
     switch (answer) {
       case 'Set Default Difficulty':
@@ -3110,56 +3108,56 @@ function inAccount() {
 
 function killQuestEvaluate() {
   if (questKillAmt >= questKillReq) {
-    alert('Galkemen says \'Thanks fer killin\' those monsters. Have ' + reward + ' gold.\'')
+    writeText('Galkemen says \'Thanks fer killin\' those monsters. Here\'s ' + reward + ' gold.\'')
     totalGold += reward
     onAQuest = 0;
     inCommonRoom()
   } else {
-    alert('Galkemen says \'GO KILL ' + (questKillReq - questKillAmt) + 'MORE MONSTERS!!!\' He then proceeds to throw you out the (thankfully open) window.');
+    writeText('Galkemen says \'GO KILL ' + (questKillReq - questKillAmt) + 'MORE MONSTERS!!!\' He then proceeds to throw you out the (thankfully open) window.');
     InTown()
   }
 }
 
 function goldQuestEvaluate() {
   if (totalGold >= questGoldReq) {
-    alert('Galkemen says \'Thanks fer givin\' me this gold. Have ' + reward + ' exp.\'')
+    writeText('Galkemen says \'Thanks fer givin\' me this gold. Here\'s ' + reward + ' exp.\'')
     totalGold -= questGoldReq
     totalExp += reward
     onAQuest = 0;
     inCommonRoom()
   } else {
-    alert('Galkemen says \'GO GET ' + (questGoldReq - totalGold) + ' MORE GOLD!!!\' He then proceeds to throw you out the (thankfully open) window.');
+    writeText('Galkemen says \'GO GET ' + (questGoldReq - totalGold) + ' MORE GOLD!!!\' He then proceeds to throw you out the (thankfully open) window.');
     InTown()
   }
 }
 
 function expQuestEvaluate() {
   if (questExpAmt >= questExpReq) {
-    alert('Galkemen says \'Thanks fer gettin\' that exp. Have ' + reward + ' gold.\'')
+    writeText('Galkemen says \'Thanks fer gettin\' that exp. Here\'s ' + reward + ' gold.\'')
     totalGold += reward
     onAQuest = 0;
     inCommonRoom();
   } else {
-    alert('Galkemen says \'GO GET ' + (questExpReq - questExpAmt) + ' MORE EXP!!!\' He then proceeds to throw you out the (thankfully open) window.');
+    writeText('Galkemen says \'GO GET ' + (questExpReq - questExpAmt) + ' MORE EXP!!!\' He then proceeds to throw you out the (thankfully open) window.');
     InTown()
   }
 }
 
 function itemQuestEvaluate() {
   if ((reqItem === "wooden sword" && woodenSword >= 1) || (reqItem === "pair of speed boots" && speedBoots >= 1)) {
-    alert('Galkemen says \'Thanks fer gettin\' that ' + reqItem + '. Have ' + reward + ' exp.\'')
+    writeText('Galkemen says \'Thanks fer gettin\' that ' + reqItem + '. Here\'s ' + reward + ' exp.\'')
     totalExp += reward
     onAQuest = 0;
     inCommonRoom()
   } else {
-    alert('Galkemen says \'GO GET A ' + (reqItem.toUpperCase()) + '!!!\' He then proceeds to throw you out the (thankfully open) window.')
+    writeText('Galkemen says \'GO GET A ' + (reqItem.toUpperCase()) + '!!!\' He then proceeds to throw you out the (thankfully open) window.')
     InTown()
   }
 }
 
 function towerSaveMenu() {
+  writeText("Do you want to save?");
   requestInput(["Yes", "No"], determineAnswer);
-  //answer = (prompt('Wanna save?', yesNo).toLowerCase())
   function determineAnswer() {
     switch (answer) {
       case 'Yes':
