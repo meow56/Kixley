@@ -1184,7 +1184,7 @@ function FightMenu() {
   }
   var temp2 = true;
   for(var i = 0; i < kixleyNCo[1].knownSpells.length; i++) {
-    if(kixleyNCo[1].blobs >= kixleyNCo[1].spellCosts) {
+    if(kixleyNCo[1].blobs >= kixleyNCo[1].spellCosts[i]) {
       temp2 = false;
     }
   }
