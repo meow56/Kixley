@@ -364,12 +364,20 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           break;
         case "Run":
           if(this.notTurn[0].called === "Group of Balbeag's Soldiers" || this.notTurn[0].called === "Tivél" || this.notTurn[0].called === "Balbeag") {
-            writeText(this.notTurn.calledPlusThe + " got to you before you could get away.");
+            if(this.notTurn.length > 2) {
+              writeText("The soldiers got to you before you could get away.");
+            } else {
+              writeText(this.notTurn[1].calledPlusThe + " got to you before you could get away.");
+            }
           } else {
             if(percentChance(90 - (10 * diffSetting))) {
               this.endFight = "run";
             } else {
-              writeText(this.notTurn.calledPlusThe + " got to you before you could get away.");
+              if(this.notTurn.length > 2) {
+                writeText("The monsters got to you before you could get away.");
+              } else {
+                writeText(this.notTurn[1].calledPlusThe + " got to you before you could get away.");
+              }
             }
           }
           break;
