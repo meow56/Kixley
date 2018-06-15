@@ -265,7 +265,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp3.appendChild(temp5);
       temp3.appendChild(temp6);
       temp3.appendChild(temp7);
-      temp2 = this.blobs / this.Blobs;
+      temp2 = this.blobs / this.totalBlobs;
       temp2 *= 100;
       temp2 = Math.round(temp2);
       if(temp2 !== 0) {
