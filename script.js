@@ -294,16 +294,9 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   }
   
   this.deleteBlobs = function() {
-    if(document.getElementById("blobs_nums_" + this.called) !== null) {
-      if(this.called === "You") {
-        temp = document.getElementById("kix_blobs");
-      } else {
-        temp = document.getElementById("mons_blobs"); 
-      }
-      temp.removeChild(document.getElementById("br_blobs_" + this.called));
-      temp.removeChild(document.getElementById("blobs_nums_" + this.called));
-      temp.removeChild(document.getElementById("current_blobs_" + this.called));
-      temp.removeChild(document.getElementById("total_blobs_" + this.called));
+    if(document.getElementById(this.called + "_blobs") !== null) {
+      temp = document.getElementById(this.called + "_stats");
+      temp.removeChild(document.getElementById(this.called + "_blobs"));
     }
   }
 }
