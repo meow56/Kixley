@@ -496,7 +496,7 @@ kixleyNCo[1].calledPlusThe = 'You';
 kixleyNCo[1].calledPlusthe = 'you';
 kixleyNCo[1].intializeMagic();
 var dead = [];
-var monsterGroup = ["Enemy", new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50)];
+var monsterGroup = ["Enemy"];
 var fightHandler = new Fight(kixleyNCo, monsterGroup);
 var monsName = [
   'You Will Never Get This Monster',
@@ -1798,7 +1798,12 @@ function Difficulty() {
         case 'Legend':
           diffSetting = 2.5
           break;
-      } 
+      }
+      if(monsterGroup.length >= 2) {
+        monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
+      } else {
+        monsterGroup.push(new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50));
+      }
       monsterGroup[1].attackPow *= diffSetting;
       monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
       monsterGroup[1].hitPoints = 100 * diffSetting
@@ -1820,6 +1825,11 @@ function Difficulty() {
   } else {
     diffSetting = localStorage.getItem(username + 'Difficulty@Kixley@65810')
     diffSetting = parseInt(diffSetting, 10)
+    if(monsterGroup.length >= 2) {
+      monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
+    } else {
+      monsterGroup.push(new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50));
+    }
     monsterGroup[1].attackPow *= diffSetting;
     monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
     monsterGroup[1].hitPoints = 100 * diffSetting
