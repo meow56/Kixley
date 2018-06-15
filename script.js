@@ -189,17 +189,13 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       var temp5 = document.createElement("DIV");
       var temp6 = document.createElement("DIV");
       var temp7 = document.createElement("BR");
-      var temp8 = document.createElement("PARAGRAPH");
       temp3.id = this.called + "_hp";
       temp4.id = "hp_nums_" + this.called;
       temp5.id = "current_hp_" + this.called;
       temp6.id = "total_hp_" + this.called;
       temp7.id = "br_" + this.called;
-      temp8.id = this.called + "_info";
       temp4.innerHTML = "HP: " + FightRound(this.hitPoints) + "/" + this.totalHP;
-      temp8.innerHTML = this.called + " Level " + this.lev;
       temp9.appendChild(temp3);
-      temp3.appendChild(temp8);
       temp3.appendChild(temp4);
       temp3.appendChild(temp5);
       temp3.appendChild(temp6);
