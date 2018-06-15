@@ -45,6 +45,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.prevHP;
   this.prevTotalBlobs;
   this.prevBlobs;
+  this.prevGold;
+  this.prevLev;
 
   this.hitMiss = function(fighter) { // general fight command: accuracy check, damage calculation, effects
     if (!percentChance(this.accuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
@@ -171,8 +173,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
     }
   }
   
-  this.showHealth = function() {
-    if(this.prevTotalHP !== this.totalHP || this.prevHP !== this.hitPoints) {
+  this.showHealth = function(foo) {
+    if(this.prevTotalHP !== this.totalHP || this.prevHP !== this.hitPoints || foo) {
       this.deleteHealth();
       var temp2 = document.getElementById("stats");
       if(document.getElementById(this.called + "_stats") === null) {
@@ -299,6 +301,46 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
     if(document.getElementById(this.called + "_blobs") !== null) {
       temp = document.getElementById(this.called + "_stats");
       temp.removeChild(document.getElementById(this.called + "_blobs"));
+    }
+  }
+  
+  this.showInfo = function() {
+    if(this.prevGold !== totalGold || this.prevLev !== this.lev) {
+      this.deleteInfo();
+      var temp2 = document.getElementById("stats");
+      if(document.getElementById(this.called + "_stats") === null) {
+        var temp9 = document.createElement("DIV");
+        temp9.id = this.called + "_stats";
+        temp2.append(temp9);
+      } else {
+        var temp9 = document.getElementById(this.called + "_stats");
+      }
+      var temp3 = document.createElement("DIV");
+      var temp4 = document.createElement("DIV");
+      var temp5 = document.createElement("DIV");
+      var temp7 = document.createElement("BR");
+      temp3.id = this.called + "_info";
+      temp4.id = "name_level_" + this.called;
+      temp5.id = "gold_" + this.called;
+      temp7.id = "br_info_" + this.called;
+      temp4.innerHTML = this.called + " Level " + this.lev;
+      temp9.appendChild(temp3);
+      temp3.appendChild(temp4);
+      if(this.called === "You") {
+        temp5.innerHTML = "Gold: " + totalGold;
+        temp3.appendChild(temp5);
+      }
+      temp3.appendChild(temp7);
+      this.prevGold = totalGold;
+      this.prevLev = this.lev;
+      this.showHP(true);
+    }
+  }
+  
+  this.deleteInfo = function() {
+    if(document.getElementById(this.called + "_info") !== null) {
+      temp = document.getElementById(this.called + "_stats");
+      temp.removeChild(document.getElementById(this.called + "_info"));
     }
   }
 }
@@ -449,10 +491,10 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.showHealth = function() {
     for(var i = 1; i < faction1.length; i++) {
-      faction1[i].showHealth();
+      faction1[i].showInfo(false);
     }
     for(var i = 1; i < faction2.length; i++) {
-      faction2[i].showHealth();
+      faction2[i].showInfo(false);
     }
   }
   
@@ -806,7 +848,8 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   
   function waitForUserInput() {
     if(answer === " ") {
-      fightHandler.showHealth();
+      fightHandler.showInfo();
+      fightHandler.showHealth(false);
       fightHandler.showBlobs(false);
       setTimeout(waitForUserInput, 0);
     } else {
@@ -840,7 +883,8 @@ function writeTextWait(text, whenDone) {
   
   function waitForUserInput() {
     if(!temp) {
-      fightHandler.showHealth();
+      fightHandler.showInfo();
+      fightHandler.showHealth(false);
       fightHandler.showBlobs(false);
       setTimeout(waitForUserInput, 0);
     } else {
@@ -1637,12 +1681,6 @@ function Options() {
 function Places() {
   writeText("Where do you go now?");
   writeText("Gold: " + totalGold);
-  writeText("HP: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
-  if(kixleyNCo[1].totalBlobs > 0) {
-    writeText("Blobs: " + kixleyNCo[1].blobs + "/" + kixleyNCo[1].totalBlobs);
-  } else {
-    writeText("Blobs: 0/0");
-  }
   loc = 1
   temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
   if(!swampDiscovery) {
