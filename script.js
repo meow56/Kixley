@@ -239,7 +239,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   }
   
   this.showBlobs = function(foo) {
-    if(this.prevTotalBlobs !== this.totalBlobs || this.prevBlobs !== this.blobs || foo) {
+    if((this.prevTotalBlobs !== this.totalBlobs || this.prevBlobs !== this.blobs || foo) && this.totalBlobs > 0) {
       this.deleteBlobs();
       var temp2 = document.getElementById("stats");
       if(document.getElementById(this.called + "_stats") === null) {
@@ -259,13 +259,13 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp5.id = "current_blobs_" + this.called;
       temp6.id = "total_blobs_" + this.called;
       temp7.id = "br_blobs_" + this.called;
-      temp4.innerHTML = "Blobs of Doom: " + FightRound(this.hitPoints) + "/" + this.totalHP;
+      temp4.innerHTML = "Blobs of Doom: " + FightRound(this.blobs) + "/" + this.totalBlobs;
       temp9.appendChild(temp3);
       temp3.appendChild(temp4);
       temp3.appendChild(temp5);
       temp3.appendChild(temp6);
       temp3.appendChild(temp7);
-      temp2 = this.hitPoints / this.totalHP;
+      temp2 = this.blobs / this.Blobs;
       temp2 *= 100;
       temp2 = Math.round(temp2);
       if(temp2 !== 0) {
