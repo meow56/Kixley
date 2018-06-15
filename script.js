@@ -1182,6 +1182,15 @@ function FightMenu() {
   if(healthPotion === 0) {
     temp.splice(temp.indexOf("Health Potion (" + healthPotion + ")"), 1);
   }
+  var temp2 = true;
+  for(var i = 0; i < kixleyNCo[1].knownSpells.length; i++) {
+    if(kixleyNCo[1].blobs >= kixleyNCo[1].spellCosts) {
+      temp2 = false;
+    }
+  }
+  if(temp2) {
+    temp.splice(temp.indexOf("Magic"));
+  }
   requestInput(temp, determineAnswer);
   function determineAnswer() {
     if(answer === "Magic") {
