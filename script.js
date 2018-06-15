@@ -176,23 +176,27 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       this.deleteHealth();
       var temp2 = document.getElementById("stats");
       if(document.getElementById(this.called + "_stats") === null) {
-        var temp3 = document.createElement("DIV");
-        temp3.id = this.called + "_stats";
-        temp2.append(temp3);
+        var temp9 = document.createElement("DIV");
+        temp9.id = this.called + "_stats";
+        temp2.append(temp9);
       } else {
-        var temp3 = document.getElementById(this.called + "_stats");
+        var temp9 = document.getElementById(this.called + "_stats");
       }
+      var temp3 = document.createElement("DIV");
       var temp4 = document.createElement("DIV");
       var temp5 = document.createElement("DIV");
       var temp6 = document.createElement("DIV");
       var temp7 = document.createElement("BR");
       var temp8 = document.createElement("PARAGRAPH");
+      temp3.id = this.called + "_hp";
       temp4.id = "hp_nums_" + this.called;
       temp5.id = "current_hp_" + this.called;
       temp6.id = "total_hp_" + this.called;
       temp7.id = "br_" + this.called;
       temp8.id = this.called + "_info";
+      temp4.innerHTML = "HP: " + FightRound(this.hitPoints) + "/" + this.totalHP;
       temp8.innerHTML = this.called + " Level " + this.lev;
+      temp9.appendChild(temp3);
       temp3.appendChild(temp8);
       temp3.appendChild(temp4);
       temp3.appendChild(temp5);
@@ -221,52 +225,52 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         temp6.innerHTML = "";
         temp6.style.width = 0;
       }
-      if(this.called === "You") {
-        temp4.innerHTML = "HP: " + FightRound(this.hitPoints) + "/" + this.totalHP;
-      } else {
-        temp4.innerHTML = this.called + "'s HP: " + FightRound(this.hitPoints) + "/" + this.totalHP;
-      }
-      this.hpRatio = this.hitPoints / this.totalHP;
       this.prevTotalHP = this.totalHP;
       this.prevHP = this.hitPoints;
     }
   }
   
   this.deleteHealth = function() {
-    if(document.getElementById(this.called + "_stats") !== null) {
-      temp = document.getElementById("stats");
-      temp.removeChild(document.getElementById(this.called + "_stats"));
+    if(document.getElementById(this.called + "_hp") !== null) {
+      temp = document.getElementById(this.called + "_stats");
+      temp.removeChild(document.getElementById(this.called + "_hp"));
     }
   }
   
   this.showBlobs = function() {
     if(this.prevTotalBlobs !== this.totalBlobs || this.prevBlobs !== this.blobs) {
       this.deleteBlobs();
-      var temp3;
-      if(this.called === "You") {
-        temp3 = document.getElementById("kix_blobs");
+      var temp2 = document.getElementById("stats");
+      if(document.getElementById(this.called + "_stats") === null) {
+        var temp9 = document.createElement("DIV");
+        temp9.id = this.called + "_stats";
+        temp2.append(temp9);
       } else {
-        temp3 = document.getElementById("mons_blobs");
+        var temp9 = document.getElementById(this.called + "_stats");
       }
+      var temp3 = document.createElement("DIV");
       var temp4 = document.createElement("DIV");
       var temp5 = document.createElement("DIV");
       var temp6 = document.createElement("DIV");
-      temp4.class = "blobs_nums_" + this.called;
-      temp5.class = "current_blobs_" + this.called;
-      temp6.class = "total_blobs_" + this.called;
+      var temp7 = document.createElement("BR");
+      temp3.id = this.called + "_blobs";
       temp4.id = "blobs_nums_" + this.called;
       temp5.id = "current_blobs_" + this.called;
       temp6.id = "total_blobs_" + this.called;
+      temp7.id = "br_blobs_" + this.called;
+      temp4.innerHTML = "Blobs of Doom: " + FightRound(this.hitPoints) + "/" + this.totalHP;
+      temp9.appendChild(temp3);
       temp3.appendChild(temp4);
       temp3.appendChild(temp5);
       temp3.appendChild(temp6);
-      var temp2 = this.blobs / this.totalBlobs;
+      temp3.appendChild(temp7);
+      temp2 = this.hitPoints / this.totalHP;
       temp2 *= 100;
       temp2 = Math.round(temp2);
       if(temp2 !== 0) {
         temp5.innerHTML = "|";
-        temp5.style.background = "#00F"; // oof
-        temp5.style.color = "#00F";
+        temp5.style.background = "#0F0";
+        temp5.style.color = "#0F0";
         temp5.style.width = temp2;
         temp5.style.float = "left";
       } else {
@@ -283,14 +287,6 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         temp6.innerHTML = "";
         temp6.style.width = 0;
       }
-      if(this.called === "You") {
-        temp4.innerHTML = "Blobs of Doom: " + this.blobs + "/" + this.totalBlobs;
-      } else {
-        temp4.innerHTML = this.called + "'s Blobs: " + this.blobs + "/" + this.totalBlobs;
-      }
-      var temp7 = document.createElement("BR");
-      temp7.id = "br_blobs_" + this.called;
-      temp3.appendChild(temp7);
       this.prevTotalBlobs = this.totalBlobs;
       this.prevBlobs = this.blobs;
     }
