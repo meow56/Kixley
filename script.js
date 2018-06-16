@@ -2520,38 +2520,42 @@ function InTown() {
 }
 
 function BuyHealthPotion() {
-  answer = prompt('How many health potions do you want? Each one costs ' + hpCost + ' gold.', '1')
-  if (answer === '') {
-    NotAnOption()
-    BuyHealthPotion()
-  } else {
-    firstChar = answer.charAt(0)
-    if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
-      answer = parseInt(answer, 10)
-      howMany = answer
-      if (totalGold < (hpCost * howMany)) {
-        writeTextWait('You don\'t have enough gold to buy that many health potions. At max you could buy ' + Math.floor(totalGold / hpCost) + ' health potion(s).', InShop)
-      } else {
-        writeText("Are you sure?");
-        writeText("You're going to buy " + answer + " health potions. This will cost " + (hpCost * howMany) + " gold.");
-        requestInput(["Yes", "No"], determineAnswer);
-        function determineAnswer() {
-          switch (answer) {
-            case "Yes":
-              writeText('Health potion(s) bought!')
-              healthPotion += howMany
-              answer = 0
-              totalGold -= (hpCost * howMany)
-              InShop()
-              break;
-            case "No":
-              InShop()
-              break;
+  writeText("How many health potions do you want?");
+  writeText("Each one costs " + hpCost + " gold.");
+  writeText("Leave the field blank to leave.");
+  requestNumber(determineAnswer, 0);
+  function determineAnswer() {
+    if (answer === '') {
+      InShop();
+    } else {
+      firstChar = answer.charAt(0)
+      if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
+        answer = parseInt(answer, 10)
+        howMany = answer
+        if (totalGold < (hpCost * howMany)) {
+          writeTextWait('You don\'t have enough gold to buy that many health potions. At max you could buy ' + Math.floor(totalGold / hpCost) + ' health potion(s).', InShop)
+        } else {
+          writeText("Are you sure?");
+          writeText("You're going to buy " + answer + " health potions. This will cost " + (hpCost * howMany) + " gold.");
+          requestInput(["Yes", "No"], determineAnswer);
+          function determineAnswer() {
+            switch (answer) {
+              case "Yes":
+                writeText('Health potion(s) bought!')
+                healthPotion += howMany
+                answer = 0
+                totalGold -= (hpCost * howMany)
+                InShop()
+                break;
+              case "No":
+                InShop()
+                break;
+            }
           }
         }
+      } else {
+        writeTextWait('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!', BuyHealthPotion)
       }
-    } else {
-      writeTextWait('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!', BuyHealthPotion)
     }
   }
 }
