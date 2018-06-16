@@ -1393,9 +1393,7 @@ function ChooseTarget() {
 function FightMenu() {
   writeText("");
   writeText("What do you want to do?");
-  writeText("Health: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
   for(var i = 1; i < monsterGroup.length; i++) {
-    writeText(monsterGroup[i].called + " health: " + monsterGroup[i].hitPoints + "/" + monsterGroup[i].totalHP);
     writeText(monsterGroup[i].called + " type: " + monsterGroup[i].element);
   }
   temp = ["Fight", "Health Potion (" + healthPotion + ")", "Magic", "Special Attack", "Run"];
@@ -1723,7 +1721,6 @@ function Options() {
 
 function Places() {
   writeText("Where do you go now?");
-  writeText("Gold: " + totalGold);
   loc = 1
   temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
   if(!swampDiscovery) {
@@ -2502,8 +2499,6 @@ function ValaClass() {
 function InTown() {
   loc = 2
   writeText("Where to?");
-  writeText("Gold: " + totalGold);
-  writeText("Health: " + kixleyNCo[1].hitPoints + "/" + kixleyNCo[1].totalHP);
   requestInput(["Market", "Inn", "Leave", "Menu"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
@@ -2539,7 +2534,6 @@ function BuyHealthPotion() {
       } else {
         writeText("Are you sure?");
         writeText("You're going to buy " + answer + " health potions. This will cost " + (hpCost * howMany) + " gold.");
-        writeText("Gold: " + totalGold);
         requestInput(["Yes", "No"], determineAnswer);
         function determineAnswer() {
           switch (answer) {
@@ -2632,7 +2626,6 @@ function BuyArrows() {
         writeTextWait('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrows(s).', InShop)
       }
       writeText("Are you sure? You're going to buy " + answer + " arrows. This will cost " + (aCost * howMany) + " gold.");
-      writeText("Gold: " + totalGold);
       requestInput(["Yes", "No"], determineAnswer);
       function determineAnswer() {
         switch (answer) {
