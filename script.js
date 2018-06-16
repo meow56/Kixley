@@ -488,10 +488,10 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.showHealth = function() {
     for(var i = 1; i < faction1.length; i++) {
-      faction1[i].showInfo(false);
+      faction1[i].showHealth(false);
     }
     for(var i = 1; i < faction2.length; i++) {
-      faction2[i].showInfo(false);
+      faction2[i].showHealth(false);
     }
   }
   
