@@ -445,6 +445,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     for(var i = 1; i < this.notTurn.length; i++) {
       if(this.notTurn[i].hitPoints < 0) {
         dead.push(this.notTurn[i]);
+        this.notTurn[i].deleteInfo();
         this.notTurn[i].deleteHealth();
         this.notTurn[i].deleteBlobs();
         this.notTurn.splice(i, 1);
