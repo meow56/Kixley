@@ -2670,14 +2670,14 @@ function BuyArrows() {
 
 function InShop() {
   writeText('The marketplace master greets you.')
-  temp = ["Buy", "Sell", "Leave"];
+  var temp2 = ["Buy", "Sell", "Leave"];
   if(woodenSword === 0 && speedBoots === 0) {
-    temp.splice(temp.indexOf("Sell"), 1);
+    temp2.splice(temp2.indexOf("Sell"), 1);
     writeText("The marketplace master asks if you would like to buy anything.");
   } else {
     writeText("The marketplace master asks if you would like to buy or sell something.");
   }
-  requestInput(temp, determineAnswer);
+  requestInput(temp2, determineAnswer);
   function determineAnswer() {
     switch (answer) {
       case 'Buy':
