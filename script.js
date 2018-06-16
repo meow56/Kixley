@@ -465,6 +465,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     switch(this.endFight) {
       case "run":
         for(var i = 1; i < this.notTurn.length; i++) {
+          faction2[i].deleteInfo();
           faction2[i].deleteHealth();
           faction2[i].deleteBlobs();
         }
