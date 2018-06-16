@@ -857,6 +857,7 @@ function requestNumber(whenDone, min, max) {
   
   temp3 = document.createElement("BUTTON");
   temp3.id = "number_submit";
+  temp3.innerHTML = "Submit";
   temp3.onclick = Function("answer = document.getElementById('number_input').value;");
   temp2.appendChild(temp3);
   
