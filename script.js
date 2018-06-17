@@ -1,10 +1,11 @@
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
-    alert(error.message);
+    writeText(error.message);
     var temp2 = document.getElementByID("buttons");
-    temp = document.createElement("BUTTON");
+    var temp = document.createElement("BUTTON");
     temp.innerHTML = "Run";
-    temp.onclick = Function("openingMenu = true; StartUpMenu();");
+    temp.id = "runbutton";
+    temp.onclick = Function("openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();");
     temp2.appendChild(temp);
   } else if(error.message === "Cannot read property 'toUpperCase' of null" || error.message === "Cannot read property 'toLowerCase' of null"){
     alert("You just pressed the \"Cancel\" button. That causes the game to end.");
