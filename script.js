@@ -47,6 +47,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.prevBlobs;
   this.prevGold;
   this.prevLev;
+  
+  this.equipped; // InventoryItem
 
   this.hitMiss = function(fighter) { // general fight command: accuracy check, damage calculation, effects
     if (!percentChance(this.accuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
@@ -55,7 +57,11 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
     } else {
       this.streak = 0; // reset missed in a row
       this.cChance = percentChance(this.critChance); // do you crit?
-      this.finalDamage = (this.attackPow * (1 + (0.05 * (3 - diffSetting) * woodenSword)) * this.rageEffect) + randomNumber(-2, 2); // final damage
+      this.finalDamage = (this.attackPow * this.rageEffect); // final damage
+      if(this.equipped !== undefined) {
+        this.equipped.effect();
+      }
+      this.finalDamage += randomNumber(-2, 2); // random variability
       if (this.cChance) {
         if (this.chosenClass === 8) {
           this.finalDamage *= 2; // cavalry has double damage crit
@@ -88,15 +94,6 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
           }
         }
       }
-      temp = false;
-      for(var i = 0; i < fighter.statusEffects.length; i++) {
-        if(fighter.statusEffects[i][0] === "Burned") {
-          temp = true;
-        }
-      }
-      if (flamingSword && percentChance(40) && !temp) {
-        fighter.statusEffects.push(["Burned", 5]);
-      }
     }
   }
   
@@ -117,8 +114,10 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.magic = function(spell, fighter) {
     switch(spell) {
       case "Fire":
-        writeText(this.calledPlusThe + " dealt " + 20 * this.magicSkillz + " damage.");
-        fighter.hitPoints -= 20 * this.magicSkillz;
+        this.tempMagicSkillz = this.magicSkillz;
+        this.equipped.effect();
+        writeText(this.calledPlusThe + " dealt " + 20 * this.tempMagicSkillz + " damage.");
+        fighter.hitPoints -= 20 * this.tempMagicSkillz;
         this.blobs -= 20;
         if(percentChance(10)) {
           fighter.statusEffects.push(["Burned", 5]);
@@ -126,12 +125,14 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         }
         break;
       case "Rage":
+        this.tempMagicSkillz = this.magicSkillz;
+        this.equipped.effect();
         if(this.called === "You") {
-          writeText("You raise your attack power by " + (1 + (0.2 * this.magicSkillz)) + ".");
+          writeText("You raise your attack power by " + (1 + (0.2 * this.tempMagicSkillz)) + ".");
         } else {
-          writeText(this.calledPlusThe + " raises their attack power by " + (1 + (0.2 * this.magicSkillz)) + ".");
+          writeText(this.calledPlusThe + " raises their attack power by " + (1 + (0.2 * this.tempMagicSkillz)) + ".");
         }
-        this.rageEffect = 1 + (0.2 * this.magicSkillz);
+        this.rageEffect = 1 + (0.2 * this.tempMagicSkillz);
         this.blobs -= 40;
         break;
       case "Heal":
@@ -515,6 +516,12 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
 }
 
+function InventoryItem(name, effect, type) {
+  this.name = name; // string
+  this.effect = effect; // function eg Function("this.finalDamage * 1.05")
+  this.type = type; // string eg "weapon", "boots", "helmet", etc
+} 
+
 function fightLoop() {
   if(fightHandler.endFight === " ") {
     fightHandler.chooseAction();
@@ -688,10 +695,11 @@ var theWholeShebang = [
 var openingMenu;
 var chosenClass;
 var loc;
-var volumeSettings = '';
+var volumeSettings = '0';
 var from;
 var mountainPass = false;
 // items
+var inventory = []; // 2D: [[InventoryItem, amount], [InventoryItem, amount]]
 var healthPotion = 0;
 var woodenSword = 0;
 var speedBoots = 0;
@@ -700,7 +708,6 @@ var wsCost = 50;
 var sbCost = 100;
 var aCost = 5;
 var hpEff = 10 + (10 * (3 - diffSetting)); // how much HP health potions restore
-var itemSell; // what you can sell
 // accounts
 var userCheck;
 var username;
@@ -841,6 +848,12 @@ var actuallyDoMusic = true
 |      UTILITY      |
 \*******************/
 
+function wFUIUpdates() { // waitForUserInputUpdates; mostly UI stuff
+  fightHandler.showInfo();
+  fightHandler.showHealth();
+  fightHandler.showBlobs();
+}
+
 function requestNumber(whenDone, min, max) {
   answer = " ";
   var temp2 = document.getElementById("buttons");
@@ -865,9 +878,7 @@ function requestNumber(whenDone, min, max) {
   
   function waitForUserInput() {
     if(answer === " ") {
-      fightHandler.showInfo();
-      fightHandler.showHealth();
-      fightHandler.showBlobs();
+      wFUIUpdates();
       setTimeout(waitForUserInput, 0);
     } else {
       temp2.removeChild(document.getElementById("number_input"));
@@ -893,9 +904,7 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   
   function waitForUserInput() {
     if(answer === " ") {
-      fightHandler.showInfo();
-      fightHandler.showHealth();
-      fightHandler.showBlobs();
+      wFUIUpdates();
       setTimeout(waitForUserInput, 0);
     } else {
       while(temp2.firstChild !== null) {
@@ -928,9 +937,7 @@ function writeTextWait(text, whenDone) {
   
   function waitForUserInput() {
     if(!temp) {
-      fightHandler.showInfo();
-      fightHandler.showHealth();
-      fightHandler.showBlobs();
+      wFUIUpdates();
       setTimeout(waitForUserInput, 0);
     } else {
       temp = document.getElementById("buttons");
