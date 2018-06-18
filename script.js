@@ -967,7 +967,7 @@ function NotAnOption() {
 }
 
 function Credits() {
-  writeTextWait(theWholeShebang[0], Function("const err = new Error("Thanks for playing!"); throw err;"));
+  writeTextWait(theWholeShebang[0], Function("const err = new Error(\"Thanks for playing!\"); throw err;"));
   for (i = 1; i < theWholeShebang.length; i++) {
     writeText(theWholeShebang[i])
   }
