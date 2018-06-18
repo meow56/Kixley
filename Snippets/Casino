@@ -1,0 +1,134 @@
+//This will probably be available from the town menu, we might also put it in the Rowdy Barstead.
+
+var answer
+var H = "Hearts"
+var C = "Clubs"
+var D = "Diamonds"
+var S = "Spades"
+var sortedDeck = [
+  [1,2,3,H], //[Actual value, What's on the card, What's on the card in Scumbags and Warlords, Suit]
+  [2,3,4,H],
+  [3,4,5,H],
+  [4,5,6,H],
+  [5,6,7,H],
+  [6,7,8,H],
+  [7,8,9,H],
+  [8,9,10,H],
+  [9,10,J,H],
+  [10,J,Q,H],
+  [11,Q,K,H],
+  [12,K,A,H],
+  [13,A,2,H],
+  [1,2,3,C],
+  [2,3,4,C],
+  [3,4,5,C],
+  [4,5,6,C],
+  [5,6,7,C],
+  [6,7,8,C],
+  [7,8,9,C],
+  [8,9,10,C],
+  [9,10,J,C],
+  [10,J,Q,C],
+  [11,Q,K,C],
+  [12,K,A,C],
+  [13,A,2,C],
+  [1,2,3,D],
+  [2,3,4,D],
+  [3,4,5,D],
+  [4,5,6,D],
+  [5,6,7,D],
+  [6,7,8,D],
+  [7,8,9,D],
+  [8,9,10,D],
+  [9,10,J,D],
+  [10,J,Q,D],
+  [11,Q,K,D],
+  [12,K,A,D],
+  [13,A,2,D],
+  [1,2,3,S],
+  [2,3,4,S],
+  [3,4,5,S],
+  [4,5,6,S],
+  [5,6,7,S],
+  [6,7,8,S],
+  [7,8,9,S],
+  [8,9,10,S],
+  [9,10,J,S],
+  [10,J,Q,S],
+  [11,Q,K,S],
+  [12,K,A,S],
+  [13,A,2,S],
+]
+var shuffledDeck = []
+var hand1 = []
+var hand2 = []
+var hand3 = []
+var hand4 = []
+//Scumbags cases
+var dubs
+var trips
+var quads
+var doubleDoubles
+var tripleDoubles
+var quadrupleDoubles
+var quintupleDoubles
+var sextupleDoubles //If you get really lucky...
+var runFour //The one after run 3
+var runEight
+var runTwelve
+
+
+//Got this from the internet https://www.frankmitchell.org/2015/01/fisher-yates/
+function shuffle (array) {
+  var i = 0
+    , j = 0
+    , temp = null
+
+  for (i = array.length - 1; i > 0; i -= 1) {
+    j = Math.floor(Math.random() * (i + 1))
+    temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+  shuffledDeck = array
+}
+
+function dealScumbags() {
+  for(i = 1; i <= 13; i++) {
+    hand1.push(shuffledDeck[i])
+  }
+  for(i = 14; i <= 26; i++) {
+    hand2.push(shuffledDeck[i])
+  }
+  for(i = 27; i <= 39; i++) {
+    hand3.push(shuffledDeck[i])
+  }
+  for(i = 40; i <= 52; i++) {
+    hand4.push(shuffledDeck[i])
+  }
+}
+
+function chooseGame() {
+  answer = prompt('What game do you want to play?', 'Scumbags and Warlords, High or Low, Blackjack, Slots').toUpperCase() //I'm making this with alert/prompt because I don't want to copy the writing functions, also I'm just better with alert/prompt.
+    switch(answer) {
+      case 'SCUMBAGS AND WARLORDS':
+        scumbagsAndWarlords()
+        break;
+      case 'HIGH OR LOW':
+        highOrLow()
+        break;
+      case 'BLACKJACK':
+        blackjack()
+        break;
+      case 'SLOTS':
+        slots()
+        break;
+    }
+}
+
+function scumbagsAndWarlords() {
+  shuffle()
+  dealScumbags()
+  alert('Your hand is ' + hand1 + '.')
+  
+}
