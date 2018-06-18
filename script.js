@@ -741,55 +741,21 @@ var possibleItems = [
   'pair of speed boots'
 ];
 var reward; // how much gold/exp you get when you finish a quest
+var actuallyDoMusic;
+var fightMusic;
+var towerMusic;
+var placesMusic;
+var menuMusic;
+var townMusic;
+var innMusic;
+var marketplaceMusic;
+var gameOverMusic;
+var endMusic;
+
 //music vars & event listener defines
 //Copied from an old Bitbucket commit, might not work...
 /*
-var actuallyDoMusic = true
- var fightMusic = document.getElementById('FightMusic')
- fightMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
- var towerMusic = document.getElementById('TowerMusic')
- towerMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
- var placesMusic = document.getElementById('PlacesMusic')
- placesMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
- var menuMusic = document.getElementById('MenuMusic')
- menuMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
- var townMusic = document.getElementById('TownMusic')
- townMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
- var innMusic = document.getElementById('InnMusic')
- innMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
- var marketplaceMusic = document.getElementById('MarketplaceMusic')
- marketplaceMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
- var gameOverMusic = document.getElementById('GameOverMusic')
- gameOverMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
- var endMusic = document.getElementById('EndMusic')
- endMusic.addEventListener('ended', function() {
-   this.currentTime = 0;
-   this.play();
- }, false);
+
   //functions
   function playMusic(which) {
    if (actuallyDoMusic) {
@@ -847,6 +813,19 @@ var actuallyDoMusic = true
 /*******************\
 |      UTILITY      |
 \*******************/
+
+function loadMusic() {
+  actuallyDoMusic = true;
+  fightMusic = document.getElementById('FightMusic');
+  towerMusic = document.getElementById('TowerMusic');
+  placesMusic = document.getElementById('PlacesMusic');
+  menuMusic = document.getElementById('MenuMusic');
+  townMusic = document.getElementById('TownMusic');
+  innMusic = document.getElementById('InnMusic');
+  marketplaceMusic = document.getElementById('MarketplaceMusic');
+  gameOverMusic = document.getElementById('GameOverMusic');
+  endMusic = document.getElementById('EndMusic');
+}
 
 function wFUIUpdates() { // waitForUserInputUpdates; mostly UI stuff
   fightHandler.showInfo();
@@ -1871,6 +1850,7 @@ function achievementMenu() {
 
 function StartUpMenu() {
   if (openingMenu === true) {
+    loadMusic();
     switch (randomNumber(1, 10000)) {
       case 3141:
         writeText('WELCOME TO unnamedTextAdventure!');
