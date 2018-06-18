@@ -743,6 +743,7 @@ var possibleItems = [
 var reward; // how much gold/exp you get when you finish a quest
 //music vars & event listener defines
 //Copied from an old Bitbucket commit, might not work...
+/*
 var actuallyDoMusic = true
  var fightMusic = document.getElementById('FightMusic')
  fightMusic.addEventListener('ended', function() {
@@ -982,7 +983,6 @@ function resetSpec() {
 }
 
 function Story() {
-  playMusic('menu')
   if(monsterGroup.length >= 2) {
     monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
   } else {
