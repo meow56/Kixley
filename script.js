@@ -741,7 +741,7 @@ var possibleItems = [
   'pair of speed boots'
 ];
 var reward; // how much gold/exp you get when you finish a quest
-var actuallyDoMusic;
+// music
 var fightMusic;
 var towerMusic;
 var placesMusic;
@@ -752,67 +752,31 @@ var marketplaceMusic;
 var gameOverMusic;
 var endMusic;
 
-//music vars & event listener defines
-//Copied from an old Bitbucket commit, might not work...
-/*
-
-  //functions
-  function playMusic(which) {
-   if (actuallyDoMusic) {
-     fightMusic.pause()
-     fightMusic.currentTime = 0
-     towerMusic.pause()
-     towerMusic.currentTime = 0
-     placesMusic.pause()
-     placesMusic.currentTime = 0
-     menuMusic.pause()
-     menuMusic.currentTime = 0
-     townMusic.pause()
-     townMusic.currentTime = 0
-     innMusic.pause()
-     innMusic.currentTime = 0
-     marketplaceMusic.pause()
-     marketplaceMusic.currentTime = 0
-     gameOverMusic.pause()
-     gameOverMusic.currentTime = 0
-     endMusic.pause()
-     endMusic.currentTime = 0
-     switch(which){
-       case 'fight':
-         fightMusic.play()
-         break;
-       case 'tower':
-         towerMusic.play()
-         break;
-       case 'places':
-         placesMusic.play()
-         break;
-       case 'menu':
-         menuMusic.play()
-         break;
-       case 'town':
-         townMusic.play()
-         break;
-       case 'inn':
-         innMusic.play()
-         break;
-       case 'marketplace':
-         marketplaceMusic.play()
-         break;
-       case 'game over':
-         gameOverMusic.play()
-         break;
-       case 'beat the game':
-         endMusic.play()
-         break;
-     }
-   }
- }
-
-
 /*******************\
 |      UTILITY      |
 \*******************/
+
+function playMusic(which) { // in the form of the variable ie fightMusic, placesMusic, etc.
+  fightMusic.pause();
+  fightMusic.currentTime = 0;
+  towerMusic.pause();
+  towerMusic.currentTime = 0;
+  placesMusic.pause();
+  placesMusic.currentTime = 0;
+  menuMusic.pause();
+  menuMusic.currentTime = 0;
+  townMusic.pause();
+  townMusic.currentTime = 0;
+  innMusic.pause();
+  innMusic.currentTime = 0;
+  marketplaceMusic.pause();
+  marketplaceMusic.currentTime = 0;
+  gameOverMusic.pause();
+  gameOverMusic.currentTime = 0;
+  endMusic.pause();
+  endMusic.currentTime = 0;
+  which.play();
+}
 
 function loadMusic() {
   actuallyDoMusic = true;
@@ -1849,6 +1813,7 @@ function achievementMenu() {
 }
 
 function StartUpMenu() {
+  playMusic(menuMusic);
   if (openingMenu === true) {
     loadMusic();
     switch (randomNumber(1, 10000)) {
