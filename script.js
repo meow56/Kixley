@@ -1813,7 +1813,6 @@ function achievementMenu() {
 }
 
 function StartUpMenu() {
-  playMusic(menuMusic);
   if (openingMenu === true) {
     loadMusic();
     switch (randomNumber(1, 10000)) {
@@ -1826,6 +1825,7 @@ function StartUpMenu() {
         openingMenu = false;
     }
   }
+  playMusic(menuMusic);
 
   function detectIE() {
     var ua = window.navigator.userAgent;
