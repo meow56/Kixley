@@ -983,7 +983,7 @@ function resetSpec() {
 }
 
 function Story() {
-  //playMusic('menu')
+  playMusic('menu')
   if(monsterGroup.length >= 2) {
     monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
   } else {
