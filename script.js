@@ -954,13 +954,12 @@ function detectMobileDevice() {
 }
 
 function GameOver() {
+  playMusic(gameOverMusic);
   for(var i = 0; i < dead.length; i++) {
     if(dead[i].called === "You") {
       writeTextWait('You died with ' + totalGold + ' gold, were level ' + dead[i].lev + ', had ' + dead[i].attackPow + ' power, and had a total of ' + dead[i].totalHP + ' health.', Credits)
     }
   }
-  const err = new Error("Thanks for playing!");
-  throw err;
 }
 
 function NotAnOption() {
@@ -968,8 +967,8 @@ function NotAnOption() {
 }
 
 function Credits() {
-  writeTextWait(theWholeShebang[0], Function("2 === 2"));
-  for (i = 1; i < theWholeShebang.length; i += 1) {
+  writeTextWait(theWholeShebang[0], Function("const err = new Error("Thanks for playing!"); throw err;"));
+  for (i = 1; i < theWholeShebang.length; i++) {
     writeText(theWholeShebang[i])
   }
 }
@@ -1104,6 +1103,7 @@ function DevCheats() {
 }
 
 function inTower() {
+  playMusic(towerMusic);
   writeText('With the gate shut behind you, you start following Tivél.');
   writeText("Suddenly, you hear footsteps from behind you!");
   writeText("You quickly duck into a nearby room as the group of people passes by.");
@@ -1238,6 +1238,7 @@ function monsInitialize(place) {
 }
 
 function MonsTypeSwitch() {
+  playMusic(fightMusic);
   for(var i = 1; i < monsterGroup.length; i++) {
     switch (monsterGroup[i].called) {
       case 'Goblin':
@@ -1603,13 +1604,14 @@ function finalBossFight() {
 
 function Options() {
   writeText('This is the options menu!');
-  writeText("Volume: " + volumeSettings);
+  writeText("Volume: " + (volumeSettings * 10));
   requestInput(["Volume", "Quality", "Text Pace", "Leave"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
       case 'Volume':
         volumeSettings = prompt('What do you want to set the volume to?', '0 to 10');
         switch (volumeSettings) {
+          case '0':
           case '1':
           case '2':
           case '3':
@@ -1620,11 +1622,18 @@ function Options() {
           case '8':
           case '9':
           case '10':
-            writeText('Volume set! Now just imagine the noises at the appropriate volume.');
-            Options();
-            break;
-          case '0':
-            writeText("Volume set! Now just play the game normally!");
+            writeText('Volume set!');
+            volumeSettings = parseInt(volumeSettings, 10);
+            volumeSettings /= 10;
+            fightMusic.volume = volumeSettings;
+            towerMusic.volume = volumeSettings;
+            placesMusic.volume = volumeSettings;
+            menuMusic.volume = volumeSettings;
+            townMusic.volume = volumeSettings;
+            innMusic.volume = volumeSettings;
+            marketplaceMusic.volume = volumeSettings;
+            gameOverMusic.volume = volumeSettings;
+            endMusic.volume = volumeSettings;
             Options();
             break;
           case "Dev Cheats":
@@ -1647,7 +1656,6 @@ function Options() {
             break;
           default:
             writeText('It can only be from 1 to 10.');
-            volumeSettings = "0";
             Options();
         }
         break;
@@ -1671,6 +1679,7 @@ function Options() {
 }
 
 function Places() {
+  playMusic(placesMusic);
   writeText("Where do you go now?");
   loc = 1
   temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
@@ -1905,6 +1914,7 @@ function StartUpMenu() {
 }
 
 function Menu() {
+  playMusic(menuMusic);
   from = 'in-game'
   writeText("Kixley Beta 1.1");
   requestInput(["Options", "Exit", "Return", "Save", "Log In"], determineAnswer);
@@ -2450,6 +2460,7 @@ function ValaClass() {
 }
 
 function InTown() {
+  playMusic(townMusic);
   loc = 2
   writeText("Where to?");
   requestInput(["Market", "Inn", "Leave", "Menu"], determineAnswer);
@@ -2619,6 +2630,7 @@ function BuyArrows() {
  */
 
 function InShop() {
+  playMusic(marketplaceMusic);
   writeText('The marketplace master greets you.')
   var temp2 = ["Buy", "Sell", "Leave"];
   if(woodenSword === 0 && speedBoots === 0) {
@@ -2731,6 +2743,7 @@ function Buy() {
 
 
 function InInn() {
+  playMusic(innMusic);
   writeText('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
   writeText("So whadda ya say?");
   requestInput(["Yes", "Common Room", "Leave"], determineAnswer);
@@ -3042,9 +3055,9 @@ function buyWoodenSwordsCheap() {
   }
 }
 function beatTheGame() {
+  playMusic(endMusic);
   writeText("You beat the game! Would you like to continue?");
   requestInput(["Yes", "No"], determineAnswer);
-  //answer = (prompt('You beat the game! Would you like to continue?', yesNo).toLowerCase())
   function determineAnswer() {
     switch (answer) {
       case 'Yes':
