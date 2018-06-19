@@ -693,7 +693,7 @@ var theWholeShebang = [
   'Cameron Jordan',
   'John Georgiades',
   'Composer:',
-  'Colin Pulis'
+  'Colin Pulis',
   'Special thanks to:',
   'The Stack Overflow community, for helping with bugs,',
   'MDN and Codecademy, for helping us learn how to JavaScript,',
