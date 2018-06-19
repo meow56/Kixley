@@ -784,7 +784,6 @@ function displayInventory() {
       }
     }
     
-    deleteInventoryText();
     writeTextInfo("Inventory:");
     // var speedBoots = InventoryItem("Speed Boots", Function("this.accuracy + (5 * (3 - diffSetting))"), "boots");
     // types: boots, weapon, helmet, item, chestplate, leggings, ring/accessory?
@@ -804,8 +803,10 @@ function displayInventory() {
 }
 
 function deleteInventoryText() {
-  temp = document.getElementById("You_info");
-  temp.removeChild(document.getElementById("inventory"));
+  temp = document.getElementById("inventory");
+  while(temp.firstChild !== null) {
+    temp.removeChild(temp.firstChild);
+  }
 }
 
 function playMusic(which) { // in the form of the variable ie fightMusic, placesMusic, etc.
