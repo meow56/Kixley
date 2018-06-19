@@ -116,7 +116,9 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
     switch(spell) {
       case "Fire":
         this.tempMagicSkillz = this.magicSkillz;
-        this.equipped.effect();
+        if(this.equipped !== undefined) {
+          this.equipped.effect();
+        }
         writeText(this.calledPlusThe + " dealt " + 20 * this.tempMagicSkillz + " damage.");
         fighter.hitPoints -= 20 * this.tempMagicSkillz;
         this.blobs -= 20;
@@ -127,7 +129,9 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         break;
       case "Rage":
         this.tempMagicSkillz = this.magicSkillz;
-        this.equipped.effect();
+        if(this.equipped !== undefined) {
+          this.equipped.effect();
+        }
         if(this.called === "You") {
           writeText("You raise your attack power by " + (1 + (0.2 * this.tempMagicSkillz)) + ".");
         } else {
@@ -521,6 +525,7 @@ function InventoryItem(name, effect, type) {
   this.name = name; // string
   this.effect = effect; // function eg Function("this.finalDamage * 1.05")
   this.type = type; // string eg "weapon", "boots", "helmet", etc
+  this.equipped;
 } 
 
 function fightLoop() {
@@ -687,6 +692,8 @@ var theWholeShebang = [
   'Jacob Kuschel',
   'Cameron Jordan',
   'John Georgiades',
+  'Composer:',
+  'Colin Pulis'
   'Special thanks to:',
   'The Stack Overflow community, for helping with bugs,',
   'MDN and Codecademy, for helping us learn how to JavaScript,',
@@ -756,6 +763,34 @@ var endMusic;
 |      UTILITY      |
 \*******************/
 
+function displayInventory() {
+  function writeTextInfo(text) {
+    if(document.getElementById("You_info") !== null) {
+      temp = document.getElementById("You_info");
+      var temp2 = document.createElement("PARAGRAPH");
+      temp2.innerHTML = text;
+      temp.appendChild(temp2);
+      temp2 = document.createElement("BR");
+      temp.appendChild(temp2);
+    }
+  }
+  
+  writeTextInfo("Inventory:");
+  // var speedBoots = InventoryItem("Speed Boots", Function("this.accuracy + (5 * (3 - diffSetting))"), "boots");
+  // types: boots, weapon, helmet, item, chestplate, leggings, ring/accessory?
+  for(var i = 0; i < inventory.length; i++) {
+    if(inventory[i][1] !== 1 && inventory[i][0].type === "item") {
+      writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][1] + ")");
+    } else if(inventory[i][1] === 1 && inventory[i][0].type === "item") {
+      writeTextInfo("  " + inventory[i][0].name);
+    } else if(inventory[i][0].equipped !== undefined) {
+      writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][0].equipped + ")");
+    } else {
+      writeTextInfo("  " + inventory[i][0].name);
+    }
+  }
+}
+
 function playMusic(which) { // in the form of the variable ie fightMusic, placesMusic, etc.
   fightMusic.pause();
   fightMusic.currentTime = 0;
@@ -795,6 +830,7 @@ function wFUIUpdates() { // waitForUserInputUpdates; mostly UI stuff
   fightHandler.showInfo();
   fightHandler.showHealth();
   fightHandler.showBlobs();
+  displayInventory();
 }
 
 function requestNumber(whenDone, min, max) {
@@ -969,10 +1005,10 @@ function NotAnOption() {
 }
 
 function Credits() {
-  writeTextWait(theWholeShebang[0], Function("const err = new Error(\"Thanks for playing!\"); throw err;"));
-  for (i = 1; i < theWholeShebang.length; i++) {
+  for (i = 0; i < theWholeShebang.length - 1; i++) {
     writeText(theWholeShebang[i])
   }
+  writeTextWait(theWholeShebang[theWholeShebang.length - 1], Function("const err = new Error(\"Thanks for playing!\"); throw err;"));
 }
 
 function DevCheats() {
