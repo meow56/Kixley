@@ -708,6 +708,7 @@ var from;
 var mountainPass = false;
 // items
 var inventory = []; // 2D: [[InventoryItem, amount], [InventoryItem, amount]]
+var pastInventory = [];
 var healthPotion = 0;
 var woodenSword = 0;
 var speedBoots = 0;
@@ -764,31 +765,47 @@ var endMusic;
 \*******************/
 
 function displayInventory() {
-  function writeTextInfo(text) {
-    if(document.getElementById("You_info") !== null) {
-      temp = document.getElementById("You_info");
-      var temp2 = document.createElement("PARAGRAPH");
-      temp2.innerHTML = text;
-      temp.appendChild(temp2);
-      temp2 = document.createElement("BR");
-      temp.appendChild(temp2);
+  if(pastInventory !== inventory) {
+    function writeTextInfo(text) {
+      if(document.getElementById("You_info") !== null) {
+        temp = document.getElementById("You_info");
+        if(document.getElementById("inventory") === null) {
+          var temp3 = document.createElement("DIV");
+          temp3.id = "inventory";
+          temp.appendChild(temp3);
+        } else {
+          var temp3 = document.getElementById("inventory");
+        }
+        var temp2 = document.createElement("PARAGRAPH");
+        temp2.innerHTML = text;
+        temp3.appendChild(temp2);
+        temp2 = document.createElement("BR");
+        temp3.appendChild(temp2);
+      }
     }
-  }
-  
-  writeTextInfo("Inventory:");
-  // var speedBoots = InventoryItem("Speed Boots", Function("this.accuracy + (5 * (3 - diffSetting))"), "boots");
-  // types: boots, weapon, helmet, item, chestplate, leggings, ring/accessory?
-  for(var i = 0; i < inventory.length; i++) {
-    if(inventory[i][1] !== 1 && inventory[i][0].type === "item") {
-      writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][1] + ")");
-    } else if(inventory[i][1] === 1 && inventory[i][0].type === "item") {
-      writeTextInfo("  " + inventory[i][0].name);
-    } else if(inventory[i][0].equipped !== undefined) {
-      writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][0].equipped + ")");
-    } else {
-      writeTextInfo("  " + inventory[i][0].name);
+    
+    deleteInventoryText();
+    writeTextInfo("Inventory:");
+    // var speedBoots = InventoryItem("Speed Boots", Function("this.accuracy + (5 * (3 - diffSetting))"), "boots");
+    // types: boots, weapon, helmet, item, chestplate, leggings, ring/accessory?
+    for(var i = 0; i < inventory.length; i++) {
+      if(inventory[i][1] !== 1 && inventory[i][0].type === "item") {
+        writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][1] + ")");
+      } else if(inventory[i][1] === 1 && inventory[i][0].type === "item") {
+        writeTextInfo("  " + inventory[i][0].name);
+      } else if(inventory[i][0].equipped !== undefined) {
+        writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][0].equipped + ")");
+      } else {
+        writeTextInfo("  " + inventory[i][0].name);
+      }
     }
+    pastInventory = inventory;
   }
+}
+
+function deleteInventoryText() {
+  temp = document.getElementById("You_info");
+  temp.removeChild(document.getElementById("inventory"));
 }
 
 function playMusic(which) { // in the form of the variable ie fightMusic, placesMusic, etc.
