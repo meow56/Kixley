@@ -10,58 +10,58 @@ var Q = "Queen"
 var K = "King"
 var A = "Ace"
 var sortedDeck = [
-  [1, 2, 3, H], //[Actual value, What's on the card, What's on the card in Scumbags and Warlords, Suit]
-  [2, 3, 4, H],
-  [3, 4, 5, H],
-  [4, 5, 6, H],
-  [5, 6, 7, H],
-  [6, 7, 8, H],
-  [7, 8, 9, H],
-  [8, 9, 10, H],
-  [9, 10, J, H],
-  [10, J, Q, H],
-  [11, Q, K, H],
-  [12, K, A, H],
-  [13, A, 2, H],
-  [1, 2, 3, C],
-  [2, 3, 4, C],
-  [3, 4, 5, C],
-  [4, 5, 6, C],
-  [5, 6, 7, C],
-  [6, 7, 8, C],
-  [7, 8, 9, C],
-  [8, 9, 10, C],
-  [9, 10, J, C],
-  [10, J, Q, C],
-  [11, Q, K, C],
-  [12, K, A, C],
-  [13, A, 2, C],
-  [1, 2, 3, D],
-  [2, 3, 4, D],
-  [3, 4, 5, D],
-  [4, 5, 6, D],
-  [5, 6, 7, D],
-  [6, 7, 8, D],
-  [7, 8, 9, D],
-  [8, 9, 10, D],
-  [9, 10, J, D],
-  [10, J, Q, D],
-  [11, Q, K, D],
-  [12, K, A, D],
-  [13, A, 2, D],
-  [1, 2, 3, S],
-  [2, 3, 4, S],
-  [3, 4, 5, S],
-  [4, 5, 6, S],
-  [5, 6, 7, S],
-  [6, 7, 8, S],
-  [7, 8, 9, S],
-  [8, 9, 10, S],
-  [9, 10, J, S],
-  [10, J, Q, S],
-  [11, Q, K, S],
-  [12, K, A, S],
-  [13, A, 2, S],
+  [1, 2, 3, 2, H], //[Actual value, What's on the card, What's on the card in Scumbags and Warlords, Blackjack Value Suit]
+  [2, 3, 4, 3, H],
+  [3, 4, 5, 4, H],
+  [4, 5, 6, 5, H],
+  [5, 6, 7, 6, H],
+  [6, 7, 8, 7, H],
+  [7, 8, 9, 8, H],
+  [8, 9, 10, 9, H],
+  [9, 10, J, 10, H],
+  [10, J, Q, 10, H],
+  [11, Q, K, 10, H],
+  [12, K, A, 10, H],
+  [13, A, 2, 11, H],
+  [1, 2, 3, 2, C],
+  [2, 3, 4, 3, C],
+  [3, 4, 5, 4, C],
+  [4, 5, 6, 5, C],
+  [5, 6, 7, 6, C],
+  [6, 7, 8, 7, C],
+  [7, 8, 9, 8, C],
+  [8, 9, 10, 9, C],
+  [9, 10, J, 10, C],
+  [10, J, Q, 10, C],
+  [11, Q, K, 10, C],
+  [12, K, A, 10, C],
+  [13, A, 2, 11, C],
+  [1, 2, 3, 2, D],
+  [2, 3, 4, 3, D],
+  [3, 4, 5, 4, D],
+  [4, 5, 6, 5, D],
+  [5, 6, 7, 6, D],
+  [6, 7, 8, 7, D],
+  [7, 8, 9, 8, D],
+  [8, 9, 10, 9, D],
+  [9, 10, J, 10, D],
+  [10, J, Q, 10, D],
+  [11, Q, K, 10, D],
+  [12, K, A, 10, D],
+  [13, A, 2, 11, D],
+  [1, 2, 3, 2, S],
+  [2, 3, 4, 3, S],
+  [3, 4, 5, 4, S],
+  [4, 5, 6, 5, S],
+  [5, 6, 7, 6, S],
+  [6, 7, 8, 7, S],
+  [7, 8, 9, 8, S],
+  [8, 9, 10, 9, S],
+  [9, 10, J, 10, S],
+  [10, J, Q, 10, S],
+  [11, Q, K, 10, S],
+  [12, K, A, 10, S],
+  [13, A, 2, 11, S],
 ]
 var shuffledDeck = []
 var hand1 = []
@@ -83,6 +83,11 @@ var runTwelve
 //From old code
 var bet
 var tempVal
+//other
+var numOfHits = 0
+var numOfAIHits = 0
+var playerTotal = 0
+var AITotal = 0
 
 
 //Got this from the internet https://www.frankmitchell.org/2015/01/fisher-yates/
@@ -337,4 +342,60 @@ function PlayMore(what) {
       NotAnOption()
       PlayMore()
   }
+}
+
+function blackjack() {
+  shuffle(sortedDeck)
+  alert('You have a ' + shufledDeck[1][2] + ' and a ' + shuffledDeck[2][2] + '. The dealer can see the + ' shuffledDeck[1][2] + '.')
+  alert('Your opponent has a ' + shuffledDeck[3][2] + '.')
+  answer = prompt('Do you want a hit?', 'Yes, No').toUpperCase()
+  AIHit()
+  switch(answer) {
+    case 'YES':
+      AIHit()
+      break;
+    case 'NO':
+      evaluateBlackjack()
+      break;
+    default:
+      NotAnOption()
+      break;
+  }
+}
+
+function firstHit() {
+  hand1.push(shuffledDeck[1])
+  hand1.push(shuffledDeck[2])
+  hand1.push(shuffledDeck[52])
+  alert('You got a ' + hand1[3][2] + '. You now have a ' + hand1[1][2] + ', a ' + hand1[2][2] + ', and a ' + hand1[3][2] + '.')
+  AIHit()
+  answer = prompt('Do you want another hit?', 'Yes, No').toUpperCase()
+  switch(answer) {
+    case 'YES':
+      hit()
+      break;
+    case 'NO':
+      evaluateBlackjack()
+      break;
+    default:
+      NotAnOption()
+      break;
+  }
+}
+
+function evaluateBlackjack() {
+  AIHit()
+}
+
+function AIHit() {
+  hand2.push(shuffledDeck[3])
+  hand2.push(shuffledDeck[4])
+  AITotal = 0
+  for(i = hand2.length - 1; i > 0; i -= 1) {
+    AITotal += hand2[i][4]
+  }
+  if(AITotal <= 17) {
+    hand2.push(shuffledDeck[5])
+    AIHit() 
+ }
 }
