@@ -954,7 +954,9 @@ function detectMobileDevice() {
 }
 
 function GameOver() {
-  playMusic(gameOverMusic);
+  if(gameOverMusic.paused) {
+    playMusic(gameOverMusic);
+  }
   for(var i = 0; i < dead.length; i++) {
     if(dead[i].called === "You") {
       writeTextWait('You died with ' + totalGold + ' gold, were level ' + dead[i].lev + ', had ' + dead[i].attackPow + ' power, and had a total of ' + dead[i].totalHP + ' health.', Credits)
@@ -1103,7 +1105,9 @@ function DevCheats() {
 }
 
 function inTower() {
-  playMusic(towerMusic);
+  if(towerMusic.paused) {
+    playMusic(towerMusic);
+  }
   writeText('With the gate shut behind you, you start following Tivél.');
   writeText("Suddenly, you hear footsteps from behind you!");
   writeText("You quickly duck into a nearby room as the group of people passes by.");
@@ -1238,7 +1242,9 @@ function monsInitialize(place) {
 }
 
 function MonsTypeSwitch() {
-  playMusic(fightMusic);
+  if(fightMusic.paused) {
+    playMusic(fightMusic);
+  }
   for(var i = 1; i < monsterGroup.length; i++) {
     switch (monsterGroup[i].called) {
       case 'Goblin':
@@ -1679,7 +1685,9 @@ function Options() {
 }
 
 function Places() {
-  playMusic(placesMusic);
+  if(placesMusic.paused) {
+    playMusic(placesMusic);
+  }
   writeText("Where do you go now?");
   loc = 1
   temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
@@ -1834,7 +1842,9 @@ function StartUpMenu() {
         openingMenu = false;
     }
   }
-  playMusic(menuMusic);
+  if(menuMusic.paused) {
+    playMusic(menuMusic);
+  }
 
   function detectIE() {
     var ua = window.navigator.userAgent;
@@ -1914,7 +1924,9 @@ function StartUpMenu() {
 }
 
 function Menu() {
-  playMusic(menuMusic);
+  if(menuMusic.paused) {
+    playMusic(menuMusic);
+  }
   from = 'in-game'
   writeText("Kixley Beta 1.1");
   requestInput(["Options", "Exit", "Return", "Save", "Log In"], determineAnswer);
@@ -2460,7 +2472,9 @@ function ValaClass() {
 }
 
 function InTown() {
-  playMusic(townMusic);
+  if(townMusic.paused) {
+    playMusic(townMusic);
+  }
   loc = 2
   writeText("Where to?");
   requestInput(["Market", "Inn", "Leave", "Menu"], determineAnswer);
@@ -2630,7 +2644,9 @@ function BuyArrows() {
  */
 
 function InShop() {
-  playMusic(marketplaceMusic);
+  if(marketplaceMusic.paused) {
+    playMusic(marketplaceMusic);
+  }
   writeText('The marketplace master greets you.')
   var temp2 = ["Buy", "Sell", "Leave"];
   if(woodenSword === 0 && speedBoots === 0) {
@@ -2743,7 +2759,9 @@ function Buy() {
 
 
 function InInn() {
-  playMusic(innMusic);
+  if(innMusic.paused) {
+    playMusic(innMusic);
+  }
   writeText('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
   writeText("So whadda ya say?");
   requestInput(["Yes", "Common Room", "Leave"], determineAnswer);
@@ -3055,7 +3073,9 @@ function buyWoodenSwordsCheap() {
   }
 }
 function beatTheGame() {
-  playMusic(endMusic);
+  if(endMusic.paused) {
+    playMusic(endMusic);
+  }
   writeText("You beat the game! Would you like to continue?");
   requestInput(["Yes", "No"], determineAnswer);
   function determineAnswer() {
