@@ -767,8 +767,8 @@ var endMusic;
 function displayInventory() {
   if(pastInventory !== inventory) {
     function writeTextInfo(text) {
-      if(document.getElementById("You_info") !== null) {
-        temp = document.getElementById("You_info");
+      if(document.getElementById("You_stats") !== null) {
+        temp = document.getElementById("You_stats");
         if(document.getElementById("inventory") === null) {
           var temp3 = document.createElement("DIV");
           temp3.id = "inventory";
@@ -787,15 +787,19 @@ function displayInventory() {
     writeTextInfo("Inventory:");
     // var speedBoots = InventoryItem("Speed Boots", Function("this.accuracy + (5 * (3 - diffSetting))"), "boots");
     // types: boots, weapon, helmet, item, chestplate, leggings, ring/accessory?
-    for(var i = 0; i < inventory.length; i++) {
-      if(inventory[i][1] !== 1 && inventory[i][0].type === "item") {
-        writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][1] + ")");
-      } else if(inventory[i][1] === 1 && inventory[i][0].type === "item") {
-        writeTextInfo("  " + inventory[i][0].name);
-      } else if(inventory[i][0].equipped !== undefined) {
-        writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][0].equipped + ")");
-      } else {
-        writeTextInfo("  " + inventory[i][0].name);
+    if(inventory.length === 0) {
+      writeTextInfo("Nothing.");
+    } else {
+      for(var i = 0; i < inventory.length; i++) {
+        if(inventory[i][1] !== 1 && inventory[i][0].type === "item") {
+          writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][1] + ")");
+        } else if(inventory[i][1] === 1 && inventory[i][0].type === "item") {
+          writeTextInfo("  " + inventory[i][0].name);
+        } else if(inventory[i][0].equipped !== undefined) {
+          writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][0].equipped + ")");
+        } else {
+          writeTextInfo("  " + inventory[i][0].name);
+        }
       }
     }
     pastInventory = inventory;
@@ -846,9 +850,9 @@ function loadMusic() {
 
 function wFUIUpdates() { // waitForUserInputUpdates; mostly UI stuff
   fightHandler.showInfo();
+  displayInventory();
   fightHandler.showHealth();
   fightHandler.showBlobs();
-  displayInventory();
 }
 
 function requestNumber(whenDone, min, max) {
