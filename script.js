@@ -862,7 +862,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           for(var j = 0; j < temp2.length; j++) {
             var temp3 = document.createElement("OPTION");
             temp3.innerHTML = temp2[j];
-            if(inventory[i][0].equipped.called === temp2) {
+            if(inventory[i][0].equipped === temp2) {
               temp3.selected = "true";
             }
             temp.appendChild(temp3);
