@@ -2786,8 +2786,8 @@ function Sell() {
         break;
       case 'Speed Boots':
         writeText('A guy shows up and offers ' + .9 * sbCost + ' gold for your speed boots.')
-        requestInput(["Yes", "No"], determineAnswer2);
-        function determineAnswer2() {
+        requestInput(["Yes", "No"], determineAnswer3);
+        function determineAnswer3() {
           switch (answer) {
             case 'Yes':
               totalGold += .9 * sbCost
