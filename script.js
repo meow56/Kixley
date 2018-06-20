@@ -1,12 +1,6 @@
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
     writeText(error.message);
-    var temp2 = document.getElementByID("buttons");
-    var temp = document.createElement("BUTTON");
-    temp.innerHTML = "Run";
-    temp.id = "runbutton";
-    temp.onclick = Function("openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();");
-    temp2.appendChild(temp);
   } else if(error.message === "Cannot read property 'toUpperCase' of null" || error.message === "Cannot read property 'toLowerCase' of null"){
     alert("You just pressed the \"Cancel\" button. That causes the game to end.");
   } else if (error.message === "Cannot read property 'appendChild' of null"){
@@ -237,7 +231,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   
   this.deleteHealth = function() {
     if(document.getElementById(this.called + "_hp") !== null) {
-      temp = document.getElementById(this.called + "_stats");
+      var temp = document.getElementById(this.called + "_stats");
       temp.removeChild(document.getElementById(this.called + "_hp"));
     }
   }
@@ -301,8 +295,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   
   this.deleteBlobs = function() {
     if(document.getElementById(this.called + "_blobs") !== null) {
-      temp = document.getElementById(this.called + "_stats");
-      temp.removeChild(document.getElementById(this.called + "_blobs"));
+      var temp = document.getElementById(this.called + "_stats");
+      var temp.removeChild(document.getElementById(this.called + "_blobs"));
     }
   }
   
@@ -341,8 +335,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   
   this.deleteInfo = function() {
     if(document.getElementById(this.called + "_info") !== null) {
-      temp = document.getElementById(this.called + "_stats");
-      temp.removeChild(document.getElementById(this.called + "_info"));
+      var temp = document.getElementById(this.called + "_stats");
+      var temp.removeChild(document.getElementById(this.called + "_info"));
     }
   }
 }
@@ -438,7 +432,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
     for(var i = 1; i < this.turn.length; i++) {
       this.turn[i].effectsManager();
     }
-    temp = this.turn;
+    var temp = this.turn;
     this.turn = this.notTurn;
     this.notTurn = temp;
     this.action = [""];
@@ -650,7 +644,6 @@ var timeGTOne = 0; // whether you get 6 or 7 BoD when Mithrómen sells you BoD
 var swampCounter = 0;
 // level
 var temp;
-var swordAdjustTempMinusOne;
 var levelReq = 100 + kixleyNCo[1].lev * 200; // exp required until level up
 var levelUpHealth = 50;
 var totalExtraHealth = levelUpHealth * (kixleyNCo[1].lev - 1);
@@ -774,7 +767,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
     deleteInventoryText();
     function writeTextInfo(text) {
       if(document.getElementById("You_stats") !== null) {
-        temp = document.getElementById("You_stats");
+        var temp = document.getElementById("You_stats");
         if(document.getElementById("inventory") === null) {
           var temp3 = document.createElement("DIV");
           temp3.id = "inventory";
@@ -814,7 +807,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
 }
 
 function deleteInventoryText() {
-  temp = document.getElementById("inventory");
+  var temp = document.getElementById("inventory");
   if(temp !== null) {
     while(temp.firstChild !== null) {
       temp.removeChild(temp.firstChild);
@@ -930,7 +923,7 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
 }
 
 function writeTextWait(text, whenDone) {
-  temp = document.getElementById("text");
+  var temp = document.getElementById("text");
   var temp2 = document.createElement("PARAGRAPH");
   temp2.innerHTML = text;
   temp.appendChild(temp2);
@@ -959,7 +952,7 @@ function writeTextWait(text, whenDone) {
 }
 
 function writeText(text) {
-  temp = document.getElementById("text");
+  var temp = document.getElementById("text");
   var temp2 = document.createElement("PARAGRAPH");
   temp2.innerHTML = text;
   temp.appendChild(temp2);
@@ -968,7 +961,7 @@ function writeText(text) {
 }
 
 function clearText() {
-  temp = document.getElementById("text");
+  var temp = document.getElementById("text");
   while(temp.firstChild !== null) {
     temp.removeChild(temp.firstChild);
   }
@@ -1026,8 +1019,19 @@ function GameOver() {
   }
   for(var i = 0; i < dead.length; i++) {
     if(dead[i].called === "You") {
-      writeTextWait('You died with ' + totalGold + ' gold, were level ' + dead[i].lev + ', had ' + dead[i].attackPow + ' power, and had a total of ' + dead[i].totalHP + ' health.', Credits)
+      writeTextWait('You died with ' + totalGold + ' gold, were level ' + dead[i].lev + ', had ' + dead[i].attackPow + ' power, and had a total of ' + dead[i].totalHP + ' health.', Function("Credits(makeButton)"))
     }
+  }
+  
+  function makeButton() {
+    var temp2 = document.getElementByID("buttons");
+    var temp = document.createElement("BUTTON");
+    temp.innerHTML = "Run";
+    temp.id = "runbutton";
+    temp.onclick = Function("openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();");
+    temp2.appendChild(temp);
+    const err = new Error("Thanks for playing!");
+    throw err;
   }
 }
 
@@ -1035,11 +1039,12 @@ function NotAnOption() {
   alert('That wasn\'t one of the options. Please try again.')
 }
 
-function Credits() {
+function Credits(whenDone) {
   for (i = 0; i < theWholeShebang.length - 1; i++) {
     writeText(theWholeShebang[i])
   }
-  writeTextWait(theWholeShebang[theWholeShebang.length - 1], Function("const err = new Error(\"Thanks for playing!\"); throw err;"));
+  
+  writeTextWait(theWholeShebang[theWholeShebang.length - 1], whenDone);
 }
 
 function DevCheats() {
@@ -1223,7 +1228,7 @@ function FightRound(n) {
 \**********************/
 
 function monsInitialize(place) {
-  temp = "";
+  var temp = "";
   if(dwNamesB) {
     temp = dwNames[randomNumber(1, dwNames.length - 1)];
   } else if(place === "plains" || place === "swamp") {
@@ -1374,7 +1379,7 @@ function MonsTypeSwitch() {
 }
 
 function MonsterAI(monster) {
-  temp = false;
+  var temp = false;
   for(var i = 0; i < monster.knownSpells.length; i++) {
     if(monster.knownSpells[i] === "Rage" && monster.rageEffect === 1) {
       temp = true;
@@ -1405,8 +1410,8 @@ function ChooseTarget() {
     temp2 = 0;
     var temp3;
     for(var i = 1; i < fightHandler.notTurn.length; i++) {
-      if(fightHandler.notTurn[i].attackPow > temp) {
-        temp = fightHandler.notTurn[i].attackPow; // if the player is not attacking, choose the target with the greatest attack
+      if(fightHandler.notTurn[i].attackPow > temp2) {
+        temp2 = fightHandler.notTurn[i].attackPow; // if the player is not attacking, choose the target with the greatest attack
         temp3 = i;
       }
     }
@@ -1421,7 +1426,7 @@ function FightMenu() {
   for(var i = 1; i < monsterGroup.length; i++) {
     writeText(monsterGroup[i].called + " type: " + monsterGroup[i].element);
   }
-  temp = ["Fight", "Health Potion", "Magic", "Special Attack", "Run"];
+  var temp = ["Fight", "Health Potion", "Magic", "Special Attack", "Run"];
   if(!hasSpecial || usedShot || usedSteal) {
     temp.splice(temp.indexOf("Special Attack"), 1);
   }
@@ -1489,7 +1494,7 @@ function useHealthPotion() {
 function ChooseSpell() {
   writeText("What spell?");
   writeText("You have " + kixleyNCo[1].blobs + " blobs of doom.");
-  temp = kixleyNCo[1].knownSpells.slice();
+  var temp = kixleyNCo[1].knownSpells.slice();
   for(var i = kixleyNCo[1].knownSpells.length - 1; i > -1; i--) {
     if(kixleyNCo[1].spellCosts[i] > kixleyNCo[1].blobs) {
       temp.splice(i, 1);
@@ -1563,8 +1568,7 @@ function WonTheFight() {
     writeText('Tivél is defeated!', finalBossFight)
   } else if (fightingBalbeag) {
     fightingBalbeag = false
-    Credits()
-    beatTheGame()
+    Credits(beatTheGame)
   } else if (toMountains) {
     toMountains = false
     writeTextWait("With the monster defeated, you hike back down the mountain.", goldAndEXP);
@@ -1711,7 +1715,7 @@ function Options() {
             volumeSettings = "0";
             alert('Welcome to the secret area, where you can enable developer cheats.');
             alert('Don\'t use these if you\'re not a dev.');
-            temp = DevPassAttempt();
+            var temp = DevPassAttempt();
             if(temp === 42) {
               Options();
             } else if(temp) {
@@ -1755,7 +1759,7 @@ function Places() {
   }
   writeText("Where do you go now?");
   loc = 1
-  temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
+  var temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
   if(!swampDiscovery) {
     temp.splice(temp.indexOf("Swamp"), 1);
   }
@@ -1874,7 +1878,7 @@ function ListingAchievements() {
 }
 
 function achievementMenu() {
-  temp = (compAchieve.length / allAchievements.length) * 100;
+  var temp = (compAchieve.length / allAchievements.length) * 100;
   writeText('This is the achievement menu. Here you can find the list of achievements, both completed and unfinished.');
   writeText("Achievement Completion: " + temp + "%");
   requestInput(["List Achievements", "Leave"], determineAnswer);
@@ -1972,9 +1976,17 @@ function StartUpMenu() {
         break;
       case 'Exit':
         alert('Goodbye!')
-        Credits()
-        const err = new Error("Thanks for playing!");
-        throw err;
+        Credits(makeButton)
+        function makeButton() {
+          var temp2 = document.getElementByID("buttons");
+          var temp = document.createElement("BUTTON");
+          temp.innerHTML = "Run";
+          temp.id = "runbutton";
+          temp.onclick = Function("openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();");
+          temp2.appendChild(temp);
+          const err = new Error("Thanks for playing!");
+          throw err;
+        }
         break;
       case 'Create New Account':
         alert('WARNING: As of right now, accounts are not yet in working order. As such, use with caution.')
@@ -2003,9 +2015,17 @@ function Menu() {
         break;
       case 'Exit':
         writeText("Bye!");
-        Credits()
-        const e = new Error("Thanks for playing!");
-        throw e;
+        Credits(makeButton)
+        function makeButton() {
+          var temp2 = document.getElementByID("buttons");
+          var temp = document.createElement("BUTTON");
+          temp.innerHTML = "Run";
+          temp.id = "runbutton";
+          temp.onclick = Function("openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();");
+          temp2.appendChild(temp);
+          const err = new Error("Thanks for playing!");
+          throw err;
+        }
         break;
       case 'Return':
         switch (loc) {
@@ -2394,6 +2414,7 @@ function ChoosingAClass(chosenClass) {
             hasSpecial = true
             specOrNo = 'Special Attack, '
             break;
+            /*
           case 'Super Hardcore':
             kixleyNCo[1].magicSkillz = (1 / temp)
             kixleyNCo[1].attackPow -= 5
@@ -2414,6 +2435,7 @@ function ChoosingAClass(chosenClass) {
             kixleyNCo[1].accuracy /= 0
             kixleyNCo[1].chosenClass = 11
             break;
+            */
         }
         if (settingDefault === false) {
           kixleyNCo[1].magicSkillz *= (3 - diffSetting)
@@ -2734,7 +2756,7 @@ function InShop() {
 
 
 function Sell() {
-  temp = ["Wooden Sword", "Speed Boots", "Leave"];
+  var temp = ["Wooden Sword", "Speed Boots", "Leave"];
   if(findNameInventory("Wooden Sword") === null) {
     temp.splice(temp.indexOf("Wooden Sword"), 1);
   }
@@ -2788,7 +2810,7 @@ function Sell() {
 
 function Buy() {
   //answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, some speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Speed Boots, Arrows, Cancel').toUpperCase()
-  temp = ["Health Potions (" + hpCost + " gold)", "Wooden Sword (" + wsCost + " gold)", "Speed Boots (" + sbCost + " gold)", "Arrows (" + aCost + " gold)", "Leave"];
+  var temp = ["Health Potions (" + hpCost + " gold)", "Wooden Sword (" + wsCost + " gold)", "Speed Boots (" + sbCost + " gold)", "Arrows (" + aCost + " gold)", "Leave"];
   if(findNameInventory("Wooden Sword") !== null) {
     temp.splice(temp.indexOf("Wooden Sword (" + wsCost + " gold)"), 1);
   }
@@ -2832,7 +2854,7 @@ function InInn() {
         if (totalGold >= 50) {
           totalGold -= 50;
           innFloorNumber = randomNumber(1, 2);
-          temp = randomNumber(1, 23);
+          var temp = randomNumber(1, 23);
           if (temp < 10) {
             temp.toString(10)
             temp = '0' + temp
@@ -3135,6 +3157,12 @@ function beatTheGame() {
         InTown()
         break;
       case 'No':
+        var temp2 = document.getElementByID("buttons");
+        var temp = document.createElement("BUTTON");
+        temp.innerHTML = "Run";
+        temp.id = "runbutton";
+        temp.onclick = Function("openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();");
+        temp2.appendChild(temp);
         const err = new Error("Thanks for playing!");
         throw err;
         break;
