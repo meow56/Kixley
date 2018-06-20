@@ -43,18 +43,22 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.prevGold;
   this.prevLev;
   
-  this.equipped; // InventoryItem
+  this.equipped = []; // 1D array: [InventoryItem, InventoryItem]
 
   this.hitMiss = function(fighter) { // general fight command: accuracy check, damage calculation, effects
-    if (!percentChance(this.accuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
+    this.tempAccuracy = this.accuracy;
+    for(var i = 0; i < this.equipped.length; i++) {
+      this.equipped[i].effect(); // apply any accuracy boosts
+    }
+    if (!percentChance(this.tempAccuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
       this.streak++ // num times missed in a row plus one
       writeText(this.calledPlusThe + " missed.");
     } else {
       this.streak = 0; // reset missed in a row
       this.cChance = percentChance(this.critChance); // do you crit?
       this.finalDamage = (this.attackPow * this.rageEffect); // final damage
-      if(this.equipped !== undefined) {
-        this.equipped.effect();
+      for(var i = 0; i < this.equipped.length; i++) {
+        this.equipped[i].effect(); // apply any attack boosts
       }
       this.finalDamage += randomNumber(-2, 2); // random variability
       if (this.cChance) {
@@ -107,12 +111,12 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   }
   
   this.magic = function(spell, fighter) {
+    this.tempMagicSkillz = this.magicSkillz;
+    for(var i = 0; i < this.equipped.length; i++) {
+      this.equipped[i].effect(); // apply any magicSkillz boosts
+    }
     switch(spell) {
       case "Fire":
-        this.tempMagicSkillz = this.magicSkillz;
-        if(this.equipped !== undefined) {
-          this.equipped.effect();
-        }
         writeText(this.calledPlusThe + " dealt " + 20 * this.tempMagicSkillz + " damage.");
         fighter.hitPoints -= 20 * this.tempMagicSkillz;
         this.blobs -= 20;
@@ -122,10 +126,6 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
         }
         break;
       case "Rage":
-        this.tempMagicSkillz = this.magicSkillz;
-        if(this.equipped !== undefined) {
-          this.equipped.effect();
-        }
         if(this.called === "You") {
           writeText("You raise your attack power by " + (1 + (0.2 * this.tempMagicSkillz)) + ".");
         } else {
