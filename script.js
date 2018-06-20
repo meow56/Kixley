@@ -821,7 +821,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
       pastInventory += inventory[i][0].name;
       pastInventory += inventory[i][1];
     }
-    kixleyNCo[1].showHealth();
+    kixleyNCo[1].showHealth(true);
   }
 }
 
