@@ -932,7 +932,7 @@ function writeTextWait(text, whenDone) {
   temp = document.getElementById("buttons");
   temp2 = document.createElement("BUTTON");
   temp2.innerHTML = "Next";
-  temp2.onclick = Function("answeredYet = true;");
+  temp2.onclick = Function("answer = 'Next';");
   temp.appendChild(temp2);
   answer = " ";
   
