@@ -390,7 +390,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
         case "Fight":
           this.turn[i].hitMiss(this.notTurn[this.target[i]]);
           break;
-        case "Health Potion (" + healthPotion + ")":
+        case "Health Potion":
           useHealthPotion();
           break;
         case "Fire (20 blobs)":
@@ -622,7 +622,6 @@ var numMons = monsterGroup.length - 1;
 var fightingGroup = false;
 var fightingAAbea = false;
 var fightingBalbeag = false;
-var arrows = 0;
 var spec = []; // special move
 var actualSpec;
 var usedShot = false;
@@ -708,10 +707,7 @@ var from;
 var mountainPass = false;
 // items
 var inventory = []; // 2D: [[InventoryItem, amount], [InventoryItem, amount]]
-var pastInventory = [];
-var healthPotion = 0;
-var woodenSword = 0;
-var speedBoots = 0;
+var pastInventory;
 var hpCost = 20;
 var wsCost = 50;
 var sbCost = 100;
@@ -764,8 +760,17 @@ var endMusic;
 |      UTILITY      |
 \*******************/
 
-function displayInventory() {
-  if(pastInventory !== inventory) {
+function findNameInventory(name) {
+  for(var i = 0; i < inventory.length; i++) {
+    if(inventory[i][0].name === name) {
+      return i;
+    }
+  }
+  return null;
+}
+
+function displayInventory(foo) { // foo: boolean for update checker bypass
+  if(pastInventory !== inventory || foo) {
     deleteInventoryText();
     function writeTextInfo(text) {
       if(document.getElementById("You_stats") !== null) {
@@ -1416,12 +1421,18 @@ function FightMenu() {
   for(var i = 1; i < monsterGroup.length; i++) {
     writeText(monsterGroup[i].called + " type: " + monsterGroup[i].element);
   }
-  temp = ["Fight", "Health Potion (" + healthPotion + ")", "Magic", "Special Attack", "Run"];
+  temp = ["Fight", "Health Potion", "Magic", "Special Attack", "Run"];
   if(!hasSpecial || usedShot || usedSteal) {
     temp.splice(temp.indexOf("Special Attack"), 1);
   }
-  if(healthPotion === 0) {
-    temp.splice(temp.indexOf("Health Potion (" + healthPotion + ")"), 1);
+  var temp2 = false;
+  for(var i = 0; i < inventory.length; i++) {
+    if(inventory[i][0].name === "Health Potion") {
+      temp2 = true;
+    }
+  }
+  if(!temp2) {
+    temp.splice(temp.indexOf("Health Potion"), 1);
   }
   var temp2 = true;
   for(var i = 0; i < kixleyNCo[1].knownSpells.length; i++) {
@@ -1462,23 +1473,16 @@ function FightMenu() {
 }
 
 function useHealthPotion() {
-  if (healthPotion <= 0) {
-    writeText('You search your backpack, but you don\'t have a health potion!')
-    window.clearTimeout(fightLoop2Timeout);
-    window.clearTimeout(fightLoop3Timeout);
-    fightHandler.actionChosen = false;
-    fightHandler.action = [""];
-    fightHandler.targetChosen = false;
-    fightHandler.target = [""];
-    fightHandler.fightLoop();
-  } else {
-    writeText('You pull a health potion out of your bag and drink it! Yum! It tastes like snickerdoodle cookies!')
-    writeText(hpEff + ' hit points restored!')
-    kixleyNCo[1].hitPoints += hpEff
-    healthPotion--
-    if (kixleyNCo[1].hitPoints > kixleyNCo[1].totalHP) {
-      kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
+  writeText('You pull a health potion out of your bag and drink it! Yum! It tastes like snickerdoodle cookies!')
+  writeText(hpEff + ' hit points restored!')
+  kixleyNCo[1].hitPoints += hpEff;
+  for(var i = 0; i < inventory.length; i++) {
+    if(inventory[i][0].name === "Health Potion") {
+      inventory[i][1]--;
     }
+  }
+  if (kixleyNCo[1].hitPoints > kixleyNCo[1].totalHP) {
+    kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
   }
 }
 
@@ -1513,7 +1517,7 @@ function ChooseSpec() {
   function determineAnswer() {
     switch (answer) {
       case "Yes":
-        if(spec[0] === "Shoot" && arrows === 0) {
+        if(spec[0] === "Shoot" && findNameInventory("Arrow") === null) {
           writeText("You're out of arrows to shoot!");
           ChooseSpec();
         } else {
@@ -1530,10 +1534,9 @@ function ChooseSpec() {
 function Shoot(target) {
   usedShot = true
   target.accuracy -= 30
-  arrows -= 1
-  writeText('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!')
-  writeText('You have ' + arrows + ' arrows!')
-  target.hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3)
+  inventory[findNameInventory("Arrow")][1]--;
+  writeText('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!');
+  target.hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3);
 }
 
 function Steal(target) {
@@ -2262,7 +2265,7 @@ function CavalryClass() {
 }
 
 function ArcherClass() {
-  spec = ['Shoot', 'You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows']
+  spec = ['Shoot', 'You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows.']
   actualSpec = Shoot;
   writeText("The Archer class isn't the strongest, but they still can fight well. With the Shoot attack, they can inflict damage while making the monster less accurate.");
   writeText("Attack - 2");
@@ -2582,8 +2585,11 @@ function BuyHealthPotion() {
             switch (answer) {
               case "Yes":
                 writeText('Health potion(s) bought!')
-                healthPotion += howMany
-                answer = 0
+                if(findNameInventory("Health Potion") !== null) {
+                  inventory[findNameInventory("Health Potion")][1] += howMany;
+                } else {
+                  inventory.push([new InventoryItem("Health Potion", useHealthPotion, "item"), howMany]);
+                }
                 totalGold -= (hpCost * howMany)
                 InShop()
                 break;
@@ -2594,65 +2600,54 @@ function BuyHealthPotion() {
           }
         }
       } else {
-        writeTextWait('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!', BuyHealthPotion)
+        writeTextWait('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!', BuyHealthPotion);
       }
     }
   }
 }
 
 function BuyWoodenSword() {
-  if (woodenSword === 0) {
-    if (totalGold >= wsCost) {
-      writeText("Are you sure?");
-      requestInput(["Yes", "No"], determineAnswer);
-      function determineAnswer() {
-        switch (answer) {
-          case 'Yes':
-            writeText('Wooden sword bought!')
-            woodenSword++;
-            totalGold -= wsCost
-            InShop()
-            break;
-          case 'No':
-            InShop()
-            break;
-        }
+  if (totalGold >= wsCost) {
+    writeText("Are you sure?");
+    requestInput(["Yes", "No"], determineAnswer);
+    function determineAnswer() {
+      switch (answer) {
+        case 'Yes':
+          writeText('Wooden sword bought!')
+          inventory.push([new InventoryItem("Wooden Sword", Function("this.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon"), 1]);
+          totalGold -= wsCost
+          InShop()
+          break;
+        case 'No':
+          InShop()
+          break;
       }
-    } else {
-      writeText('You don\'t have enough money.')
-      InShop()
     }
   } else {
-    writeText('SOLD OUT.')
+    writeText('You don\'t have enough money.')
     InShop()
   }
 }
 
 function BuySpeedBoots() {
-  if (speedBoots === 0) {
-    if (totalGold >= sbCost) {
-      writeText("Are you sure?");
-      requestInput(["Yes", "No"], determineAnswer);
-      function determineAnswer() {
-        switch (answer) {
-          case 'Yes':
-            writeText('Speed boots bought!')
-            speedBoots++
-            totalGold -= sbCost
-            kixleyNCo[1].accuracy += 5 * (3 - diffSetting)
-            InShop();
-            break;
-          case 'No':
-            InShop()
-            break;
-        }
+  if (totalGold >= sbCost) {
+    writeText("Are you sure?");
+    requestInput(["Yes", "No"], determineAnswer);
+    function determineAnswer() {
+      switch (answer) {
+        case 'Yes':
+          writeText('Speed boots bought!')
+          inventory.push([new InventoryItem("Speed Boots", Function("this.accuracy += 5 * (3 - diffSetting)"), "boots"), 1]);
+          totalGold -= sbCost;
+          InShop();
+          break;
+        case 'No':
+          InShop()
+          break;
       }
-    } else {
-      writeText('You don\'t have enough money.')
-      InShop()
     }
   } else {
-    writeText('SOLD OUT.')
+    writeText('You don\'t have enough money.')
     InShop()
   }
 }
@@ -2667,7 +2662,7 @@ function BuyArrows() {
     if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
       howMany = parseInt(answer, 10)
       if (totalGold < (aCost * howMany)) {
-        writeTextWait('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrows(s).', InShop)
+        writeTextWait('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrow(s).', InShop)
       }
       writeText("Are you sure? You're going to buy " + answer + " arrows. This will cost " + (aCost * howMany) + " gold.");
       requestInput(["Yes", "No"], determineAnswer);
@@ -2675,7 +2670,11 @@ function BuyArrows() {
         switch (answer) {
           case "Yes":
             writeText('Arrow(s) bought!')
-            arrows += howMany
+            if(findNameInventory("Arrow") !== null) {
+              inventory[findNameInventory("Arrow")][1] += howMany;
+            } else {
+              inventory.push([new InventoryItem("Arrow", Shoot, "item"), howMany]);
+            }
             answer = 0
             totalGold -= (aCost * howMany)
             InShop()
@@ -2711,7 +2710,7 @@ function InShop() {
   }
   writeText('The marketplace master greets you.')
   var temp2 = ["Buy", "Sell", "Leave"];
-  if(woodenSword === 0 && speedBoots === 0) {
+  if(findNameInventory("Wooden Sword") === null && findNameInventory("Speed Boots") === null) {
     temp2.splice(temp2.indexOf("Sell"), 1);
     writeText("The marketplace master asks if you would like to buy anything.");
   } else {
@@ -2736,10 +2735,10 @@ function InShop() {
 
 function Sell() {
   temp = ["Wooden Sword", "Speed Boots", "Leave"];
-  if(woodenSword === 0) {
+  if(findNameInventory("Wooden Sword") === null) {
     temp.splice(temp.indexOf("Wooden Sword"), 1);
   }
-  if(speedBoots === 0) {
+  if(findNameInventory("Speed Boots") === null) {
     temp.splice(temp.indexOf("Speed Boots"), 1);
   }
   writeText("What would you like to sell?");
@@ -2753,7 +2752,7 @@ function Sell() {
           switch (answer) {
             case 'Yes':
               totalGold += .9 * wsCost
-              woodenSword = 0
+              inventory[findNameInventory("Wooden Sword")][1] = 0;
               writeText('Wooden sword sold!')
               InShop()
               break;
@@ -2770,8 +2769,7 @@ function Sell() {
           switch (answer) {
             case 'Yes':
               totalGold += .9 * sbCost
-              speedBoots = 0
-              kixleyNCo[1].accuracy -= 5 * (3 - diffSetting)
+              inventory[findNameInventory("Speed Boots")][1] = 0;
               writeText('Speed boots sold!')
               InShop()
               break;
@@ -2791,10 +2789,10 @@ function Sell() {
 function Buy() {
   //answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, some speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Speed Boots, Arrows, Cancel').toUpperCase()
   temp = ["Health Potions (" + hpCost + " gold)", "Wooden Sword (" + wsCost + " gold)", "Speed Boots (" + sbCost + " gold)", "Arrows (" + aCost + " gold)", "Leave"];
-  if(woodenSword === 1) {
+  if(findNameInventory("Wooden Sword") !== null) {
     temp.splice(temp.indexOf("Wooden Sword (" + wsCost + " gold)"), 1);
   }
-  if(speedBoots === 1) {
+  if(findNameInventory("Speed Boots") !== null) {
     temp.splice(temp.indexOf("Speed Boots (" + sbCost + " gold)"), 1);
   }
   requestInput(temp, determineAnswer)
@@ -2909,31 +2907,24 @@ function quest() {
 }
 
 function save() {
-  localStorage.setItem('Health', kixleyNCo[1].hitPoints)
-  localStorage.setItem('Attack Power', kixleyNCo[1].attackPow)
-  localStorage.setItem('Class', kixleyNCo[1].chosenClass)
-  localStorage.setItem('Level', kixleyNCo[1].lev)
-  localStorage.setItem('Total Health', kixleyNCo[1].totalHP)
-  localStorage.setItem('Blobs of Doom', kixleyNCo[1].blobs)
-  localStorage.setItem('Health Potions', healthPotion)
-  localStorage.setItem('Wooden Sword', woodenSword)
-  localStorage.setItem('Swamp Discovery', swampDiscovery)
-  localStorage.setItem('Difficulty', diffSetting)
-  localStorage.setItem('Gold', totalGold)
-  localStorage.setItem('Speed Boots', speedBoots)
-  localStorage.setItem('Plains Counter', plainsCounter)
-  localStorage.setItem('Level Requirement', levelReq)
-  localStorage.setItem('Experience', totalExp)
-  localStorage.setItem('Location', loc)
+  localStorage.setItem('KixleyNCo', kixleyNCo);
+  localStorage.setItem('Inventory', inventory);
+  localStorage.setItem('Swamp Discovery', swampDiscovery);
+  localStorage.setItem('Difficulty', diffSetting);
+  localStorage.setItem('Gold', totalGold);
+  localStorage.setItem('Plains Counter', plainsCounter);
+  localStorage.setItem('Level Requirement', levelReq);
+  localStorage.setItem('Experience', totalExp);
+  localStorage.setItem('Location', loc);
 }
 
 function saveMenu() {
   answer = confirm('Are you sure you want to save? Please make sure to use the same computer when loading. This will overwrite any previous saves on this computer.')
   switch (answer) {
     case true:
-      alert('Saving...')
+      alert('Saving...');
       save()
-      alert('Done!')
+      alert('Done!');
       Places()
       break;
     case false:
@@ -2948,7 +2939,7 @@ function saveMenu() {
 
 function load() {
   if (signedIn === false) {
-    alert('You aren\'t signed in yet! Sign in before you load.')
+    alert('You aren\'t signed in yet! Sign in before you load.');
     if (from !== 'in-game') {
       StartUpMenu()
     } else {
@@ -2956,18 +2947,13 @@ function load() {
     }
   } else {
     alert('Loading...')
-    kixleyNCo[1].hitPoints = parseInt(localStorage.getItem('Health'), 10)
-    kixleyNCo[1].attackPow = parseInt(localStorage.getItem('Attack Power'), 10)
-    kixleyNCo[1].chosenClass = parseInt(localStorage.getItem('Class'), 10)
-    kixleyNCo[1].lev = parseInt(localStorage.getItem('Level'), 10)
-    kixleyNCo[1].totalHP = parseInt(localStorage.getItem('Total Health'), 10)
-    kixleyNCo[1].blobs = parseInt(localStorage.getItem('Blobs of Doom'), 10)
-    healthPotion = parseInt(localStorage.getItem('Health Potions'), 10)
-    woodenSword = parseInt(localStorage.getItem('Wooden Sword'), 10)
+    var temp2 = Function("kixleyNCo = " + localStorage.getItem('KixleyNCo'));
+    temp2();
+    temp2 = Function("inventory = " + localStorage.getItem('Inventory'));
+    temp2();
     swampDiscovery = parseInt(localStorage.getItem('Swamp Discovery'), 10)
     diffSetting = parseInt(localStorage.getItem('Difficulty'), 10)
     totalGold = parseInt(localStorage.getItem('Gold'), 10)
-    speedBoots = parseInt(localStorage.getItem('Speed Boots'), 10)
     plainsCounter = parseInt(localStorage.getItem('Plains Counter'), 10)
     levelReq = parseInt(localStorage.getItem('Level Requirement'), 10)
     totalExp = parseInt(localStorage.getItem('Experience'), 10)
@@ -3095,8 +3081,7 @@ function buySpeedBootsCheaply() {
         if (totalGold >= 70) {
           writeText('Gurthmereth hands you the boots as you hand him the money.')
           totalGold -= 70
-          kixleyNCo[1].accuracy += 5 * (3 - diffSetting)
-          speedBoots = 1
+          inventory.push([new InventoryItem("Speed Boots", Function("this.accuracy + (5 * (3 - diffSetting))"), "boots"), 1]);
         } else {
           writeText('Gurthmereth sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
           InInn()
@@ -3120,7 +3105,7 @@ function buyWoodenSwordsCheap() {
         if (totalGold >= 35) {
           writeText('Maegfin hands you the sword, along with a sheath, as you hand him the money.')
           totalGold -= 35
-          woodenSword = 1;
+          inventory.push([new InventoryItem("Wooden Sword", Function("this.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon"), 1]);
           inCommonRoom()
         } else {
           writeText('Maegfin sighs and says \'You don\'t have enough money. I want the money.\' Then you leave the common room.')
@@ -3387,7 +3372,7 @@ function expQuestEvaluate() {
 }
 
 function itemQuestEvaluate() {
-  if ((reqItem === "wooden sword" && woodenSword >= 1) || (reqItem === "pair of speed boots" && speedBoots >= 1)) {
+  if ((reqItem === "wooden sword" && findNameInventory("Wooden Sword") !== null) || (reqItem === "pair of speed boots" && findNameInventory("Speed Boots") !== null)) {
     writeText('Galkemen says \'Thanks fer gettin\' that ' + reqItem + '. Here\'s ' + reward + ' exp.\'')
     totalExp += reward
     onAQuest = 0;
