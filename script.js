@@ -828,9 +828,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
 function deleteInventoryText() {
   var temp = document.getElementById("inventory");
   if(temp !== null) {
-    while(temp.firstChild !== null) {
-      temp.removeChild(temp.firstChild);
-    }
+    document.getElementById("You_stats").removeChild(temp);
   }
 }
 
