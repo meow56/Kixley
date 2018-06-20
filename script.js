@@ -329,7 +329,11 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp3.appendChild(temp7);
       this.prevGold = totalGold;
       this.prevLev = this.lev;
-      this.showHealth(true);
+      if(this.called === "You") {
+        displayInventory(true);
+      } else {
+        this.showHealth(true);
+      }
     }
   }
   
@@ -768,7 +772,12 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
       inventory.splice(i, 1);
     }
   }
-  if(pastInventory !== inventory || foo) {
+  var temp = "";
+  for(var i = 0; i < inventory.length; i++) {
+    temp += inventory[i][0].name;
+    temp += inventory[i][1];
+  }
+  if(pastInventory !== temp || foo) {
     deleteInventoryText();
     function writeTextInfo(text) {
       if(document.getElementById("You_stats") !== null) {
@@ -807,7 +816,12 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
         }
       }
     }
-    pastInventory = inventory.slice();
+    pastInventory = "";
+    for(var i = 0; i < inventory.length; i++) {
+      pastInventory += inventory[i][0].name;
+      pastInventory += inventory[i][1];
+    }
+    kixleyNCo[1].showHealth();
   }
 }
 
