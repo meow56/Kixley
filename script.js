@@ -859,7 +859,7 @@ function loadMusic() {
 
 function wFUIUpdates() { // waitForUserInputUpdates; mostly UI stuff
   fightHandler.showInfo();
-  displayInventory();
+  displayInventory(false);
   fightHandler.showHealth();
   fightHandler.showBlobs();
 }
