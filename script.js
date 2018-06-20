@@ -776,7 +776,25 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
   for(var i = 0; i < inventory.length; i++) {
     temp += inventory[i][0].name;
     temp += inventory[i][1];
-  }
+    if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
+      var temp2 = document.getElementById(inventory[i][0].name + "_equip_select").value;
+      if(temp2 !== inventory[i][0].equipped) {
+        for(var j = 0; j < inventory[i][0].equipped.equipped.length; j++) {
+          if(inventory[i][0].equipped.equipped[j].name === inventory[i][0].name) {
+            inventory[i][0].equipped.equipped.splice(j, 1);
+          } // end if equip match
+        } // end for kixleyNCo.equipped
+        inventory[i][0].equipped = temp2;
+        for(var j = 0; j < kixleyNCo.length; j++) {
+          if(temp2 === kixleyNCo[j].called) {
+            kixleyNCo[j].equipped.push(inventory[i][0]);
+          } // end if name match
+        } // end for kixleyNCo
+      } // end if difference
+    } // end if element null check
+  } // end for inventory
+  
+  
   if(pastInventory !== temp || foo) {
     deleteInventoryText();
     function writeTextInfo(text) {
@@ -792,8 +810,10 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
         }
         var temp2 = document.createElement("PARAGRAPH");
         temp2.innerHTML = text;
+        temp2.id = text;
         temp3.appendChild(temp2);
         temp2 = document.createElement("BR");
+        temp2.id = text + "_br";
         temp3.appendChild(temp2);
       }
     }
@@ -813,9 +833,44 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][0].equipped + ")");
         } else {
           writeTextInfo("  " + inventory[i][0].name);
-        }
-      }
-    }
+          var temp = document.getElementById("  " + inventory[i][0].name);
+          temp.style.float = "left";
+          temp = document.createElement("SELECT");
+          temp.id = inventory[i][0].name + "_equip_select";
+          var temp2 = [];
+          for(var k = 1; k < kixleyNCo.length; k++) {
+            var temp3 = false;
+            var temp4 = true;
+            for(var j = 0; j < kixleyNCo[k].equipped.length; j++) { // if they have this item equipped OR they have no item of this type equipped
+              if(kixleyNCo[i].equipped[j].name === inventory[i][0].name) {
+                temp3 = true;
+              }
+              if(kixleyNCo[i].equipped[j].type === inventory[i][0].type) {
+                temp4 = false;
+              }
+            }
+            if(temp3 || temp4) {
+              temp2.push(kixleyNCo[k].called);
+            }
+          }
+          var temp3 = document.createElement("OPTION");
+          temp3.value = "none";
+          if(inventory[i][0].equipped === undefined || inventory[i][0].equipped === "none") {
+            temp3.selected = "true";
+          }
+          temp.appendChild(temp3);
+          for(var j = 0; j < temp2.length; j++) {
+            var temp3 = document.createElement("OPTION");
+            temp3.innerHTML = temp2[j];
+            if(inventory[i][0].equipped.called === temp2) {
+              temp3.selected = "true";
+            }
+            temp.appendChild(temp3);
+          }
+          document.getElementById("inventory").insertBefore(temp, document.getElementById("  " + inventory[i][0].name + "_br"));
+        } // end else
+      } // end for
+    } // end else
     pastInventory = "";
     for(var i = 0; i < inventory.length; i++) {
       pastInventory += inventory[i][0].name;
