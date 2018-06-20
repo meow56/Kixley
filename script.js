@@ -932,14 +932,14 @@ function writeTextWait(text, whenDone) {
   temp = document.getElementById("buttons");
   temp2 = document.createElement("BUTTON");
   temp2.innerHTML = "Next";
-  temp2.onclick = Function("temp = true;");
+  temp2.onclick = Function("answeredYet = true;");
   temp.appendChild(temp2);
-  temp = false;
+  answer = " ";
   
   waitForUserInput(); // wait for the player to select next
   
   function waitForUserInput() {
-    if(!temp) {
+    if(answer === " ") {
       wFUIUpdates();
       setTimeout(waitForUserInput, 0);
     } else {
