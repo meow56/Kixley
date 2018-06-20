@@ -766,13 +766,15 @@ var endMusic;
 
 function displayInventory() {
   if(pastInventory !== inventory) {
+    deleteInventoryText();
     function writeTextInfo(text) {
       if(document.getElementById("You_stats") !== null) {
         temp = document.getElementById("You_stats");
         if(document.getElementById("inventory") === null) {
           var temp3 = document.createElement("DIV");
           temp3.id = "inventory";
-          temp.appendChild(temp3);
+          var temp4 = document.getElementById("You_info");
+          temp.insertBefore(temp3, temp4.nextSibling);
         } else {
           var temp3 = document.getElementById("inventory");
         }
