@@ -832,8 +832,6 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][1] + ")");
         } else if(inventory[i][1] === 1 && inventory[i][0].type === "item") {
           writeTextInfo("  " + inventory[i][0].name);
-        } else if(inventory[i][0].equipped !== undefined) {
-          writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][0].equipped + ")");
         } else {
           writeTextInfo("  " + inventory[i][0].name);
           var temp = document.getElementById("  " + inventory[i][0].name);
