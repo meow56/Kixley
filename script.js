@@ -336,7 +336,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.deleteInfo = function() {
     if(document.getElementById(this.called + "_info") !== null) {
       var temp = document.getElementById(this.called + "_stats");
-      var temp.removeChild(document.getElementById(this.called + "_info"));
+      temp.removeChild(document.getElementById(this.called + "_info"));
     }
   }
 }
