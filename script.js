@@ -763,6 +763,11 @@ function findNameInventory(name) {
 }
 
 function displayInventory(foo) { // foo: boolean for update checker bypass
+  for(var i = 0; i < inventory.length; i++) {
+    if(inventory[i][1] === 0) {
+      inventory.splice(i, 1);
+    }
+  }
   if(pastInventory !== inventory || foo) {
     deleteInventoryText();
     function writeTextInfo(text) {
