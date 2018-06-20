@@ -810,8 +810,10 @@ function displayInventory() {
 
 function deleteInventoryText() {
   temp = document.getElementById("inventory");
-  while(temp.firstChild !== null) {
-    temp.removeChild(temp.firstChild);
+  if(temp !== null) {
+    while(temp.firstChild !== null) {
+      temp.removeChild(temp.firstChild);
+    }
   }
 }
 
