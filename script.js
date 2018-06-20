@@ -809,7 +809,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
         }
       }
     }
-    pastInventory = inventory;
+    pastInventory = inventory.slice();
   }
 }
 
