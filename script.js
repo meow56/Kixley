@@ -745,9 +745,9 @@ var mountainPass = false;
 var inventory = []; // 2D: [[InventoryItem, amount], [InventoryItem, amount]]
 var pastInventory;
 var catalog = [new InventoryItem("Health Potion", useHealthPotion, "item", 20), 
-               new InventoryItem("Wooden Sword", Function("this.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50), 
-               new InventoryItem("Simple Staff", Function("this.tempMagicSkillz *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50), 
-               new InventoryItem("Speed Boots", Function("this.accuracy += 5 * (3 - diffSetting)"), "boots", 100), 
+               new InventoryItem("Wooden Sword", Function("this.equipped.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50), 
+               new InventoryItem("Simple Staff", Function("this.equipped.tempMagicSkillz *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50), 
+               new InventoryItem("Speed Boots", Function("this.equipped.accuracy += 5 * (3 - diffSetting)"), "boots", 100), 
                new InventoryItem("Arrows", Shoot, "item", 5)];
 var hpCost = 20;
 var wsCost = 50;
