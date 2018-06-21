@@ -877,8 +877,6 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
     }
     
     writeTextInfo("Inventory:");
-    // var speedBoots = InventoryItem("Speed Boots", Function("this.accuracy + (5 * (3 - diffSetting))"), "boots");
-    // types: boots, weapon, helmet, item, chestplate, leggings, ring/accessory?
     if(inventory.length === 0) {
       writeTextInfo("Nothing.");
     } else {
@@ -893,7 +891,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           temp.style.float = "left";
           temp = document.createElement("SELECT");
           temp.id = inventory[i][0].name + "_equip_select";
-          temp.style.textAlign = "right";
+          temp.style.float = "right";
           var temp2 = [];
           for(var k = 1; k < kixleyNCo.length; k++) {
             var temp3 = false;
