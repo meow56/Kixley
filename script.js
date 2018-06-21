@@ -893,7 +893,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           temp.style.float = "left";
           temp = document.createElement("SELECT");
           temp.id = inventory[i][0].name + "_equip_select";
-          temp.style.text-align = "right";
+          temp.style.textAlign = "right";
           var temp2 = [];
           for(var k = 1; k < kixleyNCo.length; k++) {
             var temp3 = false;
