@@ -843,10 +843,36 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
             inventory[i][0].equipped.equipped.splice(j, 1);
           } // end if equip match
         } // end for kixleyNCo.equipped
-        for(var j = 0; j < kixleyNCo.length; j++) {
+        for(var j = 1; j < kixleyNCo.length; j++) {
           if(temp2 === kixleyNCo[j].called) {
             inventory[i][0].equipped = kixleyNCo[j];
             kixleyNCo[j].equipped.push(inventory[i][0]);
+            for(var k = 0; k < inventory.length; k++) {
+              var temp3 = document.getElementById(inventory[k][0].name + "_equip_select");
+              if(temp3 !== null) {
+                var temp4 = temp3.childNodes;
+                var temp5 = false;
+                var temp7;
+                for(var l = 0; l < temp4.length; l++) {
+                  if(temp4[l].value === kixleyNCo[j + 1].called) {
+                    temp7 = temp4[l];
+                  }
+                  if(temp4[l].value === kixleyNCo[j].called && i !== k) {
+                    temp5 = true;
+                    temp3.removeChild(temp4[l]);
+                  }
+                }
+                if(!temp5) {
+                  var temp6 = document.createElement("OPTION");
+                  temp6.innerHTML = kixleyNCo[j].called;
+                  if(temp7 !== undefined) {
+                    temp3.insertBefore(temp6, temp7);
+                  } else {
+                    temp3.appendChild(temp6);
+                  }
+                }
+              }
+            }
           } // end if name match
         } // end for kixleyNCo
       } // end if difference
