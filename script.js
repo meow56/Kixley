@@ -854,8 +854,10 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
                 var temp5 = false;
                 var temp7;
                 for(var l = 0; l < temp4.length; l++) {
-                  if(temp4[l].value === kixleyNCo[j + 1].called) {
-                    temp7 = temp4[l];
+                  if(kixleyNCo[j + 1] !== undefined) {
+                    if(temp4[l].value === kixleyNCo[j + 1].called) {
+                      temp7 = temp4[l];
+                    }
                   }
                   if(temp4[l].value === kixleyNCo[j].called && i !== k) {
                     temp5 = true;
