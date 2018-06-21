@@ -535,12 +535,13 @@ function InventoryItem(name, effect, type, cost) {
         writeText("Are you sure?");
         writeText("The " + this.name + " costs " + this.cost + " gold.");
         requestInput(["Yes", "No"], determineAnswer);
+        var temp = this;
         function determineAnswer() {
           switch (answer) {
             case 'Yes':
-              writeText(this.name + ' bought!')
-              inventory.push([this, 1]);
-              totalGold -= this.cost;
+              writeText(temp.name + ' bought!')
+              inventory.push([temp, 1]);
+              totalGold -= temp.cost;
               InShop();
               break;
             case 'No':
@@ -557,25 +558,26 @@ function InventoryItem(name, effect, type, cost) {
       writeText("How many " + this.name.toLowerCase() + "s would you like to buy?");
       writeText("Each one costs " + this.cost + " gold.");
       writeText("Leave the field blank to leave.");
+      var temp2 = this;
       requestNumber(determineAnswer, 0);
       function determineAnswer() {
         if(answer !== "") {
           answer = parseInt(answer, 10);
           var temp = answer;
-          if(totalGold > (temp * this.cost)) {
+          if(totalGold > (temp * temp2.cost)) {
             writeText("Are you sure?");
-            writeText("You're going to buy " + temp + " " + this.name.toLowerCase() + "s. This will cost " + (this.cost * temp) + " gold.");
+            writeText("You're going to buy " + temp + " " + temp2.name.toLowerCase() + "s. This will cost " + (temp2.cost * temp) + " gold.");
             requestInput(["Yes", "No"], determineAnswer2);
             function determineAnswer2() {
               switch (answer) {
                 case "Yes":
-                  writeText(this.name + '(s) bought!')
-                  if(findNameInventory(this.name) !== null) {
-                    inventory[findNameInventory(this.name)][1] += temp;
+                  writeText(temp2.name + '(s) bought!')
+                  if(findNameInventory(temp2.name) !== null) {
+                    inventory[findNameInventory(temp2.name)][1] += temp;
                   } else {
-                    inventory.push([this, temp]);
+                    inventory.push([temp2, temp]);
                   }
-                  totalGold -= this.cost * temp;
+                  totalGold -= temp2.cost * temp;
                   InShop();
                   break;
                 case "No":
@@ -584,7 +586,7 @@ function InventoryItem(name, effect, type, cost) {
               }
             }
           } else {
-            writeText("You don't have enough gold. At most you could buy " + Math.floor(totalGold / this.cost) + " " + this.name.toLowerCase + "(s).");
+            writeText("You don't have enough gold. At most you could buy " + Math.floor(totalGold / temp2.cost) + " " + temp2.name.toLowerCase + "(s).");
             InShop();
           }
         } else {
@@ -2956,7 +2958,7 @@ function Buy() {
   var temp = [];
   for(var i = 0; i < catalog.length; i++) {
     if(findNameInventory(catalog[i].name) === null || catalog[i].type === "item") {
-      temp.push(catalog[i].name + " (" + catalog[i].cost + ")");
+      temp.push(catalog[i].name + " (" + catalog[i].cost + " gold)");
     }
   }
   temp.push("Leave");
@@ -2967,7 +2969,7 @@ function Buy() {
       InShop();
     } else {
       for(var i = 0; i < catalog.length; i++) {
-        if(answer === catalog[i].name + " (" + catalog[i].cost + ")") {
+        if(answer === catalog[i].name + " (" + catalog[i].cost + " gold)") {
           catalog[i].buy();
         }
       }
