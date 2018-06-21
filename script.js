@@ -883,10 +883,10 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
             var temp3 = false;
             var temp4 = true;
             for(var j = 0; j < kixleyNCo[k].equipped.length; j++) { // if they have this item equipped OR they have no item of this type equipped
-              if(kixleyNCo[i].equipped[j].name === inventory[i][0].name) {
+              if(kixleyNCo[k].equipped[j].name === inventory[i][0].name) {
                 temp3 = true;
               }
-              if(kixleyNCo[i].equipped[j].type === inventory[i][0].type) {
+              if(kixleyNCo[k].equipped[j].type === inventory[i][0].type) {
                 temp4 = false;
               }
             }
