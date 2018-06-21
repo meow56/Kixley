@@ -531,7 +531,7 @@ function InventoryItem(name, effect, type, cost) {
   this.buy;
   if(this.type !== "item") {
     this.buy = function() {
-      if(totalGold > this.cost) {
+      if(totalGold >= this.cost) {
         writeText("Are you sure?");
         writeText("The " + this.name + " costs " + this.cost + " gold.");
         requestInput(["Yes", "No"], determineAnswer);
@@ -564,7 +564,7 @@ function InventoryItem(name, effect, type, cost) {
         if(answer !== "") {
           answer = parseInt(answer, 10);
           var temp = answer;
-          if(totalGold > (temp * temp2.cost)) {
+          if(totalGold >= (temp * temp2.cost)) {
             writeText("Are you sure?");
             writeText("You're going to buy " + temp + " " + temp2.name.toLowerCase() + "s. This will cost " + (temp2.cost * temp) + " gold.");
             requestInput(["Yes", "No"], determineAnswer2);
