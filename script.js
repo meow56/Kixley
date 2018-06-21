@@ -812,6 +812,21 @@ function findNameInventory(name) {
 
 function displayInventory(foo) { // foo: boolean for update checker bypass
   for(var i = 0; i < inventory.length; i++) {
+    for(var j = 1; j < kixleyNCo.length; j++) {
+      if(inventory[i][0].equipped.called === kixleyNCo[j].called) {
+        var temp2 = false;
+        for(var k = 0; k < kixleyNCo[j].equipped.length; k++) {
+          if(kixleyNCo[j].equipped[k].name === inventory[i][0].name) {
+            temp2 = true;
+          }
+        }
+        if(!temp2) {
+          kixleyNCo[j].equipped.push(inventory[i][0]);
+        }
+      }
+    }
+  }
+  for(var i = 0; i < inventory.length; i++) {
     if(inventory[i][1] === 0) {
       inventory.splice(i, 1);
     }
