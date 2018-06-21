@@ -519,46 +519,81 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
 }
 
-function InventoryItem(name, effect, type) {
+function InventoryItem(name, effect, type, cost) {
   this.name = name; // string
   this.effect = effect; // function eg Function("this.finalDamage * 1.05")
   this.type = type; // string eg "weapon", "boots", "helmet", etc
+  this.cost = cost;
   if(this.type !== "item") {
     this.equipped = new Fighter();
     this.equipped.called = "unequip";
   }
-} 
-
-function fightLoop() {
-  if(fightHandler.endFight === " ") {
-    fightHandler.chooseAction();
-    
-    fightLoop2();
-    
-    function fightLoop2() {
-      if(fightHandler.actionChosen) {
-        fightHandler.chooseTarget();
-        
-        fightLoop3();
-        
-        function fightLoop3() {
-          if(fightHandler.targetChosen) {
-            fightHandler.determineAction();
-            fightHandler.checkEnd();
-            fightHandler.endTurn();
-            setTimeout(fightLoop, 0);
-          } else {
-            fightLoop3Timeout = setTimeout(fightLoop3, 0);
+  this.buy;
+  if(this.type !== "item") {
+    this.buy = function() {
+      if(totalGold > this.cost) {
+        writeText("Are you sure?");
+        writeText("The " + this.name + " costs " + this.cost + " gold.");
+        requestInput(["Yes", "No"], determineAnswer);
+        function determineAnswer() {
+          switch (answer) {
+            case 'Yes':
+              writeText(this.name + ' bought!')
+              inventory.push([this, 1]);
+              totalGold -= this.cost;
+              InShop();
+              break;
+            case 'No':
+              InShop();
+              break;
           }
         }
       } else {
-        fightLoop2Timeout = setTimeout(fightLoop2, 0);
+        writeTextWait("You don't have enough gold.", InShop);
       }
-    };
+    }
   } else {
-    fightHandler.determineEnd();
+    this.buy = function() {
+      writeText("How many " + this.name.toLowerCase() + "s would you like to buy?");
+      writeText("Each one costs " + this.cost + " gold.");
+      writeText("Leave the field blank to leave.");
+      requestNumber(determineAnswer, 0);
+      function determineAnswer() {
+        if(answer !== "") {
+          answer = parseInt(answer, 10);
+          var temp = answer;
+          if(totalGold > (temp * this.cost)) {
+            writeText("Are you sure?");
+            writeText("You're going to buy " + temp + " " + this.name.toLowerCase() + "s. This will cost " + (this.cost * temp) + " gold.");
+            requestInput(["Yes", "No"], determineAnswer2);
+            function determineAnswer2() {
+              switch (answer) {
+                case "Yes":
+                  writeText(this.name + '(s) bought!')
+                  if(findNameInventory(this.name) !== null) {
+                    inventory[findNameInventory(this.name)][1] += temp;
+                  } else {
+                    inventory.push([this, temp]);
+                  }
+                  totalGold -= this.cost * temp;
+                  InShop();
+                  break;
+                case "No":
+                  InShop();
+                  break;
+              }
+            }
+          } else {
+            writeText("You don't have enough gold. At most you could buy " + Math.floor(totalGold / this.cost) + " " + this.name.toLowerCase + "(s).");
+            InShop();
+          }
+        } else {
+          InShop();
+        }
+      }
+    }
   }
-}
+} 
 
 var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50)];
 kixleyNCo[1].calledPlusThe = 'You';
@@ -627,7 +662,6 @@ var spec = []; // special move
 var actualSpec;
 var usedShot = false;
 var usedSteal = false;
-var flamingSword = false; // MARKED FOR DELETION
 var baseAttackPower = kixleyNCo[1].attackPow;
 var hasSpecial = false;
 var specOrNo = '';
@@ -708,6 +742,11 @@ var mountainPass = false;
 // items
 var inventory = []; // 2D: [[InventoryItem, amount], [InventoryItem, amount]]
 var pastInventory;
+var catalog = [new InventoryItem("Health Potion", useHealthPotion, "item", 20), 
+               new InventoryItem("Wooden Sword", Function("this.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50), 
+               new InventoryItem("Simple Staff", Function("this.tempMagicSkillz *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50), 
+               new InventoryItem("Speed Boots", Function("this.accuracy += 5 * (3 - diffSetting)"), "boots", 100), 
+               new InventoryItem("Arrows", Shoot, "item", 5)];
 var hpCost = 20;
 var wsCost = 50;
 var sbCost = 100;
@@ -796,7 +835,6 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
       } // end if difference
     } // end if element null check
   } // end for inventory
-  
   
   if(pastInventory !== temp || foo) {
     deleteInventoryText();
@@ -1299,8 +1337,39 @@ function FightRound(n) {
 }
 
 /**********************\
-|       Fighting       |
+|       FIGHTING       |
 \**********************/
+
+function fightLoop() {
+  if(fightHandler.endFight === " ") {
+    fightHandler.chooseAction();
+    
+    fightLoop2();
+    
+    function fightLoop2() {
+      if(fightHandler.actionChosen) {
+        fightHandler.chooseTarget();
+        
+        fightLoop3();
+        
+        function fightLoop3() {
+          if(fightHandler.targetChosen) {
+            fightHandler.determineAction();
+            fightHandler.checkEnd();
+            fightHandler.endTurn();
+            setTimeout(fightLoop, 0);
+          } else {
+            fightLoop3Timeout = setTimeout(fightLoop3, 0);
+          }
+        }
+      } else {
+        fightLoop2Timeout = setTimeout(fightLoop2, 0);
+      }
+    };
+  } else {
+    fightHandler.determineEnd();
+  }
+}
 
 function monsInitialize(place) {
   var temp = "";
@@ -2884,32 +2953,24 @@ function Sell() {
 }
 
 function Buy() {
-  //answer = prompt('One person in the marketplace says, \'What do you want? I have health potions for ' + hpCost + ' gold, a wooden sword for ' + wsCost + ' gold, some speed boots for ' + sbCost + ' gold, and arrows for ' + aCost + ' gold.\' You have ' + totalGold + ' gold.', 'Health Potion, Wooden Sword, Speed Boots, Arrows, Cancel').toUpperCase()
-  var temp = ["Health Potions (" + hpCost + " gold)", "Wooden Sword (" + wsCost + " gold)", "Speed Boots (" + sbCost + " gold)", "Arrows (" + aCost + " gold)", "Leave"];
-  if(findNameInventory("Wooden Sword") !== null) {
-    temp.splice(temp.indexOf("Wooden Sword (" + wsCost + " gold)"), 1);
+  var temp = [];
+  for(var i = 0; i < catalog.length; i++) {
+    if(findNameInventory(catalog[i].name) === null || catalog[i].type === "item") {
+      temp.push(catalog[i].name + " (" + catalog[i].cost + ")");
+    }
   }
-  if(findNameInventory("Speed Boots") !== null) {
-    temp.splice(temp.indexOf("Speed Boots (" + sbCost + " gold)"), 1);
-  }
-  requestInput(temp, determineAnswer)
+  temp.push("Leave");
+  writeText("What would you like to buy?");
+  requestInput(temp, determineAnswer);
   function determineAnswer() {
-    switch (answer) {
-      case "Health Potions (" + hpCost + " gold)":
-        BuyHealthPotion()
-        break;
-      case "Wooden Sword (" + wsCost + " gold)":
-        BuyWoodenSword()
-        break;
-      case "Speed Boots (" + sbCost + " gold)":
-        BuySpeedBoots()
-        break;
-      case "Arrows (" + aCost + " gold)":
-        BuyArrows()
-        break;
-      case 'Leave':
-        InShop()
-        break;
+    if(answer === "Leave") {
+      InShop();
+    } else {
+      for(var i = 0; i < catalog.length; i++) {
+        if(answer === catalog[i].name + " (" + catalog[i].cost + ")") {
+          catalog[i].buy();
+        }
+      }
     }
   }
 }
