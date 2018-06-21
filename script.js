@@ -893,6 +893,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           temp.style.float = "left";
           temp = document.createElement("SELECT");
           temp.id = inventory[i][0].name + "_equip_select";
+          temp.style.text-align = "right";
           var temp2 = [];
           for(var k = 1; k < kixleyNCo.length; k++) {
             var temp3 = false;
@@ -2251,10 +2252,9 @@ function Difficulty() {
     monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
     monsterGroup[1].hitPoints = 100 * diffSetting
     monsterGroup[1].totalHP = 100 * diffSetting
-    hpCost *= diffSetting
-    wsCost *= diffSetting
-    sbCost *= diffSetting
-    aCost *= diffSetting
+    for(var i = 0; i < catalog.length; i++) {
+      catalog[i].cost *= diffSetting;
+    }
     hpEff = 10 + (10 * (3 - diffSetting))
     kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
   }
