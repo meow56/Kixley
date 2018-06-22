@@ -805,7 +805,7 @@ function updateAllEquip() {
   for(var i = 0; i < inventory.length; i++) {
     if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
       while(document.getElementById(inventory[i][0].name + "_equip_select").firstChild !== null) {
-        document.getElementById(inventory[i][0].name + "_equip_select").removeChild(firstChild);
+        document.getElementById(inventory[i][0].name + "_equip_select").removeChild(document.getElementById(inventory[i][0].name + "_equip_select").firstChild);
       }
     }
   }
