@@ -801,6 +801,42 @@ var endMusic;
 |      UTILITY      |
 \*******************/
 
+function updateAllEquip() {
+  for(var i = 0; i < inventory.length; i++) {
+    if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
+      while(document.getElementById(inventory[i][0].name + "_equip_select").firstChild !== null) {
+        document.getElementById(inventory[i][0].name + "_equip_select").removeChild(firstChild);
+      }
+    }
+  }
+  var temp3 = [];
+  for(var i = 0; i < inventory.length; i++) {
+    if(inventory[i].type !== "item") {
+      temp3.push([inventory[i].equipped.called, inventory[i].type, i]);
+    }
+    
+  }
+  for(var i = 0; i < inventory.length; i++) {
+    var temp = document.getElementById(inventory[i][0].name + "_equip_select");
+    var temp2 = document.createElement("OPTION");
+    temp2.value = "unequip";
+    temp.appendChild(temp2);
+    for(var j = 1; j < kixleyNCo.length; j++) {
+      for(var k = 0; k < temp3.length; k++) {
+     // if NOT (   equipped to are the same     AND          types match             AND  different items )
+        if(!(temp3[k][0] === kixleyNCo[j].called && temp3[k][1] === inventory[i].type && temp3[k][2] !== i)) {
+          var temp4 = document.createElement("OPTION");
+          temp4.innerHTML = kixleyNCo[j].called;
+          if(temp3[k][2] === i) {
+            temp4.selected = "true";
+          }
+          temp.appendChild(temp4);
+        }
+      }
+    }
+  }
+}
+
 function findNameInventory(name) {
   for(var i = 0; i < inventory.length; i++) {
     if(inventory[i][0].name === name) {
