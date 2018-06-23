@@ -596,7 +596,26 @@ function InventoryItem(name, effect, type, cost, description) {
     }
   }
   this.desc = description;
-  
+  this.sell;
+  if(this.type !== "item") {
+    this.sell = function() {
+      writeText('A guy shows up and offers ' + .9 * this.cost + ' gold for your ' + this.name.toLowerCase() + '.')
+      requestInput(["Yes", "No"], determineAnswer2);
+      function determineAnswer2() {
+        switch (answer) {
+          case 'Yes':
+            totalGold += .9 * this.cost;
+            inventory[findNameInventory(this.name)][1] = 0;
+            writeText(this.name + ' sold!');
+            InShop();
+            break;
+          case 'No':
+            InShop();
+            break;
+        }
+      }
+    }
+  }
 } 
 
 var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50)];
@@ -2913,7 +2932,13 @@ function InShop() {
   }
   writeText('The marketplace master greets you.')
   var temp2 = ["Buy", "Sell", "Leave"];
-  if(findNameInventory("Wooden Sword") === null && findNameInventory("Speed Boots") === null) {
+  var temp3 = true;
+  for(var i = 0; i < inventory.length; i++) {
+    if(inventory[i].type !== "item") {
+      temp3 = false;
+    }
+  }
+  if(temp3) {
     temp2.splice(temp2.indexOf("Sell"), 1);
     writeText("The marketplace master asks if you would like to buy anything.");
   } else {
@@ -2937,54 +2962,34 @@ function InShop() {
 
 
 function Sell() {
-  var temp = ["Wooden Sword", "Speed Boots", "Leave"];
-  if(findNameInventory("Wooden Sword") === null) {
-    temp.splice(temp.indexOf("Wooden Sword"), 1);
+  var temp = inventory.slice();
+  function sellOptions(index) {
+    if(temp[index].type === "item") {
+      temp.splice(index, 1);
+    } else {
+      index++;
+    }
+    if(index < temp.length) {
+      sellOptions(index);
+    }
   }
-  if(findNameInventory("Speed Boots") === null) {
-    temp.splice(temp.indexOf("Speed Boots"), 1);
+  sellOptions(0);
+  var temp2 = [];
+  for(var i = 0; i < temp.length; i++) {
+    temp2.push(temp[i].name);
   }
+  temp2.push("Leave");
   writeText("What would you like to sell?");
-  requestInput(temp, determineAnswer);
+  requestInput(temp2, determineAnswer);
   function determineAnswer() {
-    switch (answer) {
-      case 'Wooden Sword':
-        writeText('A guy shows up and offers ' + .9 * wsCost + ' gold for your wooden sword.')
-        requestInput(["Yes", "No"], determineAnswer2);
-        function determineAnswer2() {
-          switch (answer) {
-            case 'Yes':
-              totalGold += .9 * wsCost
-              inventory[findNameInventory("Wooden Sword")][1] = 0;
-              writeText('Wooden sword sold!')
-              InShop()
-              break;
-            case 'No':
-              Sell()
-              break;
-          }
+    if(answer === "Leave") {
+      InShop();
+    } else {
+      for(var i = 0; i < temp2.length; i++) {
+        if(answer === temp2[i]) {
+          temp2[i].sell();
         }
-        break;
-      case 'Speed Boots':
-        writeText('A guy shows up and offers ' + .9 * sbCost + ' gold for your speed boots.')
-        requestInput(["Yes", "No"], determineAnswer3);
-        function determineAnswer3() {
-          switch (answer) {
-            case 'Yes':
-              totalGold += .9 * sbCost
-              inventory[findNameInventory("Speed Boots")][1] = 0;
-              writeText('Speed boots sold!')
-              InShop()
-              break;
-            case 'No':
-              Sell()
-              break;
-          }
-        }
-        break;
-      case 'Leave':
-        InShop();
-        break;
+      }
     }
   }
 }
