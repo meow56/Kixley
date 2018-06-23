@@ -27,3 +27,8 @@ button {
 body {
     background: #fff8c6;
 }
+
+select {
+    border: none;
+    background: #ffe30d;
+}
