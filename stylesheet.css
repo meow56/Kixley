@@ -15,3 +15,11 @@
 .main {
   margin-left: 300px;
 }
+
+button {
+    border: none;
+    background: #ffe30d;
+    width: 200px;
+    height: 25;
+    margin: 5 0;
+}
