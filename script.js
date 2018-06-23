@@ -902,6 +902,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
             }
             inventory[i][0].equipped = kixleyNCo[j];
             kixleyNCo[j].equipped.push(inventory[i][0]);
+            foo = true;
           } // end if name match
         } // end for kixleyNCo
       } // end if difference
