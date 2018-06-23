@@ -879,38 +879,27 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
             inventory[i][0].equipped.equipped.splice(j, 1);
           } // end if equip match
         } // end for kixleyNCo.equipped
+        if(temp2 === "unequip") {
+          inventory[i][0].equipped = new Fighter();
+          inventory[i][0].equipped.called = "unequip";
+          inventory[i][0].equipped.equipped.push(inventory[i][0]);
+        }
         for(var j = 1; j < kixleyNCo.length; j++) {
           if(temp2 === kixleyNCo[j].called) {
-            inventory[i][0].equipped = kixleyNCo[j];
-            kixleyNCo[j].equipped.push(inventory[i][0]);
-            for(var k = 0; k < inventory.length; k++) {
-              var temp3 = document.getElementById(inventory[k][0].name + "_equip_select");
-              if(temp3 !== null) {
-                var temp4 = temp3.childNodes;
-                var temp5 = false;
-                var temp7;
-                for(var l = 0; l < temp4.length; l++) {
-                  if(kixleyNCo[j + 1] !== undefined) {
-                    if(temp4[l].value === kixleyNCo[j + 1].called) {
-                      temp7 = temp4[l];
-                    }
-                  }
-                  if(temp4[l].value === kixleyNCo[j].called && i !== k) {
-                    temp5 = true;
-                    temp3.removeChild(temp4[l]);
-                  }
-                }
-                if(!temp5) {
-                  var temp6 = document.createElement("OPTION");
-                  temp6.innerHTML = kixleyNCo[j].called;
-                  if(temp7 !== undefined) {
-                    temp3.insertBefore(temp6, temp7);
-                  } else {
-                    temp3.appendChild(temp6);
-                  }
-                }
+            var temp3 = inventory[i][0].type;
+            function deleteTypeMatch(index) {
+              if(kixleyNCo[j].equipped[index].type === temp3) {
+                kixleyNCo[j].equipped.splice(index, 1);
+              } else {
+                index++;
+              }
+              if(index < kixleyNCo[j].equipped.length) {
+                deleteTypeMatch(index);
               }
             }
+            deleteTypeMatch();
+            inventory[i][0].equipped = kixleyNCo[j];
+            kixleyNCo[j].equipped.push(inventory[i][0]);
           } // end if name match
         } // end for kixleyNCo
       } // end if difference
@@ -919,6 +908,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
   
   if(pastInventory !== temp || foo) {
     deleteInventoryText();
+    
     function writeTextInfo(text) {
       if(document.getElementById("You_stats") !== null) {
         var temp = document.getElementById("You_stats");
@@ -947,7 +937,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
       for(var i = 0; i < inventory.length; i++) {
         if(inventory[i][1] !== 1 && inventory[i][0].type === "item") {
           writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][1] + ")");
-        } else if(inventory[i][1] === 1 && inventory[i][0].type === "item") {
+        } else if(inventory[i][0].type === "item") {
           writeTextInfo("  " + inventory[i][0].name);
         } else {
           writeTextInfo("  " + inventory[i][0].name);
@@ -958,19 +948,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           temp.style.float = "right";
           var temp2 = [];
           for(var k = 1; k < kixleyNCo.length; k++) {
-            var temp3 = false;
-            var temp4 = true;
-            for(var j = 0; j < kixleyNCo[k].equipped.length; j++) { // if they have this item equipped OR they have no item of this type equipped
-              if(kixleyNCo[k].equipped[j].name === inventory[i][0].name) {
-                temp3 = true;
-              }
-              if(kixleyNCo[k].equipped[j].type === inventory[i][0].type) {
-                temp4 = false;
-              }
-            }
-            if(temp3 || temp4) {
-              temp2.push(kixleyNCo[k].called);
-            }
+            temp2.push(kixleyNCo[k].called);
           }
           var temp3 = document.createElement("OPTION");
           var temp4 = new Fighter();
