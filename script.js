@@ -889,6 +889,12 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
               var temp3 = inventory[i][0].type;
               function deleteTypeMatch(index) {
                 if(kixleyNCo[j].equipped[index].type === temp3) {
+                  var temp4 = document.getElementById(kixleyNCo[j].equipped[index].name + "_equip_select");
+                  for(var k = 0; k < temp4.childNodes.length; k++) {
+                    if(temp4.childNodes[k].value === "unequip") {
+                      temp4.childNodes[k].selected = "true";
+                    }
+                  }
                   kixleyNCo[j].equipped[index].equipped = new Fighter();
                   kixleyNCo[j].equipped[index].equipped.called = "unequip";
                   kixleyNCo[j].equipped.splice(index, 1);
