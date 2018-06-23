@@ -599,14 +599,15 @@ function InventoryItem(name, effect, type, cost, description) {
   this.sell;
   if(this.type !== "item") {
     this.sell = function() {
-      writeText('A guy shows up and offers ' + .9 * this.cost + ' gold for your ' + this.name.toLowerCase() + '.')
+      var temp = this;
+      writeText('A guy shows up and offers ' + .9 * temp.cost + ' gold for your ' + temp.name.toLowerCase() + '.')
       requestInput(["Yes", "No"], determineAnswer2);
       function determineAnswer2() {
         switch (answer) {
           case 'Yes':
-            totalGold += .9 * this.cost;
-            inventory[findNameInventory(this.name)][1] = 0;
-            writeText(this.name + ' sold!');
+            totalGold += .9 * temp.cost;
+            inventory[findNameInventory(temp.name)][1] = 0;
+            writeText(temp.name + ' sold!');
             InShop();
             break;
           case 'No':
