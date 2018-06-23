@@ -519,7 +519,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
 }
 
-function InventoryItem(name, effect, type, cost) {
+function InventoryItem(name, effect, type, cost, description) {
   this.name = name; // string
   this.effect = effect; // function eg Function("this.finalDamage * 1.05")
   this.type = type; // string eg "weapon", "boots", "helmet", etc
@@ -595,6 +595,8 @@ function InventoryItem(name, effect, type, cost) {
       }
     }
   }
+  this.desc = description;
+  
 } 
 
 var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50)];
@@ -744,11 +746,11 @@ var mountainPass = false;
 // items
 var inventory = []; // 2D: [[InventoryItem, amount], [InventoryItem, amount]]
 var pastInventory;
-var catalog = [new InventoryItem("Health Potion", useHealthPotion, "item", 20), 
-               new InventoryItem("Wooden Sword", Function("this.equipped.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50), 
-               new InventoryItem("Simple Staff", Function("this.equipped.tempMagicSkillz *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50), 
-               new InventoryItem("Speed Boots", Function("this.equipped.accuracy += 5 * (3 - diffSetting)"), "boots", 100), 
-               new InventoryItem("Arrows", Shoot, "item", 5)];
+var catalog = [new InventoryItem("Health Potion", useHealthPotion, "item", 20, "Restores health."), 
+               new InventoryItem("Wooden Sword", Function("this.equipped.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50, "Increases attack by a small amount."), 
+               new InventoryItem("Simple Staff", Function("this.equipped.tempMagicSkillz *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50, "Increases magic by small amount."), 
+               new InventoryItem("Speed Boots", Function("this.equipped.accuracy += 5 * (3 - diffSetting)"), "boots", 100, "Increases accuracy."), 
+               new InventoryItem("Arrows", Shoot, "item", 5, "Used with the Archer class.")];
 var hpCost = 20;
 var wsCost = 50;
 var sbCost = 100;
@@ -800,42 +802,6 @@ var endMusic;
 /*******************\
 |      UTILITY      |
 \*******************/
-
-function updateAllEquip() {
-  for(var i = 0; i < inventory.length; i++) {
-    if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
-      while(document.getElementById(inventory[i][0].name + "_equip_select").firstChild !== null) {
-        document.getElementById(inventory[i][0].name + "_equip_select").removeChild(document.getElementById(inventory[i][0].name + "_equip_select").firstChild);
-      }
-    }
-  }
-  var temp3 = [];
-  for(var i = 0; i < inventory.length; i++) {
-    if(inventory[i].type !== "item") {
-      temp3.push([inventory[i].equipped.called, inventory[i].type, i]);
-    }
-    
-  }
-  for(var i = 0; i < inventory.length; i++) {
-    var temp = document.getElementById(inventory[i][0].name + "_equip_select");
-    var temp2 = document.createElement("OPTION");
-    temp2.value = "unequip";
-    temp.appendChild(temp2);
-    for(var j = 1; j < kixleyNCo.length; j++) {
-      for(var k = 0; k < temp3.length; k++) {
-     // if NOT (   equipped to are the same     AND          types match             AND  different items )
-        if(!(temp3[k][0] === kixleyNCo[j].called && temp3[k][1] === inventory[i].type && temp3[k][2] !== i)) {
-          var temp4 = document.createElement("OPTION");
-          temp4.innerHTML = kixleyNCo[j].called;
-          if(temp3[k][2] === i) {
-            temp4.selected = "true";
-          }
-          temp.appendChild(temp4);
-        }
-      }
-    }
-  }
-}
 
 function findNameInventory(name) {
   for(var i = 0; i < inventory.length; i++) {
@@ -948,9 +914,11 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
     } else {
       for(var i = 0; i < inventory.length; i++) {
         if(inventory[i][1] !== 1 && inventory[i][0].type === "item") {
-          writeTextInfo("  " + inventory[i][0].name + " (" + inventory[i][1] + ")");
+          writeTextInfo("<strong>  " + inventory[i][0].name + " (" + inventory[i][1] + ")</strong>");
+          writeTextInfo(inventory[i][0].desc);
         } else if(inventory[i][0].type === "item") {
           writeTextInfo("  " + inventory[i][0].name);
+          writeTextInfo(inventory[i][0].desc);
         } else {
           writeTextInfo("  " + inventory[i][0].name);
           var temp = document.getElementById("  " + inventory[i][0].name);
@@ -979,6 +947,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
             temp.appendChild(temp3);
           }
           document.getElementById("inventory").insertBefore(temp, document.getElementById("  " + inventory[i][0].name + "_br"));
+          writeTextInfo(inventory[i][0].desc);
         } // end else
       } // end for
     } // end else
