@@ -1616,8 +1616,12 @@ function ChooseTarget() {
     writeText("Please choose a target.");
     requestInput(temp2, determineAnswer);
     function determineAnswer() {
-      fightHandler.target = answer;
-      fightHandler.targetChosen = true;
+      for(var i = 0; i < fightHandler.notTurn.length; i++) {
+        if(fightHandler.notTurn[i].calledPlusThe === answer) {
+          fightHandler.target = answer;
+          fightHandler.targetChosen = true;
+        }
+      }
     }
   } else {
     temp2 = 0;
