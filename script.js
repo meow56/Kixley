@@ -914,14 +914,14 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
     } else {
       for(var i = 0; i < inventory.length; i++) {
         if(inventory[i][1] !== 1 && inventory[i][0].type === "item") {
-          writeTextInfo("<strong>  " + inventory[i][0].name + " (" + inventory[i][1] + ")</strong>");
+          writeTextInfo("<strong>" + inventory[i][0].name + " (" + inventory[i][1] + ")</strong>");
           writeTextInfo(inventory[i][0].desc);
         } else if(inventory[i][0].type === "item") {
-          writeTextInfo("  " + inventory[i][0].name);
+          writeTextInfo("<strong>" + inventory[i][0].name + "</strong>");
           writeTextInfo(inventory[i][0].desc);
         } else {
-          writeTextInfo("  " + inventory[i][0].name);
-          var temp = document.getElementById("  " + inventory[i][0].name);
+          writeTextInfo("<strong>" + inventory[i][0].name + "</strong>");
+          var temp = document.getElementById("<strong>" + inventory[i][0].name + "</strong>");
           temp.style.float = "left";
           temp = document.createElement("SELECT");
           temp.id = inventory[i][0].name + "_equip_select";
@@ -946,7 +946,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
             }
             temp.appendChild(temp3);
           }
-          document.getElementById("inventory").insertBefore(temp, document.getElementById("  " + inventory[i][0].name + "_br"));
+          document.getElementById("inventory").insertBefore(temp, document.getElementById("<strong>" + inventory[i][0].name + "</strong>_br"));
           writeTextInfo(inventory[i][0].desc);
         } // end else
       } // end for
