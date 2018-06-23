@@ -1871,7 +1871,6 @@ function inTowerPostDoomedGroup() {
 function finalBossFight() {
   loc = 5
   numMons = 1;
-  towerSaveMenu()
   if (kixleyNCo[1].chosenClass !== 12) {
     writeText('You use some blobs of doom that you find in Tivél\'s bag to blast down the door.')
     writeText("You are in a large throne room, and at the end of it is a throne. A person is sitting upon it.")
