@@ -464,8 +464,8 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   
   this.determineEnd = function() {
     for(var i = 0; i < inventory.length; i++) {
-      if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
-        document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = false;
+      if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
+        document.getElementById(inventory[i][0].name + "_equip_select").disabled = false;
       }
     }
     if(kixleyNCo[1] !== undefined) {
@@ -1526,8 +1526,8 @@ function MonsTypeSwitch() {
     playMusic(fightMusic);
   }
   for(var i = 0; i < inventory.length; i++) {
-    if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
-      document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = true;
+    if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
+      document.getElementById(inventory[i][0].name + "_equip_select").disabled = true;
     }
   }
   for(var i = 1; i < monsterGroup.length; i++) {
@@ -1836,8 +1836,8 @@ function hideOrFight() {
   fightingGroup = true
   writeText("With the footsteps gone, you exit your hiding spot and start to follow Tivél. Before you can, you hear a shout from behind! Turning, you see the group of soldiers rushing at you!");
   for(var i = 0; i < inventory.length; i++) {
-    if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
-      document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = true;
+    if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
+      document.getElementById(inventory[i][0].name + "_equip_select").disabled = true;
     }
   }
   fightHandler = new Fight(kixleyNCo, monsterGroup);
@@ -1855,8 +1855,8 @@ function inTowerPostDoomedGroup() {
   monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + monsterGroup[1].lev + Math.pow(kixleyNCo[1].lev, 2)
   monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(2, 8)) * diffSetting;
   for(var i = 0; i < inventory.length; i++) {
-    if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
-      document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = true;
+    if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
+      document.getElementById(inventory[i][0].name + "_equip_select").disabled = true;
     }
   }
   fightHandler = new Fight(kixleyNCo, monsterGroup);
@@ -1892,8 +1892,8 @@ function finalBossFight() {
     monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + monsterGroup[1].lev + Math.pow(kixleyNCo[1].lev, 2);
     monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(5, 10)) * diffSetting;
     for(var i = 0; i < inventory.length; i++) {
-      if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
-        document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = true;
+      if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
+        document.getElementById(inventory[i][0].name + "_equip_select").disabled = true;
       }
     }
     fightHandler = new Fight(kixleyNCo, monsterGroup);
