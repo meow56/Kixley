@@ -477,6 +477,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           faction2[i].deleteInfo();
           faction2[i].deleteHealth();
           faction2[i].deleteBlobs();
+          faction2.splice(i, 1);
         }
         writeTextWait("You got away safely.", Places);
         break;
