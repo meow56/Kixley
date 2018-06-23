@@ -897,7 +897,9 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
                 deleteTypeMatch(index);
               }
             }
-            deleteTypeMatch();
+            if(kixleyNCo[j].equipped.length !== 0) {
+              deleteTypeMatch(0);
+            }
             inventory[i][0].equipped = kixleyNCo[j];
             kixleyNCo[j].equipped.push(inventory[i][0]);
           } // end if name match
