@@ -1782,7 +1782,7 @@ function WonTheFight() {
     writeTextWait('Balbeag\'s soldiers are defeated!', inTowerPostDoomedGroup)
   } else if (fightingAAbea) {
     fightingAAbea = false
-    writeText('Tivél is defeated!', finalBossFight)
+    writeTextWait('Tivél is defeated!', finalBossFight)
   } else if (fightingBalbeag) {
     fightingBalbeag = false
     Credits(beatTheGame)
@@ -1857,6 +1857,7 @@ function inTowerPostDoomedGroup() {
   monsterGroup[1].calledPlusthe = monsterGroup[1].called
   fightingAAbea = true
   monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + monsterGroup[1].lev + Math.pow(kixleyNCo[1].lev, 2)
+  monsterGroup[1].totalHP = monsterGroup[1].hitPoints;
   monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(2, 8)) * diffSetting;
   for(var i = 0; i < inventory.length; i++) {
     if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
