@@ -5,8 +5,7 @@
   z-index: 1;
   top: -5px;
   bottom: -5px;
-  right: -5px;
-  left: 0;
+  left: -5px;
   overflow-x: hidden;
   border: solid;
   padding-top: 10px;
