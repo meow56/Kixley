@@ -2976,7 +2976,7 @@ function Sell() {
   sellOptions(0);
   var temp2 = [];
   for(var i = 0; i < temp.length; i++) {
-    temp2.push(temp[i].name);
+    temp2.push(temp[i][0].name);
   }
   temp2.push("Leave");
   writeText("What would you like to sell?");
