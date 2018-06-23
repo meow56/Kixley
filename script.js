@@ -2987,7 +2987,7 @@ function Sell() {
     } else {
       for(var i = 0; i < temp2.length; i++) {
         if(answer === temp2[i]) {
-          temp2[i].sell();
+          temp[i][0].sell();
         }
       }
     }
