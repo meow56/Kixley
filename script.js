@@ -883,30 +883,31 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           inventory[i][0].equipped = new Fighter();
           inventory[i][0].equipped.called = "unequip";
           inventory[i][0].equipped.equipped.push(inventory[i][0]);
+        } else {
+          for(var j = 1; j < kixleyNCo.length; j++) {
+            if(temp2 === kixleyNCo[j].called) {
+              var temp3 = inventory[i][0].type;
+              function deleteTypeMatch(index) {
+                if(kixleyNCo[j].equipped[index].type === temp3) {
+                  kixleyNCo[j].equipped[index].equipped = new Fighter();
+                  kixleyNCo[j].equipped[index].equipped.called = "unequip";
+                  kixleyNCo[j].equipped.splice(index, 1);
+                } else {
+                  index++;
+                }
+                if(index < kixleyNCo[j].equipped.length) {
+                  deleteTypeMatch(index);
+                }
+              }
+              if(kixleyNCo[j].equipped.length !== 0) {
+                deleteTypeMatch(0);
+              }
+              inventory[i][0].equipped = kixleyNCo[j];
+              kixleyNCo[j].equipped.push(inventory[i][0]);
+              foo = true;
+            } // end if name match
+          } // end for kixleyNCo
         }
-        for(var j = 1; j < kixleyNCo.length; j++) {
-          if(temp2 === kixleyNCo[j].called) {
-            var temp3 = inventory[i][0].type;
-            function deleteTypeMatch(index) {
-              if(kixleyNCo[j].equipped[index].type === temp3) {
-                kixleyNCo[j].equipped[index].equipped = new Fighter();
-                kixleyNCo[j].equipped[index].equipped.called = "unequip";
-                kixleyNCo[j].equipped.splice(index, 1);
-              } else {
-                index++;
-              }
-              if(index < kixleyNCo[j].equipped.length) {
-                deleteTypeMatch(index);
-              }
-            }
-            if(kixleyNCo[j].equipped.length !== 0) {
-              deleteTypeMatch(0);
-            }
-            inventory[i][0].equipped = kixleyNCo[j];
-            kixleyNCo[j].equipped.push(inventory[i][0]);
-            foo = true;
-          } // end if name match
-        } // end for kixleyNCo
       } // end if difference
     } // end if element null check
   } // end for inventory
