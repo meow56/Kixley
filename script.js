@@ -889,6 +889,8 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
             var temp3 = inventory[i][0].type;
             function deleteTypeMatch(index) {
               if(kixleyNCo[j].equipped[index].type === temp3) {
+                kixleyNCo[j].equipped[index].equipped = new Fighter();
+                kixleyNCo[j].equipped[index].equipped.called = "unequip";
                 kixleyNCo[j].equipped.splice(index, 1);
               } else {
                 index++;
