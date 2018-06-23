@@ -463,6 +463,11 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
   
   this.determineEnd = function() {
+    for(var i = 0; i < inventory.length; i++) {
+      if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
+        document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = false;
+      }
+    }
     if(kixleyNCo[1] !== undefined) {
       kixleyNCo[1].statusEffects.splice(0, kixleyNCo[1].statusEffects.length);
     }
@@ -1520,6 +1525,11 @@ function MonsTypeSwitch() {
   if(fightMusic.paused) {
     playMusic(fightMusic);
   }
+  for(var i = 0; i < inventory.length; i++) {
+    if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
+      document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = true;
+    }
+  }
   for(var i = 1; i < monsterGroup.length; i++) {
     switch (monsterGroup[i].called) {
       case 'Goblin':
@@ -1825,6 +1835,11 @@ function hideOrFight() {
   numMons = 3;
   fightingGroup = true
   writeText("With the footsteps gone, you exit your hiding spot and start to follow Tivél. Before you can, you hear a shout from behind! Turning, you see the group of soldiers rushing at you!");
+  for(var i = 0; i < inventory.length; i++) {
+    if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
+      document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = true;
+    }
+  }
   fightHandler = new Fight(kixleyNCo, monsterGroup);
   fightHandler.fightLoop();
 }
@@ -1839,6 +1854,11 @@ function inTowerPostDoomedGroup() {
   fightingAAbea = true
   monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + monsterGroup[1].lev + Math.pow(kixleyNCo[1].lev, 2)
   monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(2, 8)) * diffSetting;
+  for(var i = 0; i < inventory.length; i++) {
+    if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
+      document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = true;
+    }
+  }
   fightHandler = new Fight(kixleyNCo, monsterGroup);
   fightHandler.fightLoop();
 }
@@ -1871,6 +1891,11 @@ function finalBossFight() {
     fightingBalbeag = true
     monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + monsterGroup[1].lev + Math.pow(kixleyNCo[1].lev, 2);
     monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(5, 10)) * diffSetting;
+    for(var i = 0; i < inventory.length; i++) {
+      if(document.getElementById("<strong>" + inventory[i][0].name + "</strong>") !== null) {
+        document.getElementById("<strong>" + inventory[i][0].name + "</strong>").disabled = true;
+      }
+    }
     fightHandler = new Fight(kixleyNCo, monsterGroup);
     fightHandler.fightLoop();
   }
