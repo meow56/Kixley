@@ -608,6 +608,7 @@ function InventoryItem(name, effect, type, cost, description) {
             totalGold += .9 * temp.cost;
             inventory[findNameInventory(temp.name)][1] = 0;
             writeText(temp.name + ' sold!');
+            displayInventory(false);
             InShop();
             break;
           case 'No':
