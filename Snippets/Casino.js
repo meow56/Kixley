@@ -232,7 +232,7 @@ function Deck(cards) {
         	temp2 = true;
         } else {
         	if(pastTemp[i] !== temp[i]) {
-          		temp2 = true;
+          	temp2 = true;
         	}
         }
       }
@@ -884,7 +884,241 @@ function scumbagAI(hand, whenDone) {
           whenDone();
         }
       }
-    } // end sdoubles
+    } else if(game.typeToBeat === "qrun") {
+      var temp = hand.cards.slice(); // list of quadruple runs (ie 4 5 6 7)
+      function elimRepeats(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index + 2] !== undefined) {
+            if(temp[index + 3] !== undefined) {
+              if(temp[index + 2].value === temp[index + 3].value) {
+                temp.splice(index + 2, 1); // eliminate quads
+              }
+            }
+            if(temp[index + 1].value === temp[index + 2].value) {
+              temp.splice(index + 1, 1); // eliminate triples
+            }
+          }
+          if(temp[index].value === temp[index + 1].value) {
+            temp.splice(index, 1); // eliminate doubles
+          }
+          elimRepeats(index);
+        } else {
+          if(temp[index - 1].value === temp[index].value) {
+            temp.splice(index, 1);
+          }
+        }
+      }
+      elimRepeats(0);
+      function quadRun(index) {
+        if(temp[index + 3] !== undefined) {
+          if(temp[index].value - 1 === temp[index + 1].value && temp[index + 1].value - 1 === temp[index + 2].value && temp[index + 2].value - 1 === temp[index + 3].value) { 
+            index++;
+            quadRun(index);
+          } else {
+            temp.splice(index, 1);
+            quadRun(index);
+          }
+        } else {
+          temp.splice(index, 3);
+        }
+      }
+      quadRun(0);
+      if(temp.length === 0) {
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest qrun that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first card
+          var temp5 = hand.find(temp[temp2].value - 1, "*"); // find the second card
+          var temp6 = hand.find(temp[temp2].value - 2, "*"); // find the third card
+          var temp7 = hand.find(temp[temp2].value - 3, "*"); // find the fourth card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7]];
+          whenDone();
+        }
+      }
+    } else if(game.typeToBeat === "orun") {
+      var temp = hand.cards.slice(); // list of octuple runs (ie 4 5 6 7 8 9 10 J)
+      function elimRepeats(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index + 2] !== undefined) {
+            if(temp[index + 3] !== undefined) {
+              if(temp[index + 2].value === temp[index + 3].value) {
+                temp.splice(index + 2, 1); // eliminate quads
+              }
+            }
+            if(temp[index + 1].value === temp[index + 2].value) {
+              temp.splice(index + 1, 1); // eliminate triples
+            }
+          }
+          if(temp[index].value === temp[index + 1].value) {
+            temp.splice(index, 1); // eliminate doubles
+          }
+          elimRepeats(index);
+        } else {
+          if(temp[index - 1].value === temp[index].value) {
+            temp.splice(index, 1);
+          }
+        }
+      }
+      elimRepeats(0);
+      function octRun(index) {
+        if(temp[index + 7] !== undefined) {
+          if(temp[index].value - 1 === temp[index + 1].value && temp[index + 1].value - 1 === temp[index + 2].value && temp[index + 2].value - 1 === temp[index + 3].value && temp[index + 3].value - 1 === temp[index + 4].value && temp[index + 4].value - 1 === temp[index + 5].value && temp[index + 5].value - 1 === temp[index + 6].value && temp[index + 6].value - 1 === temp[index + 7].value) { 
+            index++;
+            octRun(index);
+          } else {
+            temp.splice(index, 1);
+            octRun(index);
+          }
+        } else {
+          temp.splice(index, 7);
+        }
+      }
+      octRun(0);
+      if(temp.length === 0) {
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest orun that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first card
+          var temp5 = hand.find(temp[temp2].value - 1, "*"); // find the second card
+          var temp6 = hand.find(temp[temp2].value - 2, "*"); // find the third card
+          var temp7 = hand.find(temp[temp2].value - 3, "*"); // find the fourth card
+          var temp8 = hand.find(temp[temp2].value - 4, "*"); // find the fifth card
+          var temp9 = hand.find(temp[temp2].value - 5, "*"); // find the sixth card
+          var temp10 = hand.find(temp[temp2].value - 6, "*"); // find the seventh card
+          var temp11 = hand.find(temp[temp2].value - 7, "*"); // find the eigth card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7], hand.cards[temp8], hand.cards[temp9], hand.cards[temp10], hand.cards[temp11]];
+          whenDone();
+        }
+      }
+    } else if(game.typeToBeat === "drun") {
+      var temp = hand.cards.slice(); // list of duodec runs (ie 4 5 6 7 8 9 10 J Q K A 2)
+      function elimRepeats(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index + 2] !== undefined) {
+            if(temp[index + 3] !== undefined) {
+              if(temp[index + 2].value === temp[index + 3].value) {
+                temp.splice(index + 2, 1); // eliminate quads
+              }
+            }
+            if(temp[index + 1].value === temp[index + 2].value) {
+              temp.splice(index + 1, 1); // eliminate triples
+            }
+          }
+          if(temp[index].value === temp[index + 1].value) {
+            temp.splice(index, 1); // eliminate doubles
+          }
+          elimRepeats(index);
+        } else {
+          if(temp[index - 1].value === temp[index].value) {
+            temp.splice(index, 1);
+          }
+        }
+      }
+      elimRepeats(0);
+      function duodecRun(index) {
+        if(temp[index + 11] !== undefined) {
+          if(temp[index].value - 1 === temp[index + 1].value && temp[index + 1].value - 1 === temp[index + 2].value && temp[index + 2].value - 1 === temp[index + 3].value && temp[index + 3].value - 1 === temp[index + 4].value && temp[index + 4].value - 1 === temp[index + 5].value && temp[index + 5].value - 1 === temp[index + 6].value && temp[index + 6].value - 1 === temp[index + 7].value && temp[index + 7].value - 1 === temp[index + 8].value && temp[index + 8].value - 1 === temp[index + 9].value && temp[index + 9].value - 1 === temp[index + 10].value && temp[index + 10].value - 1 === temp[index + 11].value) { 
+            index++;
+            duodecRun(index);
+          } else {
+            temp.splice(index, 1);
+            duodecRun(index);
+          }
+        } else {
+          temp.splice(index, 11);
+        }
+      }
+      duodecRun(0);
+      if(temp.length === 0) {
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest drun that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first card
+          var temp5 = hand.find(temp[temp2].value - 1, "*"); // find the second card
+          var temp6 = hand.find(temp[temp2].value - 2, "*"); // find the third card
+          var temp7 = hand.find(temp[temp2].value - 3, "*"); // find the fourth card
+          var temp8 = hand.find(temp[temp2].value - 4, "*"); // find the fifth card
+          var temp9 = hand.find(temp[temp2].value - 5, "*"); // find the sixth card
+          var temp10 = hand.find(temp[temp2].value - 6, "*"); // find the seventh card
+          var temp11 = hand.find(temp[temp2].value - 7, "*"); // find the eigth card
+          var temp12 = hand.find(temp[temp2].value - 8, "*"); // find the ninth card
+          var temp13 = hand.find(temp[temp2].value - 9, "*"); // find the tenth card
+          var temp14 = hand.find(temp[temp2].value - 10, "*"); // find the eleventh card
+          var temp15 = hand.find(temp[temp2].value - 11, "*"); // find the twelfth card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7], hand.cards[temp8], hand.cards[temp9], hand.cards[temp10], hand.cards[temp11], hand.cards[temp12], hand.cards[temp13], hand.cards[temp14], hand.cards[temp15]];
+          whenDone();
+        }
+      }
+    } // end drun
   }
   // otherwise check type and follow appropriately
 }
