@@ -318,6 +318,10 @@ function scumbagAI(hand, whenDone) {
     if(game.typeToBeat === "single") { // if single, play lowest card that is higher than the played one
       var temp;
       var temp2 = true;
+      if(hand.cards.length === 1) {
+        temp = 0;
+        temp2 = false;
+      }
       for(var i = 0; i < hand.cards.length; i++) {
         if(hand.cards[i].value <= game.cardsToBeat[0].value && temp2) {
           temp = i - 1;
@@ -325,6 +329,14 @@ function scumbagAI(hand, whenDone) {
         }
       }
       game.lastActions[game.currentTurn] = "play";
+      for(var i = 0; i < hand.length; i++) {
+        if(hand[i].value === 14) {
+          hand[i].value = 1;
+        }
+        if(hand[i].value === 15) {
+          hand[i].value = 2;
+        }
+      }
       game.cardsToBeat = [hand.cards[temp]];
       whenDone();
     } else if(game.typeToBeat === "double") {
@@ -348,17 +360,33 @@ function scumbagAI(hand, whenDone) {
       } else {
         var temp2;
         var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
         for(var i = 0; i < temp.length; i++) {
           if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest double that beats
             temp2 = i - 1;
             temp3 = false;
           }
         }
-        var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first double card
-        var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the other double card
-        game.lastActions[game.currentTurn] = "play";
-        game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5]];
-        whenDone();
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first double card
+          var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the other double card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5]];
+          whenDone();
+        }
       }
     } else if(game.typeToBeat === "triple") {
       var temp = hand.cards.slice(); // list of triples
@@ -381,18 +409,34 @@ function scumbagAI(hand, whenDone) {
       } else {
         var temp2;
         var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
         for(var i = 0; i < temp.length; i++) {
           if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest triple that beats
             temp2 = i - 1;
             temp3 = false;
           }
         }
-        var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first triple card
-        var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the second triple card
-        var temp6 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + temp[temp5].suit); // find the final triple card
-        game.lastActions[game.currentTurn] = "play";
-        game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6]];
-        whenDone();
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first triple card
+          var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the second triple card
+          var temp6 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + hand[temp5].suit); // find the final triple card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6]];
+          whenDone();
+        }
       }
     } else if(game.typeToBeat === "quadruple") {
       var temp = hand.cards.slice(); // list of quadruples
@@ -415,21 +459,432 @@ function scumbagAI(hand, whenDone) {
       } else {
         var temp2;
         var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
         for(var i = 0; i < temp.length; i++) {
           if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest quadruple that beats
             temp2 = i - 1;
             temp3 = false;
           }
         }
-        var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first quadruple card
-        var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the second quadruple card
-        var temp6 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + temp[temp5].suit); // find the third quadruple card
-        var temp7 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + temp[temp5].suit + "&" + temp[temp6].suit); // find the final quadruple card
-        game.lastActions[game.currentTurn] = "play";
-        game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7]];
-        whenDone();
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first quadruple card
+          var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the second quadruple card
+          var temp6 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + hand[temp5].suit); // find the third quadruple card
+          var temp7 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + hand[temp5].suit + "&" + hand[temp6].suit); // find the final quadruple card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7]];
+          whenDone();
+        }
       }
-    }
+    } else if(game.typeToBeat === "ddoubles") {
+      var temp = hand.cards.slice(); // list of double doubles (ie 44 55)
+      function findDoublesElim(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index].value === temp[index + 1].value) {
+            if(temp[index + 2] !== undefined) {
+              if(temp[index + 3] !== undefined) {
+                if(temp[index + 2].value === temp[index + 3].value) {
+                  temp.splice(index + 2, 1); // eliminate quads
+                }
+              }
+              if(temp[index + 1].value === temp[index + 2].value) {
+                temp.splice(index + 1, 1); //eliminate triples
+              }
+            }
+            index++;
+            findDoublesElim(index);
+          } else {
+            temp.splice(index, 1);
+            findDoublesElim(index);
+          }
+        } else {
+          temp.splice(index, 1);
+        }
+      }
+      findDoublesElim(0);
+      function findTwoSequence(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index].value - 1 === temp[index + 1].value) { 
+            index++;
+            findTwoSequence(index);
+          } else {
+            temp.splice(index, 1);
+            findTwoSequence(index);
+          }
+        } else {
+          temp.splice(index, 1);
+        }
+      }
+      findTwoSequence(0);
+      if(temp.length === 0) {
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest ddoubles that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first double, first card
+          var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the first double, second card
+          var temp6 = hand.find(temp[temp2].value - 1, "*"); // find the second double, first card
+          var temp7 = hand.find(temp[temp2].value - 1, "!" + hand[temp6].suit); // find the second double, second card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7]];
+          whenDone();
+        }
+      }
+    } else if(game.typeToBeat === "tdoubles") {
+      var temp = hand.cards.slice(); // list of triple doubles (ie 44 55 66)
+      function findDoublesElim(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index].value === temp[index + 1].value) {
+            if(temp[index + 2] !== undefined) {
+              if(temp[index + 3] !== undefined) {
+                if(temp[index + 2].value === temp[index + 3].value) {
+                  temp.splice(index + 2, 1); // eliminate quads
+                }
+              }
+              if(temp[index + 1].value === temp[index + 2].value) {
+                temp.splice(index + 1, 1); //eliminate triples
+              }
+            }
+            index++;
+            findDoublesElim(index);
+          } else {
+            temp.splice(index, 1);
+            findDoublesElim(index);
+          }
+        } else {
+          temp.splice(index, 1);
+        }
+      }
+      findDoublesElim(0);
+      function findThreeSequence(index) {
+        if(temp[index + 2] !== undefined) {
+          if(temp[index].value - 1 === temp[index + 1].value && temp[index + 1].value - 1 === temp[index + 2].value) { 
+            index++;
+            findThreeSequence(index);
+          } else {
+            temp.splice(index, 1);
+            findThreeSequence(index);
+          }
+        } else {
+          temp.splice(index, 2);
+        }
+      }
+      findThreeSequence(0);
+      if(temp.length === 0) {
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest tdoubles that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first double, first card
+          var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the first double, second card
+          var temp6 = hand.find(temp[temp2].value - 1, "*"); // find the second double, first card
+          var temp7 = hand.find(temp[temp2].value - 1, "!" + hand[temp6].suit); // find the second double, second card
+          var temp8 = hand.find(temp[temp2].value - 2, "*"); // find the third double, first card
+          var temp9 = hand.find(temp[temp2].value - 2, "!" + hand[temp8].suit); // find the third double, second card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7], hand.cards[temp8], hand.cards[temp9]];
+          whenDone();
+        }
+      }
+    } else if (game.typeToBeat === "qdoubles") {
+      var temp = hand.cards.slice(); // list of quadruple doubles (ie 44 55 66 77)
+      function findDoublesElim(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index].value === temp[index + 1].value) {
+            if(temp[index + 2] !== undefined) {
+              if(temp[index + 3] !== undefined) {
+                if(temp[index + 2].value === temp[index + 3].value) {
+                  temp.splice(index + 2, 1); // eliminate quads
+                }
+              }
+              if(temp[index + 1].value === temp[index + 2].value) {
+                temp.splice(index + 1, 1); //eliminate triples
+              }
+            }
+            index++;
+            findDoublesElim(index);
+          } else {
+            temp.splice(index, 1);
+            findDoublesElim(index);
+          }
+        } else {
+          temp.splice(index, 1);
+        }
+      }
+      findDoublesElim(0);
+      function findFourSequence(index) {
+        if(temp[index + 3] !== undefined) {
+          if(temp[index].value - 1 === temp[index + 1].value && temp[index + 1].value - 1 === temp[index + 2].value && temp[index + 2].value - 1 === temp[index + 3].value) { 
+            index++;
+            findFourSequence(index);
+          } else {
+            temp.splice(index, 1);
+            findFourSequence(index);
+          }
+        } else {
+          temp.splice(index, 3);
+        }
+      }
+      findFourSequence(0);
+      if(temp.length === 0) {
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest qdoubles that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first double, first card
+          var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the first double, second card
+          var temp6 = hand.find(temp[temp2].value - 1, "*"); // find the second double, first card
+          var temp7 = hand.find(temp[temp2].value - 1, "!" + hand[temp6].suit); // find the second double, second card
+          var temp8 = hand.find(temp[temp2].value - 2, "*"); // find the third double, first card
+          var temp9 = hand.find(temp[temp2].value - 2, "!" + hand[temp8].suit); // find the third double, second card
+          var temp10 = hand.find(temp[temp2].value - 3, "*"); // find the fourth double, first card
+          var temp11 = hand.find(temp[temp2].value - 3, "!" + hand[temp10].suit); // find the fourth double, second card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7], hand.cards[temp8], hand.cards[temp9], hand.cards[temp10], hand.cards[temp11]];
+          whenDone();
+        }
+      }
+    } else if (game.typeToBeat === "pdoubles") { // too lazy to write "quidoubles" so p (pent) works fine
+      var temp = hand.cards.slice(); // list of quintuple doubles (ie 44 55 66 77 88)
+      function findDoublesElim(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index].value === temp[index + 1].value) {
+            if(temp[index + 2] !== undefined) {
+              if(temp[index + 3] !== undefined) {
+                if(temp[index + 2].value === temp[index + 3].value) {
+                  temp.splice(index + 2, 1); // eliminate quads
+                }
+              }
+              if(temp[index + 1].value === temp[index + 2].value) {
+                temp.splice(index + 1, 1); //eliminate triples
+              }
+            }
+            index++;
+            findDoublesElim(index);
+          } else {
+            temp.splice(index, 1);
+            findDoublesElim(index);
+          }
+        } else {
+          temp.splice(index, 1);
+        }
+      }
+      findDoublesElim(0);
+      function findFiveSequence(index) {
+        if(temp[index + 4] !== undefined) {
+          if(temp[index].value - 1 === temp[index + 1].value && temp[index + 1].value - 1 === temp[index + 2].value && temp[index + 2].value - 1 === temp[index + 3].value && temp[index + 3].value - 1 === temp[index + 4].value) { 
+            index++;
+            findFiveSequence(index);
+          } else {
+            temp.splice(index, 1);
+            findFiveSequence(index);
+          }
+        } else {
+          temp.splice(index, 4);
+        }
+      }
+      findFiveSequence(0);
+      if(temp.length === 0) {
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest pdoubles that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first double, first card
+          var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the first double, second card
+          var temp6 = hand.find(temp[temp2].value - 1, "*"); // find the second double, first card
+          var temp7 = hand.find(temp[temp2].value - 1, "!" + hand[temp6].suit); // find the second double, second card
+          var temp8 = hand.find(temp[temp2].value - 2, "*"); // find the third double, first card
+          var temp9 = hand.find(temp[temp2].value - 2, "!" + hand[temp8].suit); // find the third double, second card
+          var temp10 = hand.find(temp[temp2].value - 3, "*"); // find the fourth double, first card
+          var temp11 = hand.find(temp[temp2].value - 3, "!" + hand[temp10].suit); // find the fourth double, second card
+          var temp12 = hand.find(temp[temp2].value - 4, "*"); // find the fifth double, first card
+          var temp13 = hand.find(temp[temp2].value - 4, "!" + hand[temp12].suit); // find the fifth double, second card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7], hand.cards[temp8], hand.cards[temp9], hand.cards[temp10], hand.cards[temp11], hand.cards[temp12], hand.cards[temp13]];
+          whenDone();
+        }
+      }
+    } else if (game.typeToBeat === "sdoubles") {
+      var temp = hand.cards.slice(); // list of sextuple doubles (ie 44 55 66 77 88 99)
+      function findDoublesElim(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index].value === temp[index + 1].value) {
+            if(temp[index + 2] !== undefined) {
+              if(temp[index + 3] !== undefined) {
+                if(temp[index + 2].value === temp[index + 3].value) {
+                  temp.splice(index + 2, 1); // eliminate quads
+                }
+              }
+              if(temp[index + 1].value === temp[index + 2].value) {
+                temp.splice(index + 1, 1); //eliminate triples
+              }
+            }
+            index++;
+            findDoublesElim(index);
+          } else {
+            temp.splice(index, 1);
+            findDoublesElim(index);
+          }
+        } else {
+          temp.splice(index, 1);
+        }
+      }
+      findDoublesElim(0);
+      function findSixSequence(index) {
+        if(temp[index + 5] !== undefined) {
+          if(temp[index].value - 1 === temp[index + 1].value && temp[index + 1].value - 1 === temp[index + 2].value && temp[index + 2].value - 1 === temp[index + 3].value && temp[index + 3].value - 1 === temp[index + 4].value && temp[index + 4].value - 1 === temp[index + 5].value) { 
+            index++;
+            findSixSequence(index);
+          } else {
+            temp.splice(index, 1);
+            findSixSequence(index);
+          }
+        } else {
+          temp.splice(index, 5);
+        }
+      }
+      findSixSequence(0);
+      if(temp.length === 0) {
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        if(temp.length === 1) {
+          temp2 = 0;
+          temp3 = false;
+        }
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest sdoubles that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        if(temp3) {
+          // pass
+        } else {
+          var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first double, first card
+          var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the first double, second card
+          var temp6 = hand.find(temp[temp2].value - 1, "*"); // find the second double, first card
+          var temp7 = hand.find(temp[temp2].value - 1, "!" + hand[temp6].suit); // find the second double, second card
+          var temp8 = hand.find(temp[temp2].value - 2, "*"); // find the third double, first card
+          var temp9 = hand.find(temp[temp2].value - 2, "!" + hand[temp8].suit); // find the third double, second card
+          var temp10 = hand.find(temp[temp2].value - 3, "*"); // find the fourth double, first card
+          var temp11 = hand.find(temp[temp2].value - 3, "!" + hand[temp10].suit); // find the fourth double, second card
+          var temp12 = hand.find(temp[temp2].value - 4, "*"); // find the fifth double, first card
+          var temp13 = hand.find(temp[temp2].value - 4, "!" + hand[temp12].suit); // find the fifth double, second card
+          var temp14 = hand.find(temp[temp2].value - 5, "*"); // find the sixth double, first card
+          var temp15 = hand.find(temp[temp2].value - 5, "!" + hand[temp14].suit); // find the sixth double, second card
+          game.lastActions[game.currentTurn] = "play";
+          for(var i = 0; i < hand.length; i++) {
+            if(hand[i].value === 14) {
+              hand[i].value = 1;
+            }
+            if(hand[i].value === 15) {
+              hand[i].value = 2;
+            }
+          }
+          game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7], hand.cards[temp8], hand.cards[temp9], hand.cards[temp10], hand.cards[temp11], hand.cards[temp12], hand.cards[temp13], hand.cards[temp14], hand.cards[temp15]];
+          whenDone();
+        }
+      }
+    } // end sdoubles
   }
   // otherwise check type and follow appropriately
 }
