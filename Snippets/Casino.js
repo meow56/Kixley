@@ -35,12 +35,57 @@ function Deck(cards) {
   }
   
   this.find = function(cardVal, cardSuit) {
-    for(var i = 0; i < this.cards.length; i++) {
-      if(this.cards[i].value === cardVal && this.cards[i].suit === cardSuit) {
-        return i;
+    var invert = (cardSuit.indexOf("!") !== -1);
+    var multipleInput = (cardSuit.indexOf("&") !== -1);
+    
+    if(cardSuit === "*") {
+      for(var i = 0; i < this.cards.length; i++) {
+        if(this.cards[i].value === cardVal) {
+          return i;
+        }
       }
+      return -1;
+    } else {
+      for(var i = 0; i < this.cards.length; i++) {
+        if(this.cards[i].value === cardVal) {
+          if(multipleInput) {
+            var suitsWanted = cardSuit.split("&");
+            var allSuits = ["Hearts", "Clubs", "Diamonds", "Spades"];
+            if(invert) {
+              for(var j = 0; j < suitsWanted.length; j++) {
+                if(suitsWanted[j].indexOf("!") !== -1) {
+                  suitsWanted[j] = suitsWanted[j].split("!");
+                  suitsWanted[j] = suitsWanted[j].join("");
+                }
+                allSuits.splice(allSuits.indexOf(suitsWanted[j]), 1);
+              }
+            } else {
+              allSuits = suitsWanted;
+            }
+            for(var j = 0; j < allSuits.length; j++) {
+              if(this.cards[i].suit === allSuits[j]) {
+                return i;
+              }
+            }
+          } else {
+            var allSuits = ["Hearts", "Clubs", "Diamonds", "Spades"];
+            if(invert) {
+              cardSuit = cardSuit.split("!");
+              cardSuit = cardSuit.join("");
+              allSuits.splice(allSuits.indexOf(cardSuit), 1);
+            } else {
+              allSuits = [cardSuit];
+            }
+            for(var j = 0; j < allSuits.length; j++) {
+              if(this.cards[i].suit === allSuits[j]) {
+                return i;
+              }
+            }
+          } // if multipleInput
+        } // if val
+      } // for cards
+      return -1;
     }
-    return -1;
   }
   
   this.sort = function() {
@@ -107,7 +152,7 @@ function Deck(cards) {
         	temp2 = true;
         } else {
         	if(pastTemp[i] !== temp[i]) {
-          		temp2 = true;
+            temp2 = true;
         	}
         }
       }
@@ -258,27 +303,134 @@ function playTurn(hand, whenDone) {
 }
 
 function scumbagAI(hand, whenDone) {
-  hand.sort();
+  hand.sortScumbags();
+  for(var i = 0; i < hand.length; i++) {
+    if(hand[i].value === 1) {
+      hand[i].value = 14;
+    }
+    if(hand[i].value === 2) {
+      hand[i].value = 15;
+    }
+  }
   if(game.cardsToBeat[0].value > hand.cards[0].value) { // is the highest card on the table higher than your highest card?
     game.lastActions[game.currentTurn] = "pass";
   } else {
     if(game.typeToBeat === "single") { // if single, play lowest card that is higher than the played one
       var temp;
       var temp2 = true;
-      for(var i = 0; i < hand.length; i++) {
-        if(hand[i].value <= game.cardsToBeat[0].value && temp2) {
+      for(var i = 0; i < hand.cards.length; i++) {
+        if(hand.cards[i].value <= game.cardsToBeat[0].value && temp2) {
           temp = i - 1;
           temp2 = false;
         }
       }
       game.lastActions[game.currentTurn] = "play";
-      game.cardsToBeat = [hand.cards[i]];
+      game.cardsToBeat = [hand.cards[temp]];
       whenDone();
     } else if(game.typeToBeat === "double") {
-    
+      var temp = hand.cards.slice();
+      function findDoubles(index) {
+        if(temp[index + 1] !== undefined) {
+          if(temp[index].value === temp[index + 1].value) { 
+            index++;
+            findDoubles(index);
+          } else {
+            temp.splice(index, 1);
+            findDoubles(index);
+          }
+        } else {
+          temp.splice(index, 1);
+        }
+      }
+      findDoubles(0);
+      if(temp.length === 0) { // if the player has no doubles, pass
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest double that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first double card
+        var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the other double card
+        game.lastActions[game.currentTurn] = "play";
+        game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5]];
+        whenDone();
+      }
+    } else if(game.typeToBeat === "triple") {
+      var temp = hand.cards.slice(); // list of triples
+      function findTriples(index) {
+        if(temp[index + 2] !== undefined) {
+          if(temp[index].value === temp[index + 1].value && temp[index + 1].value === temp[index + 2].value) { 
+            index++;
+            findTriples(index);
+          } else {
+            temp.splice(index, 1);
+            findTriples(index);
+          }
+        } else {
+          temp.splice(index, 2);
+        }
+      }
+      findTriples(0);
+      if(temp.length === 0) { // if the player has no triples, pass
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest triple that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first triple card
+        var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the second triple card
+        var temp6 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + temp[temp5].suit); // find the final triple card
+        game.lastActions[game.currentTurn] = "play";
+        game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6]];
+        whenDone();
+      }
+    } else if(game.typeToBeat === "quadruple") {
+      var temp = hand.cards.slice(); // list of quadruples
+      function findQuadruples(index) {
+        if(temp[index + 3] !== undefined) {
+          if(temp[index].value === temp[index + 1].value && temp[index + 1].value === temp[index + 2].value && temp[index + 2].value === temp[index + 3].value) { 
+            index++;
+            findQuadruples(index);
+          } else {
+            temp.splice(index, 1);
+            findQuadruples(index);
+          }
+        } else {
+          temp.splice(index, 3);
+        }
+      }
+      findQuadruples(0);
+      if(temp.length === 0) { // if the player has no quadruples, pass
+        // pass
+      } else {
+        var temp2;
+        var temp3 = true;
+        for(var i = 0; i < temp.length; i++) {
+          if(temp[i].value <= game.cardsToBeat[0].value && temp3) { // choose the lowest quadruple that beats
+            temp2 = i - 1;
+            temp3 = false;
+          }
+        }
+        var temp4 = hand.find(temp[temp2].value, temp[temp2].suit); // find the first quadruple card
+        var temp5 = hand.find(temp[temp2].value, "!" + temp[temp2].suit); // find the second quadruple card
+        var temp6 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + temp[temp5].suit); // find the third quadruple card
+        var temp7 = hand.find(temp[temp2].value, "!" + temp[temp2].suit + "&" + temp[temp5].suit + "&" + temp[temp6].suit); // find the final quadruple card
+        game.lastActions[game.currentTurn] = "play";
+        game.cardsToBeat = [hand.cards[temp4], hand.cards[temp5], hand.cards[temp6], hand.cards[temp7]];
+        whenDone();
+      }
     }
   }
-  // highest card played higher than all cards?
   // otherwise check type and follow appropriately
 }
 
