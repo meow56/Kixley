@@ -1,5 +1,173 @@
 //This will probably be available from the town menu, we might also put it in the Rowdy Barstead.
 
+function Card(value, suit) {
+  this.value = value;
+  this.suit = suit;
+}
+
+function Deck(cards) {
+  this.cards = cards;
+  
+  this.shuffle = function() {
+    // From the internet https://www.frankmitchell.org/2015/01/fisher-yates/
+    var i = 0,
+    j = 0,
+    temp = null;
+
+    for (i = this.cards.length - 1; i > 0; i -= 1) {
+      j = Math.floor(Math.random() * (i + 1));
+      temp = this.cards[i];
+      this.cards[i] = this.cards[j];
+      this.cards[j] = temp;
+    }
+  }
+  
+  this.deal = function(numPlayers) {
+    var temp = Math.floor(this.cards.length / numPlayers);
+    var temp2 = [];
+    for(var i = 0; i < numPlayers; i++) {
+      temp2.push(new Deck(this.cards.slice(i * temp, (i + 1) * temp)));
+    }
+    if(this.cards.length / numPlayers !== temp) {
+      temp2.push(new Deck(this.cards.slice((numPlayers - 1) * temp))); 
+    }
+    return temp2;
+  }
+  
+  this.find = function(cardVal, cardSuit) {
+    for(var i = 0; i < this.cards.length; i++) {
+      if(this.cards[i].value === cardVal && this.cards[i].suit === cardSuit) {
+        return i;
+      }
+    }
+    return -1;
+  }
+}
+
+function Game(type) {
+  this.type = type;
+  this.hands;
+  this.trick = 0;
+  this.currentTurn = 0;
+  this.lastActions = ["none", "none", "none", "none"];
+  this.cardsToBeat = [];
+  this.typeToBeat = "none";
+  
+  switch(this.type) {
+    case "Scumbags":
+      if(this.trick === 0) {
+        for(var i = 0; i < this.hands.length; i++) {
+          if(this.hands[i].find(3, "Clubs") !== -1) {
+            this.currentTurn = i;
+          }
+        }
+      }
+      scumbagsLoop();
+      break;
+  }
+}
+
+function scumbagsLoop() {
+  var temp = true;
+  for(var i = 0; i < 4; i++) {
+    if(i !== game.currentTurn && game.lastActions[i] !== "pass") {
+      temp = false; // someone has not passed
+    }
+  }
+  if(temp) { // end of trick
+    game.currentTurn = (game.currentTurn + 1) % 4;
+    game.cardsToBeat = [];
+    game.typeToBeat = "none";
+    game.lastActions = ["none", "none", "none", "none"];
+    game.trick++;
+    scumbagsLoop();
+  } else { // keep playing
+    playTurn(game.hands[game.currentTurn], function () {
+      game.currentTurn = (game.currentTurn + 1) % 4;
+      scumbagsLoop();
+    }); // play cards
+  }
+}
+
+function playTurn(hand, whenDone) {
+  if(hand === game.hands[0]) { // that's you!
+    displayOptions(hand, whenDone);
+  } else { // that's not you!
+    scumbagAI(hand, whenDone);
+  }
+}
+
+function displayOptions(hand, whenDone) {
+  var temp = "",
+      toPlay = new Deck([]);
+  for(var i = 0; i < hand.length; i++) {
+    if(hand[i].value !== 1 && hand[i].value !== 11 && hand[i].value !== 12 && hand[i].value !== 13) {
+      temp += hand[i].value.toString() + " of ";
+    } else {
+      switch(hand[i].value) {
+        case 1:
+          temp += "Ace of ";
+          break;
+        case 11:
+          temp += "Jack of ";
+          break;
+        case 12:
+          temp += "Queen of ";
+          break;
+        case 13:
+          temp += "King of ";
+          break;
+      }
+    }
+    temp += hand[i].suit + ". ";
+  }
+  alert("Hand: " + temp);
+  // temp.push("Pass");
+  // temp.push("Finished");
+  answer = prompt("What thingy?"/*, determineAnswer*/);
+  function determineAnswer() {
+    switch(answer) {
+      case "Pass":
+        game.lastActions[game.currentTurn] = "pass";
+        break;
+      case "Finished":
+        validPlay(toPlay, whenDone);
+        break;
+      default:
+        var temp2 = true; // yes, add it to the play
+        for(var i = 0; i < toPlay.cards.length; i++) {
+          if(toPlay.cards[i].value === answer.value && toPlay.cards[i].suit === answer.suit) {
+            toPlay.cards.splice(i, 1); // remove it if it's already there
+            temp2 = false; // don't add it back!
+          }
+        }
+        if(temp2) {
+          toPlay.cards.push(answer);
+        }
+        break;
+    }
+  }
+}
+
+function validPlay(toPlay, whenDone) {
+  // empty deck check
+  // sort play
+  // same type?
+  //   better cards?
+  //     play
+  //   else invalid
+  // else invalid
+}
+
+var deck = new Deck([]);
+for(var i = 0; i < 4; i++) {
+  var temp = ["Hearts", "Clubs", "Diamonds", "Spades"];
+	for(var j = 1; j < 14; j++) {
+		deck.cards.push(new Card(j, temp[i]));
+  }
+}
+var hands;
+
 var answer
 var H = "Hearts"
 var C = "Clubs"
@@ -139,10 +307,11 @@ function chooseGame() {
 }
 
 function scumbagsAndWarlords() {
-  shuffle(sortedDeck)
-  dealScumbags()
-  alert('Your hand is ' + hand1 + '.')
-
+  var game = new Game("Scumbags");
+  deck.shuffle();
+  game.hands = deck.deal(4);
+  alert('Your hand is ' + game.hands[0] + '.')
+  
 }
 
 function TheActualHighLow() {
