@@ -42,6 +42,166 @@ function Deck(cards) {
     }
     return -1;
   }
+  
+  this.sort = function() {
+    var temp = this.cards.slice();
+    var sorted = [];
+    var pastTemp;
+    var temp2 = true;
+    while(temp2) {
+      pastTemp = temp.slice();
+      
+      var temp3 = -1;
+      var valBeat = 0;
+      var suitBeat;
+      
+      for(var i = 0; i < temp.length; i++) {
+        if(temp[i].value > valBeat) {
+          valBeat = temp[i].value;
+          var temp4 = temp[i].suit;
+          switch(temp4) {
+            case "Hearts":
+              temp4 = 3;
+              break;
+            case "Clubs":
+              temp4 = 2;
+              break;
+            case "Diamonds":
+              temp4 = 1;
+              break;
+            case "Spades":
+              temp4 = 0;
+              break;
+          }
+          suitBeat = temp4;
+          temp3 = i;
+        } else if(temp[i].value === valBeat) { // hearts, clubs, diamonds, spades
+          var temp4 = temp[i].suit;
+          switch(temp4) {
+            case "Hearts":
+              temp4 = 3;
+              break;
+            case "Clubs":
+              temp4 = 2;
+              break;
+            case "Diamonds":
+              temp4 = 1;
+              break;
+            case "Spades":
+              temp4 = 0;
+              break;
+          }
+          if(temp4 > suitBeat) {
+            valBeat = temp[i].value;
+            suitBeat = temp4;
+            temp3 = i;
+          }
+        }
+      }
+      
+      var temp5 = temp.splice(temp3, 1);
+      sorted.push(temp5[0]);
+      temp2 = false;
+      for(var i = 0; i < temp.length; i++) {
+      	if(pastTemp.length !== temp.length) {
+        	temp2 = true;
+        } else {
+        	if(pastTemp[i] !== temp[i]) {
+          		temp2 = true;
+        	}
+        }
+      }
+    }
+    this.cards = sorted;
+  }
+  
+  this.sortScumbags = function() {
+    var temp = this.cards.slice();
+    for(var i = 0; i < temp.length; i++) {
+      if(temp[i].value === 1) {
+        temp[i].value = 14;
+      }
+      if(temp[i].value === 2) {
+        temp[i].value = 15;
+      }
+    }
+    var sorted = [];
+    var pastTemp;
+    var temp2 = true;
+    while(temp2) {
+      pastTemp = temp.slice();
+      
+      var temp3 = -1;
+      var valBeat = 0;
+      var suitBeat;
+      
+      for(var i = 0; i < temp.length; i++) {
+        if(temp[i].value > valBeat) {
+          valBeat = temp[i].value;
+          var temp4 = temp[i].suit;
+          switch(temp4) {
+            case "Hearts":
+              temp4 = 3;
+              break;
+            case "Clubs":
+              temp4 = 2;
+              break;
+            case "Diamonds":
+              temp4 = 1;
+              break;
+            case "Spades":
+              temp4 = 0;
+              break;
+          }
+          suitBeat = temp4;
+          temp3 = i;
+        } else if(temp[i].value === valBeat) { // hearts, clubs, diamonds, spades
+          var temp4 = temp[i].suit;
+          switch(temp4) {
+            case "Hearts":
+              temp4 = 3;
+              break;
+            case "Clubs":
+              temp4 = 2;
+              break;
+            case "Diamonds":
+              temp4 = 1;
+              break;
+            case "Spades":
+              temp4 = 0;
+              break;
+          }
+          if(temp4 > suitBeat) {
+            valBeat = temp[i].value;
+            suitBeat = temp4;
+            temp3 = i;
+          }
+        }
+      }
+      
+      var temp5 = temp.splice(temp3, 1);
+      sorted.push(temp5[0]);
+      temp2 = false;
+      for(var i = 0; i < temp.length; i++) {
+      	if(pastTemp.length !== temp.length) {
+        	temp2 = true;
+        } else {
+        	if(pastTemp[i] !== temp[i]) {
+          		temp2 = true;
+        	}
+        }
+      }
+    }
+    for(var i = 0; i < sorted.length; i++) {
+      if(sorted[i].value === 14) {
+        sorted[i].value = 1;
+      }
+      if(sorted[i].value === 15) {
+        sorted[i].value = 2;
+      }
+    }
+    this.cards = sorted;
+  }
 }
 
 function Game(type) {
@@ -97,6 +257,31 @@ function playTurn(hand, whenDone) {
   }
 }
 
+function scumbagAI(hand, whenDone) {
+  hand.sort();
+  if(game.cardsToBeat[0].value > hand.cards[0].value) { // is the highest card on the table higher than your highest card?
+    game.lastActions[game.currentTurn] = "pass";
+  } else {
+    if(game.typeToBeat === "single") { // if single, play lowest card that is higher than the played one
+      var temp;
+      var temp2 = true;
+      for(var i = 0; i < hand.length; i++) {
+        if(hand[i].value <= game.cardsToBeat[0].value && temp2) {
+          temp = i - 1;
+          temp2 = false;
+        }
+      }
+      game.lastActions[game.currentTurn] = "play";
+      game.cardsToBeat = [hand.cards[i]];
+      whenDone();
+    } else if(game.typeToBeat === "double") {
+    
+    }
+  }
+  // highest card played higher than all cards?
+  // otherwise check type and follow appropriately
+}
+
 function displayOptions(hand, whenDone) {
   var temp = "",
       toPlay = new Deck([]);
@@ -129,20 +314,42 @@ function displayOptions(hand, whenDone) {
     switch(answer) {
       case "Pass":
         game.lastActions[game.currentTurn] = "pass";
+        whenDone();
         break;
       case "Finished":
         validPlay(toPlay, whenDone);
         break;
       default:
+        var temp = answer.split(" ");
+        var temp5;
+        switch(temp[0]) {
+          case "Ace":
+            temp5 = "1";
+            break;
+          case "Jack":
+            temp5 = "11";
+            break;
+          case "Queen":
+            temp5 = "12";
+            break;
+          case "King":
+            temp5 = "13";
+            break;
+          default:
+            temp5 = temp[0]
+            break;
+        }
+        var temp3 = temp[temp.length - 1].split(".");
+        temp3 = temp3[0];
         var temp2 = true; // yes, add it to the play
         for(var i = 0; i < toPlay.cards.length; i++) {
-          if(toPlay.cards[i].value === answer.value && toPlay.cards[i].suit === answer.suit) {
+          if(toPlay.cards[i].value.toString() === temp5 && toPlay.cards[i].suit === temp3) {
             toPlay.cards.splice(i, 1); // remove it if it's already there
             temp2 = false; // don't add it back!
           }
         }
         if(temp2) {
-          toPlay.cards.push(answer);
+          toPlay.cards.push(answer); // actually add it to the play
         }
         break;
     }
@@ -150,13 +357,154 @@ function displayOptions(hand, whenDone) {
 }
 
 function validPlay(toPlay, whenDone) {
-  // empty deck check
-  // sort play
-  // same type?
-  //   better cards?
-  //     play
-  //   else invalid
-  // else invalid
+  if(toPlay.cards.length === 0) {
+    //alert("no bad");
+    displayOptions(game.hands[0], whenDone);
+  } else {
+    toPlay.sortScumbags();
+    if(game.typeToBeat === "none") {
+      var playIt = false;
+      var typeToBeat;
+      for(var i = 0; i < toPlay.length; i++) {
+        if(toPlay[i].value === 1) {
+          toPlay[i].value = 14;
+        }
+        if(toPlay[i].value === 2) {
+          toPlay[i].value = 15;
+        }
+      }
+      var playIt = false;
+      if(toPlay.cards.length === 1) {
+        playIt = true;
+        typeToBeat = "single";
+      } else if(toPlay.cards.length === 2 && toPlay[0].value === toPlay[1].value) {
+        playIt = true;
+        typeToBeat = "double";
+      } else if(toPlay.cards.length === 3 && toPlay[0].value === toPlay[1].value && toPlay[1].value === toPlay[2].value) {
+        playIt = true;
+        typeToBeat = "triple";
+      } else if(toPlay.cards.length === 4 && toPlay[0].value === toPlay[1].value && toPlay[1].value === toPlay[2].value && toPlay[2].value === toPlay[3].value) {
+        playIt = true;
+        typeToBeat = "quadruple";
+      } else if(toPlay.cards.length === 4 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value) {
+        playIt = true;
+        typeToBeat = "ddouble";
+      } else if(toPlay.cards.length === 6 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value && toPlay[4].value === toPlay[5].value) {
+        playIt = true;
+        typeToBeat = "tdouble";
+      } else if(toPlay.cards.length === 8 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value && toPlay[4].value === toPlay[5].value && toPlay[6].value === toPlay[7].value) {
+        playIt = true;
+        typeToBeat = "qdouble";
+      } else if(toPlay.cards.length === 10 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value && toPlay[4].value === toPlay[5].value && toPlay[6].value === toPlay[7].value && toPlay[8].value === toPlay[9].value) {
+        playIt = true;
+        typeToBeat = "pdouble";
+      } else if(toPlay.cards.length === 12 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value && toPlay[4].value === toPlay[5].value && toPlay[6].value === toPlay[7].value && toPlay[8].value === toPlay[9].value && toPlay[9].value === toPlay[10].value) {
+        playIt = true;
+        typeToBeat = "sdouble";
+      } else if(toPlay.cards.length === 4 && toPlay[0].value - 1 === toPlay[1].value && toPlay[1].value - 1 === toPlay[2].value && toPlay[2].value - 1 === toPlay[3].value) {
+        playIt = true;
+        typeToBeat = "qrun";
+      } else if(toPlay.cards.length === 8 && toPlay[0].value - 1 === toPlay[1].value && toPlay[1].value - 1 === toPlay[2].value && toPlay[2].value - 1 === toPlay[3].value && toPlay[3].value - 1 === toPlay[4].value && toPlay[4].value - 1 === toPlay[5].value && toPlay[5].value - 1 === toPlay[6].value && toPlay[6] - 1 === toPlay[7]) {
+        playIt = true;
+        typeToBeat = "orun";
+      } else if(toPlay.cards.length === 12 && toPlay[0].value - 1 === toPlay[1].value && toPlay[1].value - 1 === toPlay[2].value && toPlay[2].value - 1 === toPlay[3].value && toPlay[3].value - 1 === toPlay[4].value && toPlay[4].value - 1 === toPlay[5].value && toPlay[5].value - 1 === toPlay[6].value && toPlay[6].value - 1 === toPlay[7].value && toPlay[7].value - 1 === toPlay[8].value && toPlay[8].value - 1 === toPlay[9].value && toPlay[9].value - 1 === toPlay[10].value && toPlay[10].value - 1 === toPlay[11].value) {
+        playIt = true;
+        typeToBeat = "drun";
+      }
+      if(playIt) {
+        for(var i = 0; i < toPlay.length; i++) {
+          if(toPlay[i].value === 14) {
+            toPlay[i].value = 1;
+          }
+          if(toPlay[i].value === 15) {
+            toPlay[i].value = 2;
+          }
+        }
+        game.lastActions[0] = "play";
+        game.cardsToBeat = toPlay.cards.slice();
+        game.typeToBeat = typeToBeat;
+        whenDone();
+      } else {
+        // invalid! do it again, baka
+        displayOptions(game.hands[0], whenDone);
+      }
+    } else {
+      for(var i = 0; i < toPlay.length; i++) {
+        if(toPlay[i].value === 1) {
+          toPlay[i].value = 14;
+        }
+        if(toPlay[i].value === 2) {
+          toPlay[i].value = 15;
+        }
+      }
+      var playIt = false;
+      if(game.typeToBeat === "single" && toPlay.cards.length === 1) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "double" && toPlay.cards.length === 2 && toPlay[0].value === toPlay[1].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "triple" && toPlay.cards.length === 3 && toPlay[0].value === toPlay[1].value && toPlay[1].value === toPlay[2].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "quadruple" && toPlay.cards.length === 4 && toPlay[0].value === toPlay[1].value && toPlay[1].value === toPlay[2].value && toPlay[2].value === toPlay[3].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "ddoubles" && toPlay.cards.length === 4 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "tdoubles" && toPlay.cards.length === 6 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value && toPlay[4].value === toPlay[5].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "qdoubles" && toPlay.cards.length === 8 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value && toPlay[4].value === toPlay[5].value && toPlay[6].value === toPlay[7].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "pdoubles" && toPlay.cards.length === 10 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value && toPlay[4].value === toPlay[5].value && toPlay[6].value === toPlay[7].value && toPlay[8].value === toPlay[9].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "sdoubles" && toPlay.cards.length === 12 && toPlay[0].value === toPlay[1].value && toPlay[2].value === toPlay[3].value && toPlay[4].value === toPlay[5].value && toPlay[6].value === toPlay[7].value && toPlay[8].value === toPlay[9].value && toPlay[9].value === toPlay[10].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "qrun" && toPlay.cards.length === 4 && toPlay[0].value - 1 === toPlay[1].value && toPlay[1].value - 1 === toPlay[2].value && toPlay[2].value - 1 === toPlay[3].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "orun" && toPlay.cards.length === 8 && toPlay[0].value - 1 === toPlay[1].value && toPlay[1].value - 1 === toPlay[2].value && toPlay[2].value - 1 === toPlay[3].value && toPlay[3].value - 1 === toPlay[4].value && toPlay[4].value - 1 === toPlay[5].value && toPlay[5].value - 1 === toPlay[6].value && toPlay[6] - 1 === toPlay[7]) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      } else if(game.typeToBeat === "drun" && toPlay.cards.length === 12 && toPlay[0].value - 1 === toPlay[1].value && toPlay[1].value - 1 === toPlay[2].value && toPlay[2].value - 1 === toPlay[3].value && toPlay[3].value - 1 === toPlay[4].value && toPlay[4].value - 1 === toPlay[5].value && toPlay[5].value - 1 === toPlay[6].value && toPlay[6].value - 1 === toPlay[7].value && toPlay[7].value - 1 === toPlay[8].value && toPlay[8].value - 1 === toPlay[9].value && toPlay[9].value - 1 === toPlay[10].value && toPlay[10].value - 1 === toPlay[11].value) {
+        if(toPlay.cards[0].value > game.cardsToBeat[0].value) {
+          playIt = true;
+        }
+      }
+      if(playIt) {
+        for(var i = 0; i < toPlay.length; i++) {
+          if(toPlay[i].value === 14) {
+            toPlay[i].value = 1;
+          }
+          if(toPlay[i].value === 15) {
+            toPlay[i].value = 2;
+          }
+        }
+        game.lastActions[0] = "play";
+        game.cardsToBeat = toPlay.cards.slice();
+        whenDone();
+      } else {
+        // invalid! do it again, baka
+        displayOptions(game.hands[0], whenDone);
+      }
+    }
+  }
 }
 
 var deck = new Deck([]);
