@@ -249,17 +249,42 @@ function Deck(cards) {
   }
 }
 
-function Game(type) {
+function Game(type, previousPlacement, points) {
   this.type = type;
+  this.prePla = previousPlacement;
+  this.points = points;
   this.hands;
   this.trick = 0;
   this.currentTurn = 0;
   this.lastActions = ["none", "none", "none", "none"];
   this.cardsToBeat = [];
   this.typeToBeat = "none";
+  this.placement = [0, 0, 0, 0];
+  this.nextPlace = 1;
   
   switch(this.type) {
     case "Scumbags":
+      if(this.prePla !== [0, 0, 0, 0]) {
+        for(var i = 0; i < this.prePla.length; i++) {
+          if(this.prePla[i] === 1) {
+            var id1 = i;
+          } else if(this.prePla[i] === 2) {
+            var id2 = i;
+          } else if(this.prePla[i] === 3) {
+            var id3 = i;
+          } else if(this.prePla[i] === 4) {
+            var id4 = i;
+          }
+        }
+        
+        this.points[id1] += 2;
+        this.points[id2] += 1;
+        this.points[id3] -= 1;
+        this.points[id4] -= 2;
+        
+        this.exchangeCards(2, id1, id4);
+        this.exchangeCards(1, id2, id3);
+      }
       if(this.trick === 0) {
         for(var i = 0; i < this.hands.length; i++) {
           if(this.hands[i].find(3, "Clubs") !== -1) {
@@ -273,32 +298,57 @@ function Game(type) {
 }
 
 function scumbagsLoop() {
-  var temp = true;
+  var temp2 = 0;
   for(var i = 0; i < 4; i++) {
-    if(i !== game.currentTurn && game.lastActions[i] !== "pass") {
-      temp = false; // someone has not passed
+    if(game.placement[i] === 0) {
+      temp2++;
     }
   }
-  if(temp) { // end of trick
-    game.currentTurn = (game.currentTurn + 1) % 4;
-    game.cardsToBeat = [];
-    game.typeToBeat = "none";
-    game.lastActions = ["none", "none", "none", "none"];
-    game.trick++;
-    scumbagsLoop();
-  } else { // keep playing
-    playTurn(game.hands[game.currentTurn], function () {
+  if(temp2 <= 1) {
+    for(var i = 0; i < 4; i++) {
+      if(game.placement[i] === 0) {
+        game.placement[i] = 4;
+      }
+    }
+    var temp = game.placement;
+    var temp3 = game.points;
+    game = new Game("Scumbags", temp, temp3);
+  } else {
+    var temp = true;
+    for(var i = 0; i < 4; i++) {
+      if(i !== game.currentTurn && game.lastActions[i] !== "pass") {
+        temp = false; // someone has not passed
+      }
+    }
+    if(temp) { // end of trick
       game.currentTurn = (game.currentTurn + 1) % 4;
+      game.cardsToBeat = [];
+      game.typeToBeat = "none";
+      game.lastActions = ["none", "none", "none", "none"];
+      game.trick++;
       scumbagsLoop();
-    }); // play cards
+    } else { // keep playing
+      playTurn(game.hands[game.currentTurn], function () {
+        if(game.hands[game.currentTurn].cards.length === 0 && game.placement[game.currentTurn] === 0) {
+          game.placement[game.currentTurn] = game.nextPlace++;
+        }
+        game.currentTurn = (game.currentTurn + 1) % 4;
+        scumbagsLoop();
+      }); // play cards
+    }
   }
 }
 
 function playTurn(hand, whenDone) {
-  if(hand === game.hands[0]) { // that's you!
-    displayOptions(hand, whenDone);
-  } else { // that's not you!
-    scumbagAI(hand, whenDone);
+  if(hand.length !== 0) {
+    if(hand === game.hands[0]) { // that's you!
+      displayOptions(hand, whenDone);
+    } else { // that's not you!
+      scumbagAI(hand, whenDone);
+    }
+  } else {
+    game.lastActions[game.currentTurn] = "pass";
+    whenDone();
   }
 }
 
