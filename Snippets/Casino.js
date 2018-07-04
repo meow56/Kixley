@@ -295,6 +295,23 @@ function Game(type, previousPlacement, points) {
       scumbagsLoop();
       break;
   }
+	
+	this.exchangeCards = function(howMany, better, worse) {
+    if(better === 0) { // if you get the better cards
+      
+    } else if(worse === 0) { // if you get the worse cards
+      
+    } else { // you aren't here
+      this.hands[better].sortScumbags();
+      this.hands[worse].sortScumbags();
+      var temp = this.hands[worse].splice(0, howMany);
+      var temp2 = this.hands[better].splice(-howMany, howMany);
+      for(var i = 0; i < temp.length; i++) {
+        this.hands[worse].push(temp2[i]);
+        this.hands[better].push(temp[i]);
+      }
+    }
+  }
 }
 
 function scumbagsLoop() {
