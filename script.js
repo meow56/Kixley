@@ -3,8 +3,6 @@ window.onerror = function(message, source, lineno, colno, error) {
     writeText(error.message);
   } else if(error.message === "Cannot read property 'toUpperCase' of null" || error.message === "Cannot read property 'toLowerCase' of null"){
     alert("You just pressed the \"Cancel\" button. That causes the game to end.");
-  } else if (error.message === "Cannot read property 'appendChild' of null"){
-    alert("You baka! You forgot to add <div id=\"buttons\"></div>!");
   } else {
     alert("Kixley has run into an unexpected error.");
     alert("To help in debugging, Kixley has this to say:");
