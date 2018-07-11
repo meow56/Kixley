@@ -691,13 +691,9 @@ var fightingAAbea = false;
 var fightingBalbeag = false;
 var spec = []; // special move
 var actualSpec;
-var usedShot = false;
-var usedSteal = false;
+var usedSpec = false;
 var baseAttackPower = kixleyNCo[1].attackPow;
 var hasSpecial = false;
-var specOrNo = '';
-var fightLoop2Timeout;
-var fightLoop3Timeout;
 // monster drops
 var goldDrops; // gold dropped by monster
 var dropMult = 1; // multiplier for how much gold the monster drops
@@ -708,10 +704,9 @@ var expLeft; // exp until level up
 // travel
 var inSwamp;
 var toMountains;
-var min;
 var plainsCounter = 0;
 var swampDiscovery = false;
-var yesNo = 'Yes, No';
+var mountainPass = false;
 var timeGTOne = 0; // whether you get 6 or 7 BoD when Mithrómen sells you BoD
 var swampCounter = 0;
 // level
@@ -720,7 +715,6 @@ var levelReq = 100 + kixleyNCo[1].lev * 200; // exp required until level up
 var levelUpHealth = 50;
 var totalExtraHealth = levelUpHealth * (kixleyNCo[1].lev - 1);
 var levelUpBlobsOfDoom = 50;
-var infinity = 1 / 0;
 var classHealthChanges = [
   15, -15, -25,
   15,
@@ -728,9 +722,8 @@ var classHealthChanges = [
   0,
   0,
   7, -7, -75,
-  infinity
+  -(Math.log(0))
 ];
-var attLevelUp;
 // cheats
 var goldCheat = 0;
 var expCheat = 0;
@@ -741,12 +734,9 @@ var accCheat = 0;
 var actualAccuracy;
 var youCheated = false; // have you cheated, ever?
 // other
-var innFloorNumber;
 var x; // rng
-var firstChar;
 var PassOrNot = '';
 var answer;
-var howMany = 0;
 var diffSetting = 0; // difficulty: Easy = 0.5, Normal = 1.0, Hard = 1.5, Epic = 2.0, Legend = 2.5
 var theWholeShebang = [
   'Kixley Beta 1.1',
@@ -769,19 +759,14 @@ var chosenClass;
 var loc;
 var volumeSettings = '10';
 var from;
-var mountainPass = false;
 // items
 var inventory = []; // 2D: [[InventoryItem, amount], [InventoryItem, amount]]
-var pastInventory;
+var pastInventory; // used for hud update
 var catalog = [new InventoryItem("Health Potion", useHealthPotion, "item", 20, "Restores health."), 
                new InventoryItem("Wooden Sword", Function("this.equipped.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50, "Increases attack by a small amount."), 
                new InventoryItem("Simple Staff", Function("this.equipped.tempMagicSkillz *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50, "Increases magic by a small amount."), 
                new InventoryItem("Speed Boots", Function("this.equipped.accuracy += 5 * (3 - diffSetting)"), "boots", 100, "Increases accuracy."), 
                new InventoryItem("Arrows", Shoot, "item", 5, "Used with the Archer class.")];
-var hpCost = 20;
-var wsCost = 50;
-var sbCost = 100;
-var aCost = 5;
 var hpEff = 10 + (10 * (3 - diffSetting)); // how much HP health potions restore
 // accounts
 var userCheck;
@@ -793,7 +778,6 @@ var defaultClass; // normal class you set in your account
 var settingDefault = false;
 var useDefaultClass = false; // whether to use your default class
 var useDefaultDiff = false; // whether to use your default difficulty
-var useTheForceCount = 0; // how many times you've used the force
 // questing
 var questKillAmt = 0; // amount of monsters you've killed for the quest
 var questKillReq; // amount of monsters to kill
@@ -803,7 +787,6 @@ var questExpAmt = 0; // amount of exp you've gotten for the quest
 var questExpReq; // amount of exp you need to get
 var onAQuest = 0; // are you on a quest?
 var y; // what type of quest
-var z;
 var questType = [
   'kill',
   'gold',
@@ -864,32 +847,32 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
   for(var i = 0; i < inventory.length; i++) {
     temp += inventory[i][0].name;
     temp += inventory[i][1];
-    if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
+    if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) { // equipment equipping updates
       var temp2 = document.getElementById(inventory[i][0].name + "_equip_select").value;
-      if(temp2 !== inventory[i][0].equipped.called) {
-        for(var j = 0; j < inventory[i][0].equipped.equipped.length; j++) {
+      if(temp2 !== inventory[i][0].equipped.called) { // if the dropdown is different then the person equipped to
+        for(var j = 0; j < inventory[i][0].equipped.equipped.length; j++) { // why did i name them both equipped D:
           if(inventory[i][0].equipped.equipped[j].name === inventory[i][0].name) {
-            inventory[i][0].equipped.equipped.splice(j, 1);
-          } // end if equip match
-        } // end for kixleyNCo.equipped
-        if(temp2 === "unequip") {
+            inventory[i][0].equipped.equipped.splice(j, 1); // unequip, player side
+          }
+        }
+        if(temp2 === "unequip") { // if the player wants to unequip, unequip
           inventory[i][0].equipped = new Fighter();
-          inventory[i][0].equipped.called = "unequip";
+          inventory[i][0].equipped.called = "unequip"; // unequip, item side
           inventory[i][0].equipped.equipped.push(inventory[i][0]);
         } else {
           for(var j = 1; j < kixleyNCo.length; j++) {
-            if(temp2 === kixleyNCo[j].called) {
-              var temp3 = inventory[i][0].type;
+            if(temp2 === kixleyNCo[j].called) { // name match
+              var temp3 = inventory[i][0].type; // type of inventory to equip
               function deleteTypeMatch(index) {
-                if(kixleyNCo[j].equipped[index].type === temp3) {
-                  var temp4 = document.getElementById(kixleyNCo[j].equipped[index].name + "_equip_select");
+                if(kixleyNCo[j].equipped[index].type === temp3) { // if player has matching type equipped
+                  var temp4 = document.getElementById(kixleyNCo[j].equipped[index].name + "_equip_select"); // dropdown
                   for(var k = 0; k < temp4.childNodes.length; k++) {
                     if(temp4.childNodes[k].value === "unequip") {
-                      temp4.childNodes[k].selected = "true";
+                      temp4.childNodes[k].selected = "true"; // unequip it
                     }
                   }
                   kixleyNCo[j].equipped[index].equipped = new Fighter();
-                  kixleyNCo[j].equipped[index].equipped.called = "unequip";
+                  kixleyNCo[j].equipped[index].equipped.called = "unequip"; // unequip, inventory side
                   kixleyNCo[j].equipped.splice(index, 1);
                 } else {
                   index++;
@@ -901,20 +884,20 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
               if(kixleyNCo[j].equipped.length !== 0) {
                 deleteTypeMatch(0);
               }
-              inventory[i][0].equipped = kixleyNCo[j];
-              kixleyNCo[j].equipped.push(inventory[i][0]);
-              foo = true;
-            } // end if name match
-          } // end for kixleyNCo
+              inventory[i][0].equipped = kixleyNCo[j]; // equip, inventory side
+              kixleyNCo[j].equipped.push(inventory[i][0]); // equip, player side
+              foo = true; // hud update bypass
+            }
+          }
         }
-      } // end if difference
-    } // end if element null check
-  } // end for inventory
+      }
+    }
+  }
   
   if(pastInventory !== temp || foo) {
-    deleteInventoryText();
+    deleteInventoryText(); // clear inventory screen
     
-    function writeTextInfo(text) {
+    function writeTextInfo(text) { // write text to info
       if(document.getElementById("You_stats") !== null) {
         var temp = document.getElementById("You_stats");
         if(document.getElementById("inventory") === null) {
@@ -950,16 +933,14 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           writeTextInfo("<strong>" + inventory[i][0].name + "</strong>");
           var temp = document.getElementById("<strong>" + inventory[i][0].name + "</strong>");
           temp.style.float = "left";
-          temp = document.createElement("SELECT");
+          temp = document.createElement("SELECT"); // dropdown menu
           temp.id = inventory[i][0].name + "_equip_select";
           temp.style.float = "right";
           var temp2 = [];
           for(var k = 1; k < kixleyNCo.length; k++) {
-            temp2.push(kixleyNCo[k].called);
+            temp2.push(kixleyNCo[k].called); // list of names
           }
           var temp3 = document.createElement("OPTION");
-          var temp4 = new Fighter();
-          temp4.called = "unequip";
           temp3.value = "unequip";
           if(inventory[i][0].equipped.called === "unequip") {
             temp3.selected = "true";
@@ -975,15 +956,15 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           }
           document.getElementById("inventory").insertBefore(temp, document.getElementById("<strong>" + inventory[i][0].name + "</strong>_br"));
           writeTextInfo(inventory[i][0].desc);
-        } // end else
-      } // end for
-    } // end else
-    pastInventory = "";
+        }
+      }
+    }
+    pastInventory = ""; // update inventory check
     for(var i = 0; i < inventory.length; i++) {
       pastInventory += inventory[i][0].name;
       pastInventory += inventory[i][1];
     }
-    kixleyNCo[1].showHealth(true);
+    kixleyNCo[1].showHealth(true); // health show bypass; need to update because otherwise the inventory appears below everything else
   }
 }
 
@@ -1017,7 +998,6 @@ function playMusic(which) { // in the form of the variable ie fightMusic, places
 }
 
 function loadMusic() {
-  actuallyDoMusic = true;
   fightMusic = document.getElementById('FightMusic');
   towerMusic = document.getElementById('TowerMusic');
   placesMusic = document.getElementById('PlacesMusic');
@@ -1308,7 +1288,7 @@ function DevCheats() {
       case 'Infinite Accuracy':
         if (accCheat === 0) {
           actualAccuracy = kixleyNCo[1].accuracy
-          kixleyNCo[1].accuracy = infinity
+          kixleyNCo[1].accuracy = -(Math.log(0));
           writeText('Cheat successfully activated!')
           accCheat = 1
           youCheated = true
@@ -1424,11 +1404,11 @@ function fightLoop() {
             fightHandler.endTurn();
             setTimeout(fightLoop, 0);
           } else {
-            fightLoop3Timeout = setTimeout(fightLoop3, 0);
+            setTimeout(fightLoop3, 0);
           }
         }
       } else {
-        fightLoop2Timeout = setTimeout(fightLoop2, 0);
+        setTimeout(fightLoop2, 0);
       }
     };
   } else {
@@ -1645,7 +1625,7 @@ function FightMenu() {
     writeText(monsterGroup[i].called + " type: " + monsterGroup[i].element);
   }
   var temp = ["Fight", "Health Potion", "Magic", "Special Attack", "Run"];
-  if(!hasSpecial || usedShot || usedSteal) {
+  if(spec.length > 0 || usedSpec) {
     temp.splice(temp.indexOf("Special Attack"), 1);
   }
   var temp2 = false;
@@ -1755,7 +1735,7 @@ function ChooseSpec() {
 }
 
 function Shoot(target) {
-  usedShot = true
+  usedSpec = true
   target.accuracy -= 30
   inventory[findNameInventory("Arrow")][1]--;
   writeText('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!');
@@ -1767,7 +1747,7 @@ function Steal(target) {
     writeText('You steal ' + target.calledPlusthe + '\'s weapon!')
     kixleyNCo[1].attackPow += 2
     target.attackPow -= 2;
-    usedSteal = true;
+    usedSpec = true;
   } else {
     writeText('You fail to steal ' + target.calledPlusthe + '\'s weapon.')
   }
@@ -1912,7 +1892,7 @@ function finalBossFight() {
 
 function Options() {
   writeText('This is the options menu!');
-  writeText("Volume: " + (volumeSettings * 10));
+  writeText("Volume: " + volumeSettings);
   requestInput(["Volume", "Quality", "Text Pace", "Leave"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
@@ -2613,7 +2593,6 @@ function ChoosingAClass(chosenClass) {
             kixleyNCo[1].accuracy += 15
             dropMult += 0.5
             kixleyNCo[1].chosenClass = 6
-            specOrNo = 'Special Attack, '
             break;
           case 'Ninja':
             kixleyNCo[1].attackPow -= 2
@@ -2622,7 +2601,6 @@ function ChoosingAClass(chosenClass) {
             kixleyNCo[1].accuracy += 20
             monsterGroup[1].accuracy -= 10
             kixleyNCo[1].chosenClass = 7
-            hasSpecial = true
             break;
           case 'Cavalry':
             kixleyNCo[1].attackPow += 1
@@ -2643,8 +2621,6 @@ function ChoosingAClass(chosenClass) {
             kixleyNCo[1].magicSkillz += 10
             kixleyNCo[1].accuracy += 30
             kixleyNCo[1].chosenClass = 9
-            hasSpecial = true
-            specOrNo = 'Special Attack, '
             break;
             /*
           case 'Super Hardcore':
@@ -2816,134 +2792,6 @@ function InTown() {
   }
 }
 
-function BuyHealthPotion() {
-  writeText("How many health potions do you want?");
-  writeText("Each one costs " + hpCost + " gold.");
-  writeText("Leave the field blank to leave.");
-  requestNumber(determineAnswer, 0);
-  function determineAnswer() {
-    if (answer === '') {
-      InShop();
-    } else {
-      firstChar = answer.charAt(0)
-      if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
-        answer = parseInt(answer, 10)
-        howMany = answer
-        if (totalGold < (hpCost * howMany)) {
-          writeTextWait('You don\'t have enough gold to buy that many health potions. At max you could buy ' + Math.floor(totalGold / hpCost) + ' health potion(s).', InShop)
-        } else {
-          writeText("Are you sure?");
-          writeText("You're going to buy " + answer + " health potions. This will cost " + (hpCost * howMany) + " gold.");
-          requestInput(["Yes", "No"], determineAnswer);
-          function determineAnswer() {
-            switch (answer) {
-              case "Yes":
-                writeText('Health potion(s) bought!')
-                if(findNameInventory("Health Potion") !== null) {
-                  inventory[findNameInventory("Health Potion")][1] += howMany;
-                } else {
-                  inventory.push([new InventoryItem("Health Potion", useHealthPotion, "item"), howMany]);
-                }
-                totalGold -= (hpCost * howMany)
-                InShop()
-                break;
-              case "No":
-                InShop()
-                break;
-            }
-          }
-        }
-      } else {
-        writeTextWait('That wasn\'t a number! You can\'t buy ' + answer + ' health potions!', BuyHealthPotion);
-      }
-    }
-  }
-}
-
-function BuyWoodenSword() {
-  if (totalGold >= wsCost) {
-    writeText("Are you sure?");
-    requestInput(["Yes", "No"], determineAnswer);
-    function determineAnswer() {
-      switch (answer) {
-        case 'Yes':
-          writeText('Wooden sword bought!')
-          inventory.push([new InventoryItem("Wooden Sword", Function("this.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon"), 1]);
-          totalGold -= wsCost
-          InShop()
-          break;
-        case 'No':
-          InShop()
-          break;
-      }
-    }
-  } else {
-    writeText('You don\'t have enough money.')
-    InShop()
-  }
-}
-
-function BuySpeedBoots() {
-  if (totalGold >= sbCost) {
-    writeText("Are you sure?");
-    requestInput(["Yes", "No"], determineAnswer);
-    function determineAnswer() {
-      switch (answer) {
-        case 'Yes':
-          writeText('Speed boots bought!')
-          inventory.push([new InventoryItem("Speed Boots", Function("this.accuracy += 5 * (3 - diffSetting)"), "boots"), 1]);
-          totalGold -= sbCost;
-          InShop();
-          break;
-        case 'No':
-          InShop()
-          break;
-      }
-    }
-  } else {
-    writeText('You don\'t have enough money.')
-    InShop()
-  }
-}
-
-function BuyArrows() {
-  answer = prompt('How many arrows do you want? Each one costs ' + aCost + " gold.", '1')
-  if (answer === '') {
-    NotAnOption()
-    BuyArrows()
-  } else {
-    firstChar = answer.charAt(0)
-    if (firstChar === '0' || firstChar === '1' || firstChar === '2' || firstChar === '3' || firstChar === '4' || firstChar === '5' || firstChar === '6' || firstChar === '7' || firstChar === '8' || firstChar === '9') {
-      howMany = parseInt(answer, 10)
-      if (totalGold < (aCost * howMany)) {
-        writeTextWait('You don\'t have enough gold to buy that many arrows. At max you could buy ' + Math.floor(totalGold / aCost) + ' arrow(s).', InShop)
-      }
-      writeText("Are you sure? You're going to buy " + answer + " arrows. This will cost " + (aCost * howMany) + " gold.");
-      requestInput(["Yes", "No"], determineAnswer);
-      function determineAnswer() {
-        switch (answer) {
-          case "Yes":
-            writeText('Arrow(s) bought!')
-            if(findNameInventory("Arrow") !== null) {
-              inventory[findNameInventory("Arrow")][1] += howMany;
-            } else {
-              inventory.push([new InventoryItem("Arrow", Shoot, "item"), howMany]);
-            }
-            answer = 0
-            totalGold -= (aCost * howMany)
-            InShop()
-            break;
-          case "No":
-            InShop()
-            break;
-        }
-      }
-    } else {
-      writeTextWait('That wasn\'t a number! You can\'t buy ' + answer + ' arrows!', BuyArrows)
-    }
-  }
-}
-
 /* Congratulations! You found an easter egg.
           .-"-.
         .'     '.
@@ -3057,24 +2905,23 @@ function InInn() {
   writeText('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
   writeText("So whadda ya say?");
   requestInput(["Yes", "Common Room", "Leave"], determineAnswer);
-  //answer = prompt('So whadda you say?', 'Yes, No, Common Room').toUpperCase()
   function determineAnswer() {
     switch (answer) {
       case 'Yes':
         if (totalGold >= 50) {
           totalGold -= 50;
-          innFloorNumber = randomNumber(1, 2);
           var temp = randomNumber(1, 23);
-          if (temp < 10) {
-            temp.toString(10)
-            temp = '0' + temp
+          var temp2 = randomNumber(1, 2);
+          if (temp2 < 10) {
+            temp2.toString(10);
+            temp2 = '0' + temp2;
           }
-          writeText('The man gestures towards a room door. \'There\'s your room, room ' + innFloorNumber.toString(10) + temp + '. Have a good night\'s rest.\'')
-          writeText('You wake up fully refreshed, and new vigor fills your heart.')
-          writeText('Hit points fully restored!')
-          kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
-          writeText('You walk out of the room.')
-          InInn()
+          writeText('The man gestures towards a room door. \'There\'s your room, room ' + temp.toString(10) + temp2 + '. Have a good night\'s rest.\'');
+          writeText('You wake up fully refreshed, and new vigor fills your heart.');
+          writeText('Hit points fully restored!');
+          kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP;
+          writeText('You walk out of the room.');
+          InInn();
         } else if (totalGold <= 50) {
           writeText('The Inn keeper sighs and says \'You don\'t have enough gold. Sorry, pardner!\'');
           writeText('You go back into town.');
@@ -3389,7 +3236,6 @@ function StatToLevelUp() {
         writeText('You got ' + temp + ' base attack!')
         kixleyNCo[1].attackPow += temp
         baseAttackPower += temp
-        attLevelUp++
         break;
       case 'Health + ' + levelUpHealth:
         writeText('You got ' + levelUpHealth + ' health!')
