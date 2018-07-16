@@ -2111,6 +2111,15 @@ for(var i = 0; i < 4; i++) {
   }
 }
 var hands;
+var slot1 = ["B", "7", "C", "B", "L", "L", "C", "D"];
+var oneIsStopped = false;
+var indexOne = 0;
+var slot2 = ["C", "C", "7", "D", "B", "L", "L", "B"];
+var twoIsStopped = false;
+var indexTwo = 0;
+var slot3 = ["B", "L", "B", "D", "C", "L", "C", "7"];
+var threeIsStopped = false;
+var indexThree = 0;
 
 var answer
 var H = "Hearts"
@@ -2511,4 +2520,8 @@ function AIHit() {
     hand2.push(shuffledDeck[5])
     AIHit() 
  }
+}
+
+function slotsStart() {
+	
 }
