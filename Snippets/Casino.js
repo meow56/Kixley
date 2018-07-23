@@ -971,24 +971,30 @@ function scumbagAI(hand, whenDone) {
     } else if(game.typeToBeat === "qrun") {
       var temp = hand.cards.slice(); // list of quadruple runs (ie 4 5 6 7)
       function elimRepeats(index) {
+        if(temp[index + 3] !== undefined) {
+          if(temp[index + 2].value === temp[index + 3].value) {
+            temp.splice(index, 4); // eliminate quads
+            elimRepeats(index);
+          }
+        }
+        if(temp[index + 2] !== undefined) {
+          if(temp[index + 1].value === temp[index + 2].value) {
+            temp.splice(index, 3); // eliminate triples
+            elimRepeats(index);
+          }
+        }
         if(temp[index + 1] !== undefined) {
-          if(temp[index + 2] !== undefined) {
-            if(temp[index + 3] !== undefined) {
-              if(temp[index + 2].value === temp[index + 3].value) {
-                temp.splice(index + 2, 1); // eliminate quads
-              }
-            }
-            if(temp[index + 1].value === temp[index + 2].value) {
-              temp.splice(index + 1, 1); // eliminate triples
-            }
-          }
           if(temp[index].value === temp[index + 1].value) {
-            temp.splice(index, 1); // eliminate doubles
+            temp.splice(index, 2); // eliminate doubles
+            elimRepeats(index);
           }
+          index++;
           elimRepeats(index);
         } else {
-          if(temp[index - 1].value === temp[index].value) {
-            temp.splice(index, 1);
+          if(temp[index] !== undefined && temp[index - 1] !== undefined) {
+            if(temp[index - 1].value === temp[index].value) {
+              temp.splice(index, 1);
+            }
           }
         }
       }
@@ -1047,24 +1053,30 @@ function scumbagAI(hand, whenDone) {
     } else if(game.typeToBeat === "orun") {
       var temp = hand.cards.slice(); // list of octuple runs (ie 4 5 6 7 8 9 10 J)
       function elimRepeats(index) {
+        if(temp[index + 3] !== undefined) {
+          if(temp[index + 2].value === temp[index + 3].value) {
+            temp.splice(index, 4); // eliminate quads
+            elimRepeats(index);
+          }
+        }
+        if(temp[index + 2] !== undefined) {
+          if(temp[index + 1].value === temp[index + 2].value) {
+            temp.splice(index, 3); // eliminate triples
+            elimRepeats(index);
+          }
+        }
         if(temp[index + 1] !== undefined) {
-          if(temp[index + 2] !== undefined) {
-            if(temp[index + 3] !== undefined) {
-              if(temp[index + 2].value === temp[index + 3].value) {
-                temp.splice(index + 2, 1); // eliminate quads
-              }
-            }
-            if(temp[index + 1].value === temp[index + 2].value) {
-              temp.splice(index + 1, 1); // eliminate triples
-            }
-          }
           if(temp[index].value === temp[index + 1].value) {
-            temp.splice(index, 1); // eliminate doubles
+            temp.splice(index, 2); // eliminate doubles
+            elimRepeats(index);
           }
+          index++;
           elimRepeats(index);
         } else {
-          if(temp[index - 1].value === temp[index].value) {
-            temp.splice(index, 1);
+          if(temp[index] !== undefined && temp[index - 1] !== undefined) {
+            if(temp[index - 1].value === temp[index].value) {
+              temp.splice(index, 1);
+            }
           }
         }
       }
@@ -1127,24 +1139,30 @@ function scumbagAI(hand, whenDone) {
     } else if(game.typeToBeat === "drun") {
       var temp = hand.cards.slice(); // list of duodec runs (ie 4 5 6 7 8 9 10 J Q K A 2)
       function elimRepeats(index) {
+        if(temp[index + 3] !== undefined) {
+          if(temp[index + 2].value === temp[index + 3].value) {
+            temp.splice(index, 4); // eliminate quads
+            elimRepeats(index);
+          }
+        }
+        if(temp[index + 2] !== undefined) {
+          if(temp[index + 1].value === temp[index + 2].value) {
+            temp.splice(index, 3); // eliminate triples
+            elimRepeats(index);
+          }
+        }
         if(temp[index + 1] !== undefined) {
-          if(temp[index + 2] !== undefined) {
-            if(temp[index + 3] !== undefined) {
-              if(temp[index + 2].value === temp[index + 3].value) {
-                temp.splice(index + 2, 1); // eliminate quads
-              }
-            }
-            if(temp[index + 1].value === temp[index + 2].value) {
-              temp.splice(index + 1, 1); // eliminate triples
-            }
-          }
           if(temp[index].value === temp[index + 1].value) {
-            temp.splice(index, 1); // eliminate doubles
+            temp.splice(index, 2); // eliminate doubles
+            elimRepeats(index);
           }
+          index++;
           elimRepeats(index);
         } else {
-          if(temp[index - 1].value === temp[index].value) {
-            temp.splice(index, 1);
+          if(temp[index] !== undefined && temp[index - 1] !== undefined) {
+            if(temp[index - 1].value === temp[index].value) {
+              temp.splice(index, 1);
+            }
           }
         }
       }
@@ -1218,24 +1236,30 @@ function scumbagAI(hand, whenDone) {
 function trickStart(hand, whenDone) { // chooses a play to start with. in order: drun, sdoubles, pdoubles, orun, qdoubles, tdoubles, qrun, ddoubles, quadruples, triples, doubles, single
   var temp = hand.cards.slice(); // list of duodec runs (ie 4 5 6 7 8 9 10 J Q K A 2)
   function elimRepeats(index) {
+    if(temp[index + 3] !== undefined) {
+      if(temp[index + 2].value === temp[index + 3].value) {
+        temp.splice(index, 4); // eliminate quads
+        elimRepeats(index);
+      }
+    }
+    if(temp[index + 2] !== undefined) {
+      if(temp[index + 1].value === temp[index + 2].value) {
+        temp.splice(index, 3); // eliminate triples
+        elimRepeats(index);
+      }
+    }
     if(temp[index + 1] !== undefined) {
-      if(temp[index + 2] !== undefined) {
-        if(temp[index + 3] !== undefined) {
-          if(temp[index + 2].value === temp[index + 3].value) {
-            temp.splice(index + 2, 1); // eliminate quads
-          }
-        }
-        if(temp[index + 1].value === temp[index + 2].value) {
-          temp.splice(index + 1, 1); // eliminate triples
-        }
-      }
       if(temp[index].value === temp[index + 1].value) {
-        temp.splice(index, 1); // eliminate doubles
+        temp.splice(index, 2); // eliminate doubles
+        elimRepeats(index);
       }
+      index++;
       elimRepeats(index);
     } else {
-      if(temp[index - 1].value === temp[index].value) {
-        temp.splice(index, 1);
+      if(temp[index] !== undefined && temp[index - 1] !== undefined) {
+        if(temp[index - 1].value === temp[index].value) {
+          temp.splice(index, 1);
+        }
       }
     }
   }
@@ -1428,24 +1452,30 @@ function trickStartPDoubles(hand, whenDone) {
 function trickStartORun(hand, whenDone) {
   var temp = hand.cards.slice(); // list of octuple runs (ie 4 5 6 7 8 9 10 J)
   function elimRepeats(index) {
+    if(temp[index + 3] !== undefined) {
+      if(temp[index + 2].value === temp[index + 3].value) {
+        temp.splice(index, 4); // eliminate quads
+        elimRepeats(index);
+      }
+    }
+    if(temp[index + 2] !== undefined) {
+      if(temp[index + 1].value === temp[index + 2].value) {
+        temp.splice(index, 3); // eliminate triples
+        elimRepeats(index);
+      }
+    }
     if(temp[index + 1] !== undefined) {
-      if(temp[index + 2] !== undefined) {
-        if(temp[index + 3] !== undefined) {
-          if(temp[index + 2].value === temp[index + 3].value) {
-            temp.splice(index + 2, 1); // eliminate quads
-          }
-        }
-        if(temp[index + 1].value === temp[index + 2].value) {
-          temp.splice(index + 1, 1); // eliminate triples
-        }
-      }
       if(temp[index].value === temp[index + 1].value) {
-        temp.splice(index, 1); // eliminate doubles
+        temp.splice(index, 2); // eliminate doubles
+        elimRepeats(index);
       }
+      index++;
       elimRepeats(index);
     } else {
-      if(temp[index - 1].value === temp[index].value) {
-        temp.splice(index, 1);
+      if(temp[index] !== undefined && temp[index - 1] !== undefined) {
+        if(temp[index - 1].value === temp[index].value) {
+          temp.splice(index, 1);
+        }
       }
     }
   }
@@ -1626,24 +1656,30 @@ function startTrickTDoubles(hand, whenDone) {
 function trickStartQRun(hand, whenDone) {
   var temp = hand.cards.slice(); // list of quadruple runs (ie 4 5 6 7)
   function elimRepeats(index) {
+    if(temp[index + 3] !== undefined) {
+      if(temp[index + 2].value === temp[index + 3].value) {
+        temp.splice(index, 4); // eliminate quads
+        elimRepeats(index);
+      }
+    }
+    if(temp[index + 2] !== undefined) {
+      if(temp[index + 1].value === temp[index + 2].value) {
+        temp.splice(index, 3); // eliminate triples
+        elimRepeats(index);
+      }
+    }
     if(temp[index + 1] !== undefined) {
-      if(temp[index + 2] !== undefined) {
-        if(temp[index + 3] !== undefined) {
-          if(temp[index + 2].value === temp[index + 3].value) {
-            temp.splice(index + 2, 1); // eliminate quads
-          }
-        }
-        if(temp[index + 1].value === temp[index + 2].value) {
-          temp.splice(index + 1, 1); // eliminate triples
-        }
-      }
       if(temp[index].value === temp[index + 1].value) {
-        temp.splice(index, 1); // eliminate doubles
+        temp.splice(index, 2); // eliminate doubles
+        elimRepeats(index);
       }
+      index++;
       elimRepeats(index);
     } else {
-      if(temp[index - 1].value === temp[index].value) {
-        temp.splice(index, 1);
+      if(temp[index] !== undefined && temp[index - 1] !== undefined) {
+        if(temp[index - 1].value === temp[index].value) {
+          temp.splice(index, 1);
+        }
       }
     }
   }
