@@ -998,10 +998,10 @@ function playMusic(which) { // in the form of the variable ie fightMusic, places
 function loadMusic() {
   fightMusic = document.getElementById('FightMusic');
   towerMusic = document.getElementById('TowerMusic');
-  placesMusic = document.getElementById('PlacesMusic');
+  placesMusic = document.getElementById('MarketplaceMusic');
   menuMusic = document.getElementById('MenuMusic');
-  townMusic = document.getElementById('TownMusic');
-  innMusic = document.getElementById('InnMusic');
+  townMusic = document.getElementById('MarketplaceMusic');
+  innMusic = document.getElementById('MarketplaceMusic');
   marketplaceMusic = document.getElementById('MarketplaceMusic');
   gameOverMusic = document.getElementById('GameOverMusic');
   endMusic = document.getElementById('EndMusic');
