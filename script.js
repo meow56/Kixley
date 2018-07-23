@@ -1965,8 +1965,8 @@ function Options() {
 }
 
 function Places() {
-  if(placesMusic.paused) {
-    playMusic(placesMusic);
+  if(marketplaceMusic.paused) {
+    playMusic(marketplaceMusic);
   }
   writeText("Where do you go now?");
   loc = 1
@@ -2765,9 +2765,6 @@ function ValaClass() {
 }
 
 function InTown() {
-  if(townMusic.paused) {
-    playMusic(townMusic);
-  }
   loc = 2
   writeText("Where to?");
   requestInput(["Market", "Inn", "Leave", "Menu"], determineAnswer);
@@ -2805,9 +2802,6 @@ function InTown() {
  */
 
 function InShop() {
-  if(marketplaceMusic.paused) {
-    playMusic(marketplaceMusic);
-  }
   writeText('The marketplace master greets you.')
   var temp2 = ["Buy", "Sell", "Leave"];
   var temp3 = true;
@@ -2897,9 +2891,6 @@ function Buy() {
 
 
 function InInn() {
-  if(innMusic.paused) {
-    playMusic(innMusic);
-  }
   writeText('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
   writeText("So whadda ya say?");
   requestInput(["Yes", "Common Room", "Leave"], determineAnswer);
