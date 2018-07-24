@@ -1,4 +1,4 @@
-//This will probably be available from the town menu, we might also put it in the Rowdy Barstead.
+//This will be available from the Rowdy Barstead.
 
 function Casino() {
   function Card(value, suit) {
@@ -110,6 +110,7 @@ function Casino() {
 		suit doesn't matter in Scumbags, number is the only thing we have to sort for. Unless, of course, we add
 		another game like hearts where suit matters.
 	  */
+		  // well, i figure i might as well keep things consistent, especially for viewing.
             switch (temp4) {
               case "Hearts":
                 temp4 = 3;
@@ -304,22 +305,82 @@ function Casino() {
 
     this.exchangeCards = function(howMany, better, worse) {
       if (better === 0) { // if you get the better cards
-
-      } else if (worse === 0) { // if you get the worse cards
-
-      } else { // you aren't here
         this.hands[better].sortScumbags();
         this.hands[worse].sortScumbags();
-        var temp = this.hands[worse].splice(0, howMany);
-        var temp2 = this.hands[better].splice(-howMany, howMany);
+        for(var i = 0; i < howMany; i++) {
+          chooseCardsAsk(worse);
+        }
+      } else { // the computer is in control of what cards to give/take
+        this.hands[better].sortScumbags();
+        this.hands[worse].sortScumbags();
+        var temp = this.hands[worse].cards.splice(0, howMany);
+        var temp2 = this.hands[better].cards.splice(-howMany, howMany);
         for (var i = 0; i < temp.length; i++) {
-          this.hands[worse].push(temp2[i]);
-          this.hands[better].push(temp[i]);
+          this.hands[worse].cards.push(temp2[i]);
+          this.hands[better].cards.push(temp[i]);
         }
       }
     }
   }
 
+  function chooseCardsAsk(worse) {
+    writeText("What card would you like to ask for?");
+    writeText("Your hand:");
+    for(var i = 0; i < game.hands[0].cards.length; i++) {
+      var temp = "";
+      switch(game.hands[0].cards[i].value) {
+        case 11:
+          temp += "Jack";
+          break;
+        case 12:
+          temp += "Queen";
+          break;
+        case 13:
+          temp += "King";
+          break;
+        case 1:
+          temp += "Ace";
+          break;
+        default:
+          temp += game.hands[0].cards[i].value;
+      }
+      temp += " of ";
+      temp += game.hands[0].cards[i].suit;
+      writeText(temp);
+    }
+    requestInput([3, "3 of Clubs", 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace", 2], determineAnswer);
+    function determineAnswer() {
+      switch(answer) {
+        case "Jack":
+          answer = 11;
+          break;
+        case "Queen":
+          answer = 12;
+          break;
+        case "King":
+          answer = 13;
+          break;
+        case "Ace":
+          answer = 1;
+          break;
+        case "3 of Clubs":
+          break;
+        default:
+          answer = +answer;
+          break;
+      }
+      if(answer === "3 of Clubs") {
+        var temp = game.hands[worse].find(3, "Clubs");
+        if(temp === -1) {
+          writeText("The man says, \"Sorry, I don't have that.\"");
+          chooseCardsAsk(worse);
+        } else {
+          
+        }
+      }
+    }
+  }
+  
   function scumbagsLoop() {
     var temp2 = 0;
     for (var i = 0; i < 4; i++) {
