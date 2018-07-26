@@ -4,6 +4,7 @@ function Casino() {
   function Card(value, suit) {
     this.value = value;
     this.suit = suit;
+    this.tradedThisTurn = false;
   }
 
   function Deck(cards) {
@@ -254,6 +255,12 @@ function Casino() {
       }
       this.cards = sorted;
     }
+    
+    this.resetTrades = function() {
+      for(var i = 0; i < this.cards.length; i++) {
+        this.cards[i].tradedThisTurn = false;
+      }
+    }
   }
 
   function Game(type, previousPlacement, points) {
@@ -268,6 +275,7 @@ function Casino() {
     this.typeToBeat = "none";
     this.placement = [0, 0, 0, 0];
     this.nextPlace = 1;
+    this.lastCardTraded;
 
     switch (this.type) {
       case "Scumbags":
@@ -283,7 +291,9 @@ function Casino() {
               var id4 = i;
             }
           }
-
+          for(var i = 0; i < this.hands.length; i++) {
+            this.hands[i].resetTrades();
+          }
           this.points[id1] += 2;
           this.points[id2] += 1;
           this.points[id3] -= 1;
@@ -309,6 +319,7 @@ function Casino() {
         this.hands[worse].sortScumbags();
         for(var i = 0; i < howMany; i++) {
           chooseCardsAsk(worse);
+          chooseCardsGive(worse);
         }
       } else { // the computer is in control of what cards to give/take
         this.hands[better].sortScumbags();
@@ -371,16 +382,165 @@ function Casino() {
       }
       if(answer === "3 of Clubs") {
         var temp = game.hands[worse].find(3, "Clubs");
-        if(temp === -1) {
-          writeText("The man says, \"Sorry, I don't have that.\"");
+        var temp2 = game.hands[worse].cards[temp];
+        var temp3 = false;
+        if(temp2 !== undefined) {
+          var temp3 = game.hands[worse].cards[temp].tradedthisTurn;
+        }
+        if(temp === -1 || temp3) {
+          if(temp === -1) {
+            writeText("The man says, \"Sorry, I don't have that.\"");
+          } else {
+            writeText("The man looks at you in confusion and says, \"You just gave that card to me!\"");
+          }
           chooseCardsAsk(worse);
         } else {
-          
+          game.hands[worse].cards[temp].tradedThisTurn = true;
+          game.hands[0].cards.push(game.hands[worse].cards.splice(temp, 1));
+          game.hands[0].sortScumbags();
+          writeText("The man says, \"Here ya go.\"");
+        }
+      } else {
+        if(answer === 3) {
+          var temp = game.hands[worse].find(3, "!Clubs");
+          var temp2 = game.hands[worse].cards[temp];
+          var temp3 = false;
+          if(temp2 !== undefined) {
+            temp3 = game.hands[worse].cards[temp].tradedthisTurn;
+          }
+          if(temp3) {
+            var temp = game.hands[worse].find(3, "!Clubs&" + temp2.suit);
+            var temp4 = game.hands[worse].cards[temp];
+            if(temp4 !== undefined) {
+              temp3 = game.hands[worse].cards[temp].tradedthisTurn;
+            }
+            if(temp3) {
+              var temp = game.hands[worse].find(3, "!Clubs&" + temp2.suit + "&" + temp4.suit);
+              var temp5 = game.hands[worse].cards[temp];
+              if(temp5 !== undefined) {
+                temp3 = game.hands[worse].cards[temp].tradedthisTurn;
+              }
+            }
+          }
+          if(temp === -1 || temp3) {
+            if(temp === -1) {
+              writeText("The man says, \"Sorry, I don't have that.\"");
+            } else {
+              writeText("The man looks at you in confusion and says, \"You just gave that card to me!\"");
+            }
+            chooseCardsAsk(worse);
+          } else {
+            game.hands[worse].cards[temp].tradedThisTurn = true;
+            game.hands[0].cards.push(game.hands[worse].cards.splice(temp, 1));
+            game.hands[0].sortScumbags();
+            writeText("The man says, \"Here ya go.\"");
+          }
+        } else {
+          var temp = game.hands[worse].find(answer, "*");
+          var temp2 = game.hands[worse].cards[temp];
+          var temp3 = false;
+          if(temp2 !== undefined) {
+            temp3 = game.hands[worse].cards[temp].tradedthisTurn;
+          }
+          if(temp3) {
+            var temp = game.hands[worse].find(answer, "!" + temp2.suit);
+            var temp4 = game.hands[worse].cards[temp];
+            if(temp4 !== undefined) {
+              temp3 = game.hands[worse].cards[temp].tradedthisTurn;
+            }
+            if(temp3) {
+              var temp = game.hands[worse].find(answer, "!" + temp2.suit + "&" + temp4.suit);
+              var temp5 = game.hands[worse].cards[temp];
+              if(temp5 !== undefined) {
+                temp3 = game.hands[worse].cards[temp].tradedthisTurn;
+              }
+              if(temp3) {
+                var temp = game.hands[worse].find(answer, "!" + temp2.suit + "&" + temp4.suit + "&" + temp5.suit);
+                var temp6 = game.hands[worse].cards[temp];
+                if(temp6 !== undefined) {
+                  temp3 = game.hands[worse].cards[temp].tradedthisTurn;
+                }
+              }
+            }
+          }
+          if(temp === -1 || temp3) {
+            if(temp === -1) {
+              writeText("The man says, \"Sorry, I don't have that.\"");
+            } else {
+              writeText("The man looks at you in confusion and says, \"You just gave that card to me!\"");
+            }
+            chooseCardsAsk(worse);
+          } else {
+            game.hands[worse].cards[temp].tradedThisTurn = true;
+            game.hands[0].cards.push(game.hands[worse].cards.splice(temp, 1));
+            game.hands[0].sortScumbags();
+            writeText("The man says, \"Here ya go.\"");
+          }
         }
       }
     }
   }
   
+  function chooseCardsGive(worse) {
+    writeText("What card would you like to give?");
+    for(var i = 0; i < game.hands[0].cards.length; i++) {
+      var temp = [];
+      var temp2 = "";
+      switch(game.hands[0].cards[i].value) {
+        case 11:
+          temp2 += "Jack";
+          break;
+        case 12:
+          temp2 += "Queen";
+          break;
+        case 13:
+          temp2 += "King";
+          break;
+        case 1:
+          temp2 += "Ace";
+          break;
+        default:
+          temp2 += game.hands[0].cards[i].value;
+      }
+      temp2 += " of ";
+      temp2 += game.hands[0].cards[i].suit;
+      if(!game.hands[0].cards[i].tradedThisTurn) {
+        temp.push(temp2);
+      }
+    }
+    requestInput(temp, determineAnswer);
+    function determineAnswer() {
+      var temp = answer.split(" ");
+      switch(temp[0]) {
+        case "Jack":
+          answer = 11;
+          break;
+        case "Queen":
+          answer = 12;
+          break;
+        case "King":
+          answer = 13;
+          break;
+        case "Ace":
+          answer = 1;
+          break;
+        default:
+          answer = +answer;
+          break;
+      }
+      var temp2 = game.hands[0].find(temp[0], temp[2]);
+      if(game.hands[0].cards[temp2].tradedThisTurn) {
+        writeText("The man looks at the card and says, \"Hey, I just gave you that card!\"");
+        chooseCardsGive(worse);
+      } else {
+        game.hands[0].cards[temp2].tradedThisTurn = true;
+        game.hands[worse].cards.push(game.hands[0].cards.splice(temp, 1));
+        game.hands[worse].sortScumbags();
+        writeText("The man says \"Thankya.\" as you hand him the card.");
+      }
+    }    
+  }
+
   function scumbagsLoop() {
     var temp2 = 0;
     for (var i = 0; i < 4; i++) {
