@@ -7,6 +7,10 @@ Version: Beta 1.3
 
 Site: meow56.github.io/Kixley
 
+Composer:
+
+Colin Pulis
+
 Programmers:
 
 Ethan Lai
