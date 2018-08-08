@@ -2805,7 +2805,59 @@ function Casino() {
   }
 
   function slotsStart() {
-
+    oneIsStopped = false;
+    twoIsStopped = false;
+    threeIsStopped = false;
+    var temp = document.createElement("BUTTON");
+    temp.textContent = "STOP";
+    temp.onclick = stopSlot1();
+    temp.id = "stop_slots";
+    // document.getElementById("buttons").appendChild(temp);
+    slotsLoop();
+    // slots start rolling
+    // button creation, wait for response
+  }
+  
+  function slotsLoop() {
+    if(!oneIsStopped) {
+      indexOne++;
+    }
+    if(!twoIsStopped) {
+      indexTwo++;
+    }
+    if(!threeIsStopped) {
+      indexThree++;
+    }
+    // something about rendering the slots
+    // slots table creation
+    // row one shows index - 1, unless index is zero. then it shows array.length - 1
+    // row two shows index
+    // row three shows index + 1, unless index is array.length - 1. then it shows zero
+  }
+  
+  function stopSlot1() {
+    oneIsStopped = true;
+    // stop slot 1, perhaps with a slowdown to stop? ie tick 5 ahead before stopping
+    document.getElementById("stop_slots").onclick = stopSlot2(); // does this work or will it break horribly? who knows
+    // recreate button for slot 2
+  }
+  
+  function stopSlot2() {
+    twoIsStopped = true;
+    // stop slot 2, perhaps with a slowdown to stop? ie tick 5 ahead before stopping
+    document.getElementById("stop_slots").onclick = stopSlot3(); // does this work or will it break horribly? who knows
+    // recreate button for slot 3
+  }
+  
+  function stopSlot3() {
+    // stop slot 3, perhaps with a slowdown to stop? ie tick 5 ahead before stopping
+    // after that's done, determine win
+    document.getElementById("buttons").removeChild(document.getElementById("stop_slots"));
+    determineSlots();
+  }
+  
+  function determineSlots() {
+    // do the middle three slots match? if so, win! otherwise, lose (unless we want to add a special for a different combo?)
   }
   chooseGame()
 }
