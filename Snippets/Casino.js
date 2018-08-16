@@ -2527,6 +2527,7 @@ function Casino() {
     answer = prompt('What game do you want to play?', 'Scumbags and Warlords, High or Low, Blackjack, Slots').toUpperCase() //I'm making this with alert/prompt because I don't want to copy the writing functions, also I'm just better with alert/prompt.
     switch (answer) {
       case 'SCUMBAGS AND WARLORDS':
+      case 'SCUMMYBOIS':
         scumbagsAndWarlords()
         break;
       case 'HIGH OR LOW':
