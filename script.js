@@ -424,7 +424,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           break;
         case "Special Attack":
           writeText('This class doesn\'t have a special attack.')
-          fightLoop()
+          this.fightLoop()
           break;
         default:
           const err = new Error("\"" + this.action[i] + "\" is not a valid command.");
