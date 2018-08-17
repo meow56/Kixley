@@ -423,8 +423,8 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
           actualSpec(this.notTurn[this.target[i]]);
           break;
         case "Special Attack":
-          alert('This class doesn\'t have a special attack.')
-          Fight()
+          writeText('This class doesn\'t have a special attack.')
+          fightLoop()
           break;
         default:
           const err = new Error("\"" + this.action[i] + "\" is not a valid command.");
