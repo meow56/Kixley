@@ -299,8 +299,13 @@ function Casino() {
           this.points[id3] -= 1;
           this.points[id4] -= 2;
 
-          this.exchangeCards(2, id1, id4);
-          this.exchangeCards(1, id2, id3);
+		      if(this.points[0] >= 8 || this.points[1] >= 8 || this.points[2] >= 8 || this.points[3] >= 8) {
+            // end
+            this.endScumbags();
+          } else {
+            this.exchangeCards(2, id1, id4);
+            this.exchangeCards(1, id2, id3);
+          }
         }
         if (this.trick === 0) {
           for (var i = 0; i < this.hands.length; i++) {
@@ -313,6 +318,32 @@ function Casino() {
         break;
     }
 
+    this.endScumbags = function() {
+      var temp = (this.points[0] >= this.points[1]); // beat AI 1
+      var temp2 = (this.points[0] >= this.points[2]); // beat AI 2
+      var temp3 = (this.points[0] >= this.points[3]); // beat AI 3
+      var temp4 = 0;
+      if(temp) {
+        temp4++;
+      }
+      if(temp2) {
+        temp4++;
+      }
+      if(temp3) {
+        temp4++;
+      }
+      if(temp4 === 3) { // ya got first or tied for it
+        var finalReturns = bet * 2;
+      } else if(temp4 === 2) { // ya got second or tied for it
+        var finalReturns = bet * 1;
+      } else if(temp4 === 1) { // ya got third or tied for it
+        var finalReturns = bet * 0.5;
+      } else { // ya got last, ya baka!
+        var finalReturns = 0;
+      }
+      // something something give them money
+    }
+    
     this.exchangeCards = function(howMany, better, worse) {
       if (better === 0) { // if you get the better cards
         this.hands[better].sortScumbags();
