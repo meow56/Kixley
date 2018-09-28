@@ -279,7 +279,13 @@ function Casino() {
 
     switch (this.type) {
       case "Scumbags":
-        if (this.prePla !== [0, 0, 0, 0]) {
+		    var temp = true;
+        for(var i = 0; i < this.prePla.length; i++) {
+          if(this.prePla[i] !== 0) {
+            temp = false;
+          }
+        }
+        if (temp) {
           for (var i = 0; i < this.prePla.length; i++) {
             if (this.prePla[i] === 1) {
               var id1 = i;
