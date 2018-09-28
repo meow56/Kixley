@@ -2585,8 +2585,6 @@ function Casino() {
 
   function scumbagsAndWarlords() {
     game = new Game("Scumbags", [0, 0, 0, 0], [0, 0, 0, 0]);
-    alert('Your hand is ' + game.hands[0] + '.')
-
   }
 
   function TheActualHighLow() {
