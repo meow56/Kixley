@@ -285,7 +285,10 @@ function Casino() {
             temp = true;
           }
         }
-        if (temp) {
+        if (!temp) {
+          deck.shuffle();
+          this.hands = deck.deal(4);
+        } else {
           for (var i = 0; i < this.prePla.length; i++) {
             if (this.prePla[i] === 1) {
               var id1 = i;
