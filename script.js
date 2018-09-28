@@ -2897,7 +2897,7 @@ function Buy() {
 function InInn() {
   writeText('A musty scent fills your nose as you walk into the inn. The dim lights are a stark difference from the outside, and it takes a moment for your eyes to adjust. When they do, they show you a man grinning at you. "Welcom\' to the Rowdy Barstead. You ca\' spend the night here if you like. Only 50 gold. You can also go to the common room. Do jobs fer money. Buy stuff real cheap.')
   writeText("So whadda ya say?");
-  requestInput(["Yes", "Common Room", "Leave"], determineAnswer);
+  requestInput(["Yes", "Common Room", "Casino", "Leave"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
       case 'Yes':
@@ -2927,6 +2927,9 @@ function InInn() {
         break;
       case 'Common Room':
         inCommonRoom()
+        break;
+      case "Casino":
+        Casino();
         break;
     }
   }
