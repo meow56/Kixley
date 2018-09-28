@@ -2574,7 +2574,7 @@ function Casino() {
   }
 
   function scumbagsAndWarlords() {
-    var game = new Game("Scumbags");
+    var game = new Game("Scumbags", [0, 0, 0, 0], [0, 0, 0, 0]);
     deck.shuffle();
     game.hands = deck.deal(4);
     alert('Your hand is ' + game.hands[0] + '.')
