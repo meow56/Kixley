@@ -2433,6 +2433,7 @@ function Casino() {
     }
   }
   var hands;
+  var game;
   var slot1 = ["B", "7", "C", "B", "L", "L", "C", "D"];
   var oneIsStopped = false;
   var indexOne = 0;
@@ -2583,9 +2584,7 @@ function Casino() {
   }
 
   function scumbagsAndWarlords() {
-    var game = new Game("Scumbags", [0, 0, 0, 0], [0, 0, 0, 0]);
-    deck.shuffle();
-    game.hands = deck.deal(4);
+    game = new Game("Scumbags", [0, 0, 0, 0], [0, 0, 0, 0]);
     alert('Your hand is ' + game.hands[0] + '.')
 
   }
