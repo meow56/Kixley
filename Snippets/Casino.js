@@ -1,5 +1,6 @@
 //This will be available from the Rowdy Barstead.
 
+var game;
 function Casino() {
   function Card(value, suit) {
     this.value = value;
@@ -2433,7 +2434,6 @@ function Casino() {
     }
   }
   var hands;
-  var game;
   var slot1 = ["B", "7", "C", "B", "L", "L", "C", "D"];
   var oneIsStopped = false;
   var indexOne = 0;
