@@ -1,3 +1,7 @@
+export { kixleyNCo, fightHandler };
+
+
+
 function Fighter(health, attack, acc, name, level, type, BoD) {
   this.hitPoints = health;
   this.attackPow = attack;
