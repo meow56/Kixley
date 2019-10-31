@@ -1,4 +1,8 @@
-import { randomNumber } from './main.js';
+//import { randomNumber } from './main.js';
+
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
