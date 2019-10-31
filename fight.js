@@ -1,4 +1,4 @@
-export { kixleyNCo, fightHandler };
+
 
 
 
@@ -983,3 +983,8 @@ function WonTheFight() {
     }
   }
 }
+
+
+
+
+export { kixleyNCo, fightHandler };
