@@ -1,5 +1,8 @@
 //alert("Ok, what the heck.");
 
+export function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 import { kixleyNCo, fightHandler } from './fight.js';
 
@@ -2510,4 +2513,4 @@ function towerSaveMenu() {
 
 
 
-export randomNumber;
+//export randomNumber;
