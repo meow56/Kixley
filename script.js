@@ -1,9 +1,5 @@
-//alert("Ok, what the heck.");
 
-export randomNumber;
 import { kixleyNCo, fightHandler } from './fight.js';
-
-alert("Uh oh...");
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
@@ -575,10 +571,6 @@ function clearText() {
   }
 }
 
-function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function parseBool(stringBool) {
   if (stringBool === 'true') {
     return true
@@ -818,10 +810,6 @@ function NIY() {
   alert('Sorry. That feauture hasn\'t been implemented yet.')
 }
 
-function percentChance(percent) {
-  return (1 + (Math.random() * 99)) <= percent
-}
-
 function FightRound(n) {
   if (n < 1) {
     return 1;
@@ -833,7 +821,6 @@ function FightRound(n) {
 /**********************\
 |       FIGHTING       |
 \**********************/
-
 
 function hideOrFight() {
   for(var i = 1; i < 4; i++) {
