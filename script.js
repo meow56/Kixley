@@ -1,3 +1,7 @@
+import { kixleyNCo, fightHandler } from "./fight.js"
+
+
+
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
     writeText(error.message);
