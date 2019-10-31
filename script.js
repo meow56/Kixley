@@ -1,4 +1,4 @@
-alert("Ok, what the heck.");
+//alert("Ok, what the heck.");
 
 import { kixleyNCo, fightHandler } from './fight.js';
 
