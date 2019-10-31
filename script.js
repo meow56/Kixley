@@ -1,4 +1,4 @@
-import { kixleyNCo, fightHandler } from "./fight.js"
+import { kixleyNCo, fightHandler } from "./fight.js";
 
 alert("Uh oh...");
 
