@@ -3,7 +3,9 @@
 import { kixleyNCo, fightHandler } from './fight.js';
 
 alert("Uh oh...");
-/*
+
+export randomNumber;
+
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
     writeText(error.message);
@@ -2501,4 +2503,3 @@ function towerSaveMenu() {
     }
   }
 }
-*/
