@@ -1,6 +1,5 @@
 //alert("Ok, what the heck.");
 
-export randomNumber;
 
 import { kixleyNCo, fightHandler } from './fight.js';
 
@@ -2503,3 +2502,12 @@ function towerSaveMenu() {
     }
   }
 }
+
+
+
+
+
+
+
+
+export randomNumber;
