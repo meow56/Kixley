@@ -489,28 +489,28 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
   
   this.showHealth = function() {
-    for(var i = 1; i < faction1.length; i++) {
+    for(var i = 0; i < faction1.length; i++) {
       faction1[i].showHealth(false);
     }
-    for(var i = 1; i < faction2.length; i++) {
+    for(var i = 0; i < faction2.length; i++) {
       faction2[i].showHealth(false);
     }
   }
   
   this.showBlobs = function() {
-    for(var i = 1; i < faction1.length; i++) {
+    for(var i = 0; i < faction1.length; i++) {
       faction1[i].showBlobs(false);
     }
-    for(var i = 1; i < faction2.length; i++) {
+    for(var i = 0; i < faction2.length; i++) {
       faction2[i].showBlobs(false);
     }
   }
   
   this.showInfo = function() {
-    for(var i = 1; i < faction1.length; i++) {
+    for(var i = 0; i < faction1.length; i++) {
       faction1[i].showInfo();
     }
-    for(var i = 1; i < faction2.length; i++) {
+    for(var i = 0; i < faction2.length; i++) {
       faction2[i].showInfo();
     }
   }
