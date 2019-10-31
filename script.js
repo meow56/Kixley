@@ -153,9 +153,9 @@ var timeGTOne = 0; // whether you get 6 or 7 BoD when Mithrómen sells you BoD
 var swampCounter = 0;
 // level
 var temp;
-var levelReq = 100 + kixleyNCo[1].lev * 200; // exp required until level up
+var levelReq = 300; // exp required until level up
 var levelUpHealth = 50;
-var totalExtraHealth = levelUpHealth * (kixleyNCo[1].lev - 1);
+var totalExtraHealth = 0;
 var levelUpBlobsOfDoom = 50;
 var classHealthChanges = [
   15, -15, -25,
