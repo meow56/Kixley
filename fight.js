@@ -1,4 +1,4 @@
-import { randomNumber } from './script.js';
+import { randomNumber } from './utility.js';
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
