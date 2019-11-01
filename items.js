@@ -1,3 +1,8 @@
+//import;
+
+export { displayInventory };
+
+
 function InventoryItem(name, effect, type, cost, description) {
   this.name = name; // string
   this.effect = effect; // function eg Function("this.finalDamage * 1.05")
