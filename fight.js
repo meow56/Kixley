@@ -866,20 +866,6 @@ function FightMenu() {
   }
 }
 
-function useHealthPotion() {
-  writeText('You pull a health potion out of your bag and drink it! Yum! It tastes like snickerdoodle cookies!')
-  writeText(hpEff + ' hit points restored!')
-  kixleyNCo[1].hitPoints += hpEff;
-  for(var i = 0; i < inventory.length; i++) {
-    if(inventory[i][0].name === "Health Potion") {
-      inventory[i][1]--;
-    }
-  }
-  if (kixleyNCo[1].hitPoints > kixleyNCo[1].totalHP) {
-    kixleyNCo[1].hitPoints = kixleyNCo[1].totalHP
-  }
-}
-
 function ChooseSpell() {
   writeText("What spell?");
   writeText("You have " + kixleyNCo[1].blobs + " blobs of doom.");
