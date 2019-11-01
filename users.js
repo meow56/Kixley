@@ -185,9 +185,9 @@ function inAccount() {
     requestInput(["Yes", "No"], determineAnswer);
     function determineAnswer() {
       if (answer === "Yes") {
-        settingDefault = true
-        Difficulty()
-        useDefaultDiff = true
+        settingDefault = true;
+        Difficulty();
+        useDefaultDiff = true;
       }
     }
   }
@@ -214,12 +214,10 @@ function inAccount() {
   function determineAnswer3() {
     switch (answer) {
       case 'Set Default Difficulty':
-        settingDefault = true
-        Difficulty()
+        Difficulty(true);
         break;
       case 'Set Default Class':
-        settingDefault = true
-        ChooseClass()
+        ChooseClass(true);
         break;
       case 'Stay Signed In':
         localStorage.setItem('staySignedInAs', username)
