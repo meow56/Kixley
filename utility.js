@@ -1,5 +1,5 @@
 import { loadMusic, playMusic } from './music.js';
-import { username, useDefaults, useDefaultDiff, useDefaultClass, MakeNewAccount, login } from './users.js';
+import { initializeUsers, MakeNewAccount, login } from './users.js';
 
 export { randomNumber, percentChance, StartUpMenu, requestNumber, requestInput, writeTextWait, writeText };
 
@@ -190,17 +190,7 @@ function StartUpMenu() {
     chromeWindow()
   }
   
-  username = localStorage.getItem('staySignedInAs')
-  if (username !== null) {
-    useDefaults = localStorage.getItem('Defaults Used?' + username + 'Kixley@65810')
-    useDefaults = parseBool(useDefaults)
-    if (useDefaults === false) {
-      useDefaultDiff = localStorage.getItem('Default Diff Used?' + username + 'Kixley@65810')
-      useDefaultDiff = parseBool(useDefaultDiff)
-      useDefaultClass = localStorage.getItem('Default Class Used?' + username + 'Kixley@65810')
-      useDefaultClass = parseBool(useDefaultClass)
-    }
-  }
+  initializeUsers();
   writeText("Kixley Beta 1.1");
   requestInput(["Start", "Options", "Load", "Achievements", "Create New Account", "Log In", "Exit"], determineAnswer);
   //answer = prompt('Choose an option. (Version: Beta 1.1)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
@@ -291,16 +281,6 @@ function Menu() {
         login()
         break;
     }
-  }
-}
-
-function parseBool(stringBool) {
-  if (stringBool === 'true') {
-    return true
-  } else if (stringBool === 'false') {
-    return false
-  } else {
-    return stringBool
   }
 }
 
