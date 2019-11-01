@@ -1,6 +1,6 @@
 //import;
 
-export { initalizeUsers, MakeNewAccount, login };
+export { initializeUsers, MakeNewAccount, login };
 
 
 window.onerror = function(message, source, lineno, colno, error) {
