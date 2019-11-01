@@ -1,6 +1,6 @@
 import { randomNumber } from './utility.js';
 
-export { fightHandler };
+export { kixleyNCo, fightHandler };
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
@@ -985,8 +985,3 @@ function WonTheFight() {
     }
   }
 }
-
-
-
-
-export { kixleyNCo, fightHandler };
