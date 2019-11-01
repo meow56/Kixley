@@ -2,6 +2,10 @@
 
 export { displayInventory };
 
+function FakeFighter(name) {
+  this.called = name;
+}
+
 
 function InventoryItem(name, effect, type, cost, description) {
   this.name = name; // string
@@ -9,8 +13,7 @@ function InventoryItem(name, effect, type, cost, description) {
   this.type = type; // string eg "weapon", "boots", "helmet", etc
   this.cost = cost;
   if(this.type !== "item") {
-    this.equipped = new Fighter();
-    this.equipped.called = "unequip";
+    this.equipped = new FakeFighter("unequip");
   }
   this.buy;
   if(this.type !== "item") {
@@ -176,8 +179,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
           }
         }
         if(temp2 === "unequip") { // if the player wants to unequip, unequip
-          inventory[i][0].equipped = new Fighter();
-          inventory[i][0].equipped.called = "unequip"; // unequip, item side
+          inventory[i][0].equipped = new FakeFighter("unequip"); // unequip, item side
           inventory[i][0].equipped.equipped.push(inventory[i][0]);
         } else {
           for(var j = 1; j < kixleyNCo.length; j++) {
@@ -191,8 +193,7 @@ function displayInventory(foo) { // foo: boolean for update checker bypass
                       temp4.childNodes[k].selected = "true"; // unequip it
                     }
                   }
-                  kixleyNCo[j].equipped[index].equipped = new Fighter();
-                  kixleyNCo[j].equipped[index].equipped.called = "unequip"; // unequip, inventory side
+                  kixleyNCo[j].equipped[index].equipped = new FakeFighter("unequip"); // unequip, inventory side
                   kixleyNCo[j].equipped.splice(index, 1);
                 } else {
                   index++;
