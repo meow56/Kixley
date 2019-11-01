@@ -1,4 +1,4 @@
-import { Shoot } from './classes.js';
+import { Shoot, diffSetting } from './classes.js';
 
 export { displayInventory };
 
