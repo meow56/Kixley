@@ -1,4 +1,5 @@
 import { Shoot, diffSetting } from './classes.js';
+import { kixleyNCo } from './fight.js';
 
 export { displayInventory };
 
