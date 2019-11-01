@@ -1,7 +1,7 @@
 import { randomNumber } from './utility.js';
 import { displayInventory } from './items.js';
 
-export { kixleyNCo, fightHandler };
+export { kixleyNCo, fightHandler, Shoot };
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
