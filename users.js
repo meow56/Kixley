@@ -1,6 +1,6 @@
-//import;
+// import;
 
-export { initializeUsers, MakeNewAccount, login };
+export { initializeUsers, MakeNewAccount, login, checkDefaults };
 
 
 window.onerror = function(message, source, lineno, colno, error) {
@@ -234,6 +234,19 @@ function inAccount() {
     }
   }
 }
+
+function checkDefaults() {
+  if(useDefaults) {
+    return "Both";
+  } else if (useDefaultClass) {
+    return "Class";
+  } else if (useDefaultDiff) {
+    return "Diff";
+  } else {
+    return "None";
+  }
+}
+
 
 function parseBool(stringBool) {
   if (stringBool === 'true') {
