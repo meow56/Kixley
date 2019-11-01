@@ -126,9 +126,9 @@ function SpecialAttack(name, description, action) {
   this.action = action;
 }
                            // name, description, attack, health, bod, spell effectiveness, special, accuracy, drops, speed, critc, critmult
-var classes = [new GameClass("Knight", "The knight is a fierce warrior. They know when to fight and when to block, and trains themself ceaselessly.", 2, 15, -100, 50)
+var classes = [new GameClass("Knight", "The knight is a fierce warrior. They know when to fight and when to block, and trains themself ceaselessly.", 2, 15, -100, 50),
                new GameClass("Mage", "The mage does not overuse the fight option. Rather, they use magical attacks that damage the enemy.", -2, -15, 100, 150),
-               new GameClass("Barbarian", "The barbarian hits hard, but at the cost of health. With the Rage spell, they can knock out enemies with a single hit.", 4, 75)
+               new GameClass("Barbarian", "The barbarian hits hard, but at the cost of health. With the Rage spell, they can knock out enemies with a single hit.", 4, 75),
                new GameClass("Cleric", "The cleric would prefer to heal friends than attack foes, but they will have to fight now. With the Heal spell, they can restore some of their health.", -3, 10, 50, 125, new SpecialAttack("Heal", "Heal 60 HP for 30 Blobs of Doom", function() {writeText("You heal 60 hitpoints!"); this.hitPoints += 60; if (this.hitPoints > this.totalHP) { this.hitPoints = this.totalHP; } this.blobs -= 30; })),
                new GameClass("Prince", "The prince is like a knight on steroids. The fight option is definitely the choice for this class.", 4, 30, -200, 25),
                new GameClass("Archmage", "The arch-mage is like a mage on steroids. You should definitely use some magic as this class.", -4, -30, 200, 175),
