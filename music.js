@@ -1,4 +1,4 @@
-export { loadMusic, playMusic, currentlyPlaying };
+export { loadMusic, playMusic };
 
 function Song(name, source) {
   this.name = name;
@@ -31,10 +31,12 @@ function loadMusic() {
 }
 
 function playMusic(which) { // string with the name
-  for(var i = 0; i < songs.length; i++) {
-    songs[i].pause();
-    if(songs[i].name === which) {
-      songs[i].play();
+  if(currentlyPlaying() !== which) {
+    for(var i = 0; i < songs.length; i++) {
+      songs[i].pause();
+      if(songs[i].name === which) {
+        songs[i].play();
+      }
     }
   }
 }
