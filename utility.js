@@ -2,6 +2,20 @@ import { loadMusic, playMusic } from './music.js';
 
 export { randomNumber, percentChance, StartUpMenu, requestNumber, requestInput, writeTextWait, writeText };
 
+window.onerror = function(message, source, lineno, colno, error) {
+  if(error.message === "Thanks for playing!") {
+    writeText(error.message);
+  } else if(error.message === "Cannot read property 'toUpperCase' of null" || error.message === "Cannot read property 'toLowerCase' of null"){
+    alert("You just pressed the \"Cancel\" button. That causes the game to end.");
+  } else {
+    alert("Kixley-Utility has run into an unexpected error.");
+    alert("To help in debugging, Kixley-Utility has this to say:");
+    alert(message);
+    alert("Error found on line " + lineno);
+    alert("Error found on column " + colno);
+  }
+}
+
 var openingMenu;
 var loc;
 var from;
@@ -144,9 +158,7 @@ function StartUpMenu() {
         openingMenu = false;
     }
   }
-  if(menuMusic.paused) {
-    playMusic(menuMusic);
-  }
+  playMusic("Menu");
 
   function detectIE() {
     var ua = window.navigator.userAgent;
