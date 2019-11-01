@@ -20,6 +20,7 @@ window.onerror = function(message, source, lineno, colno, error) {
 var openingMenu;
 var loc;
 var from;
+var answer;
 
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
