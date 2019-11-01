@@ -36,7 +36,7 @@
     <div id="text">
     </div>
     <div id="buttons">
-      <button id="runbutton" onclick="openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();">Run</button>
+      <button id="runbutton" onclick="import { StartUpMenu } from './utility.js'; openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();">Run</button>
     </div>
   </div>
 </body>
