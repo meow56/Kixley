@@ -1,4 +1,5 @@
 import { loadMusic, playMusic } from './music.js';
+import { username, useDefaults, useDefaultDiff, useDefaultClass, MakeNewAccount, login } from './users.js';
 
 export { randomNumber, percentChance, StartUpMenu, requestNumber, requestInput, writeTextWait, writeText };
 
@@ -290,6 +291,16 @@ function Menu() {
         login()
         break;
     }
+  }
+}
+
+function parseBool(stringBool) {
+  if (stringBool === 'true') {
+    return true
+  } else if (stringBool === 'false') {
+    return false
+  } else {
+    return stringBool
   }
 }
 
