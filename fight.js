@@ -1,7 +1,8 @@
 import { randomNumber } from './utility.js';
 import { displayInventory } from './items.js';
+import { diffSetting } from './classes.js';
 
-export { kixleyNCo, fightHandler, Shoot };
+export { kixleyNCo, fightHandler, Shoot, monsterGroup };
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
@@ -19,7 +20,7 @@ window.onerror = function(message, source, lineno, colno, error) {
 
 
 
-function Fighter(health, attack, acc, name, level, type, BoD) {
+function Fighter(health, attack, acc, name, level, type, BoD, speed) {
   this.hitPoints = health;
   this.attackPow = attack;
   this.accuracy = acc;
@@ -27,10 +28,16 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
   this.lev = level;
   this.element = type;
   this.blobs = BoD;
+  this.speed = speed;
+  
+  
+  
+  this.spec;
   this.streak = 0;
   this.finalDamage;
   this.chosenClass;
   this.critChance = 10;
+  this.critDamage = 1.5;
   this.calledPlusThe = "The " + this.called;
   this.calledPlusthe = "the " + this.called;
   this.totalHP = this.hitPoints;
@@ -54,7 +61,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
     for(var i = 0; i < this.equipped.length; i++) {
       this.equipped[i].effect(); // apply any accuracy boosts
     }
-    if (!percentChance(this.tempAccuracy) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
+    if (!percentChance(this.tempAccuracy / fighter.speed) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
       this.streak++ // num times missed in a row plus one
       writeText(this.calledPlusThe + " missed.");
     } else {
@@ -66,11 +73,7 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       }
       this.finalDamage += randomNumber(-2, 2); // random variability
       if (this.cChance) {
-        if (this.chosenClass === 8) {
-          this.finalDamage *= 2; // cavalry has double damage crit
-        } else {
-          this.finalDamage *= 1.5; // everyone else is 1.5x damage crit
-        }
+        this.finalDamage *= this.critDamage;
       }
       this.finalDamage = Math.round(10 * this.finalDamage) / 10; // round damage to tenth position
       if (this.cChance) {
@@ -347,6 +350,8 @@ function Fighter(health, attack, acc, name, level, type, BoD) {
       temp.removeChild(document.getElementById(this.called + "_info"));
     }
   }
+  
+  
 }
 
 function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighter2, etc.] faction 2: [faction name, mons1, mons2, etc.]
@@ -425,8 +430,8 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
             }
           }
           break;
-        case spec[0]:
-          actualSpec(this.notTurn[this.target[i]]);
+        case this.turn[i].spec.name:
+          this.turn[i].spec.action(this.notTurn[this.target[i]]);
           break;
         case "Special Attack":
           writeText('This class doesn\'t have a special attack.')
@@ -692,6 +697,21 @@ function monsInitialize(place) {
     } else {
       writeText('Once you get into the mountains, you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
     }
+  } else if (place === "start") {
+    if(monsterGroup.length >= 2) {
+      monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
+    } else {
+      monsterGroup.push(new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50));
+    }
+    monsterGroup[1].attackPow *= diffSetting;
+    monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
+    monsterGroup[1].hitPoints = 100 * diffSetting;
+    monsterGroup[1].totalHP = 100 * diffSetting;
+    for(var i = 0; i < catalog.length; i++) {
+      catalog[i].cost *= diffSetting;
+    }
+    hpEff = 10 + (10 * (3 - diffSetting));
+    kixleyNCo[1].accuracy += 15 * (3 - diffSetting);
   }
   MonsTypeSwitch();
 }
