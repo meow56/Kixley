@@ -1,6 +1,6 @@
 //import;
 
-export { username, useDefaults, MakeNewAccount, login };
+export { username, useDefaults, MakeNewAccount, login, useDefaultClass, useDefaultDiff };
 
 
 window.onerror = function(message, source, lineno, colno, error) {
