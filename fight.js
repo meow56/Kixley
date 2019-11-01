@@ -1,5 +1,7 @@
 import { randomNumber } from './utility.js';
 
+export { fightHandler };
+
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
     writeText(error.message);
