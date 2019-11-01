@@ -1,7 +1,7 @@
 import { checkDefaults } from './users.js';
 import { monsterGroup } from './fight.js';
 
-export { diffSetting };
+export { diffSetting, Shoot };
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
@@ -405,4 +405,23 @@ function ValaClass() {
       alert('That message was brought to you by Murphy, one of the programmer\'s dog.')
     }
   }
+}
+
+function Steal(target) {
+  if (percentChance(43)) {
+    writeText('You steal ' + target.calledPlusthe + '\'s weapon!')
+    kixleyNCo[1].attackPow += 2
+    target.attackPow -= 2;
+    usedSpec = true;
+  } else {
+    writeText('You fail to steal ' + target.calledPlusthe + '\'s weapon.')
+  }
+}
+
+function Shoot(target) {
+  usedSpec = true
+  target.accuracy -= 30
+  inventory[findNameInventory("Arrow")][1]--;
+  writeText('You did ' + randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3) + ' damage by shooting the monster!');
+  target.hitPoints -= randomNumber(kixleyNCo[1].attackPow - 3, kixleyNCo[1].attackPow + 3);
 }
