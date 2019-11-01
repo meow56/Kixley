@@ -2,6 +2,7 @@ import { loadMusic, playMusic } from './music.js';
 import { initializeUsers, MakeNewAccount, login } from './users.js';
 import { fightHandler } from './fight.js';
 import { diffSetting } from './classes.js';
+import { displayInventory } from './items.js';
 
 export { randomNumber, percentChance, StartUpMenu, requestNumber, requestInput, writeTextWait, writeText };
 
