@@ -1,6 +1,6 @@
 //import;
 
-export { username, useDefaults, MakeNewAccount, login, useDefaultClass, useDefaultDiff };
+export { initalizeUsers, MakeNewAccount, login };
 
 
 window.onerror = function(message, source, lineno, colno, error) {
@@ -28,6 +28,22 @@ var defaultClass; // normal class you set in your account
 var settingDefault = false;
 var useDefaultClass = false; // whether to use your default class
 var useDefaultDiff = false; // whether to use your default difficulty
+
+
+
+function initializeUsers() {
+  username = localStorage.getItem('staySignedInAs')
+  if (username !== null) {
+    useDefaults = localStorage.getItem('Defaults Used?' + username + 'Kixley@65810')
+    useDefaults = parseBool(useDefaults)
+    if (useDefaults === false) {
+      useDefaultDiff = localStorage.getItem('Default Diff Used?' + username + 'Kixley@65810')
+      useDefaultDiff = parseBool(useDefaultDiff)
+      useDefaultClass = localStorage.getItem('Default Class Used?' + username + 'Kixley@65810')
+      useDefaultClass = parseBool(useDefaultClass)
+    }
+  }
+}
 
 function save() {
   localStorage.setItem('KixleyNCo', kixleyNCo);
@@ -216,5 +232,15 @@ function inAccount() {
         }
         break;
     }
+  }
+}
+
+function parseBool(stringBool) {
+  if (stringBool === 'true') {
+    return true
+  } else if (stringBool === 'false') {
+    return false
+  } else {
+    return stringBool
   }
 }
