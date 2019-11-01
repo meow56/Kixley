@@ -2,6 +2,17 @@
   <link rel="icon" type="image/x-icon" sizes="32x32" href="cyan_black_k_NgL_icon.ico">
   <title>Kixley</title>
   <script src="script.js" type="module"></script>
+  <script type="module">
+    import { StartUpMenu } from './utility.js'; 
+    function runButton() {
+      openingMenu = true; 
+      temp = document.getElementById('buttons'); 
+      while(temp.firstChild !== null) { 
+        temp.removeChild(temp.firstChild); 
+      }; 
+      StartUpMenu();
+    }
+  </script>
   <!--<script src="Snippets/Casino.js"></script>-->
   <link rel="stylesheet" href="stylesheet.css">
   <audio id="FightMusic" src="Music/Kixley Fight Music.wav" loop preload="auto">
@@ -36,7 +47,7 @@
     <div id="text">
     </div>
     <div id="buttons">
-      <button id="runbutton" onclick="import { StartUpMenu } from './utility.js'; openingMenu = true; temp = document.getElementById('buttons'); while(temp.firstChild !== null) { temp.removeChild(temp.firstChild); }; StartUpMenu();">Run</button>
+      <button id="runbutton" onclick="runButton();">Run</button>
     </div>
   </div>
 </body>
