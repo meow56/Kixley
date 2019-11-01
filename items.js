@@ -1,4 +1,4 @@
-import { Shoot } from './fight.js';
+import { Shoot } from './classes.js';
 
 export { displayInventory };
 
