@@ -1,3 +1,5 @@
+import { loadMusic, playMusic } from './music.js';
+
 export { randomNumber, percentChance, StartUpMenu, requestNumber, requestInput, writeTextWait, writeText };
 
 var openingMenu;
