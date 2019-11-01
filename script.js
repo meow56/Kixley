@@ -129,16 +129,6 @@ var reward; // how much gold/exp you get when you finish a quest
 |      UTILITY      |
 \*******************/
 
-function parseBool(stringBool) {
-  if (stringBool === 'true') {
-    return true
-  } else if (stringBool === 'false') {
-    return false
-  } else {
-    return stringBool
-  }
-}
-
 function resetSpec() {
   spec = [];
 }
