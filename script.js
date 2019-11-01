@@ -344,14 +344,6 @@ function NIY() {
   alert('Sorry. That feauture hasn\'t been implemented yet.')
 }
 
-function FightRound(n) {
-  if (n < 1) {
-    return 1;
-  } else {
-    return Math.round(n);
-  }
-}
-
 /**********************\
 |       FIGHTING       |
 \**********************/
