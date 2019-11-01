@@ -1,49 +1,49 @@
-export { loadMusic, playMusic };
+export { loadMusic, playMusic, currentlyPlaying };
 
+function Song(name, source) {
+  this.name = name;
+  this.src = source;
+  
+  this.play = function() {
+    this.src.play();
+  }
+  
+  this.pause = function() {
+    this.src.pause();
+    this.src.currentTime = 0;
+  }
+}
 
-
-var fightMusic;
-var towerMusic;
-var placesMusic;
-var menuMusic;
-var townMusic;
-var innMusic;
-var marketplaceMusic;
-var gameOverMusic;
-var endMusic;
+var songs = [new Song("Fight"), 
+             new Song("Tower"), 
+             new Song("Places"), 
+             new Song("Menu"), 
+             new Song("Town"), 
+             new Song("Inn"), 
+             new Song("Marketplace"), 
+             new Song("GameOver"), 
+             new Song("End")];
 
 function loadMusic() {
-  fightMusic = document.getElementById('FightMusic');
-  towerMusic = document.getElementById('TowerMusic');
-  placesMusic = document.getElementById('MarketplaceMusic');
-  menuMusic = document.getElementById('MenuMusic');
-  townMusic = document.getElementById('MarketplaceMusic');
-  innMusic = document.getElementById('MarketplaceMusic');
-  marketplaceMusic = document.getElementById('MarketplaceMusic');
-  gameOverMusic = document.getElementById('GameOverMusic');
-  endMusic = document.getElementById('EndMusic');
+  for(var i = 0; i < songs.length; i++) {
+    songs[i].src = document.getElementById(songs[i].name + "Music");
+  }
 }
 
-function playMusic(which) { // in the form of the variable ie fightMusic, placesMusic, etc.
-  fightMusic.pause();
-  fightMusic.currentTime = 0;
-  towerMusic.pause();
-  towerMusic.currentTime = 0;
-  placesMusic.pause();
-  placesMusic.currentTime = 0;
-  menuMusic.pause();
-  menuMusic.currentTime = 0;
-  townMusic.pause();
-  townMusic.currentTime = 0;
-  innMusic.pause();
-  innMusic.currentTime = 0;
-  marketplaceMusic.pause();
-  marketplaceMusic.currentTime = 0;
-  gameOverMusic.pause();
-  gameOverMusic.currentTime = 0;
-  endMusic.pause();
-  endMusic.currentTime = 0;
-  which.play();
+function playMusic(which) { // string with the name
+  for(var i = 0; i < songs.length; i++) {
+    songs[i].pause();
+    if(songs[i].name === which) {
+      songs[i].play();
+    }
+  }
 }
 
-
+function currentlyPlaying() {
+  for(var i = 0; i < songs.length; i++) {
+    if(songs[i].paused) {
+      return songs[i].name;
+    }
+  }
+  return "None";
+}
