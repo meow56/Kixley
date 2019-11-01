@@ -274,3 +274,14 @@ function Menu() {
     }
   }
 }
+
+function runButton() {
+  openingMenu = true; 
+  temp = document.getElementById('buttons'); 
+  while(temp.firstChild !== null) { 
+    temp.removeChild(temp.firstChild); 
+  }; 
+  StartUpMenu();
+}
+
+document.getElementById("runbutton").addEventListener("click", runButton);
