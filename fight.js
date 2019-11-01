@@ -1,4 +1,5 @@
 import { randomNumber } from './utility.js';
+import { displayInventory } from './items.js';
 
 export { kixleyNCo, fightHandler };
 
