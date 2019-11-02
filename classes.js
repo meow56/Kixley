@@ -335,7 +335,7 @@ function Difficulty(settingDefault) { // boolean; whether the user is setting th
 }*/
 
 function ChooseClass() {
-  if (useDefaultClass === true || useDefaults === true) {
+  if (checkDefaults() === "Class" || checkDefaults() === "Both") {
     ChoosingAClass(chosenClass)
   } else {
     writeText('Along with difficulty, we need you to choose your class. Please select one now.');
