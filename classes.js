@@ -1,7 +1,7 @@
 import { checkDefaults } from './users.js';
 import { monsterGroup } from './fight.js';
 
-export { diffSetting, Shoot };
+export { diffSetting, Shoot, Difficulty };
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
