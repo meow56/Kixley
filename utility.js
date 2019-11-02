@@ -199,7 +199,7 @@ function StartUpMenu() {
   requestInput(["Start", "Options", "Load", "Achievements", "Create New Account", "Log In", "Exit"], determineAnswer);
   //answer = prompt('Choose an option. (Version: Beta 1.1)', 'Start, Options, Load, Achievements, Create New Account, Log In, Exit').toUpperCase()
   function determineAnswer() {
-    switch (answer) {
+    switch (window.answer) {
       case 'Start':
         writeText('Before you start, please set the difficulty. Easier difficulties have monsters with less health and attack. Harder difficulties have monsters with more health and attack.')
         openingMenu = 0
@@ -249,7 +249,7 @@ function Menu() {
   requestInput(["Options", "Exit", "Return", "Save", "Log In"], determineAnswer);
   // answer = prompt('Choose an option. (Version: Beta 1.1)', 'Options, Exit, Return, Save, Log In').toLowerCase()
   function determineAnswer() {
-    switch (answer) {
+    switch (window.answer) {
       case 'Options':
         Options()
         break;
