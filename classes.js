@@ -1,5 +1,6 @@
 import { checkDefaults } from './users.js';
 import { monsterGroup } from './fight.js';
+import { writeText, requestInput } from './utility.js';
 
 export { diffSetting, Shoot, Difficulty };
 
