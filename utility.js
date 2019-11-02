@@ -75,12 +75,12 @@ function requestNumber(whenDone, min, max) {
 }
 
 function requestInput(options, whenDone) { // IMPORTANT: don't put anything that runs directly after this function. (ie don't call requestInput and follow it with an if statement, cuz the if statement will run even if there hasn't been an input yet. Put the if statement in requestInput() as whenDone, using function notation (function() {...}))
-  answer = " ";
+  window.answer = " ";
   var temp2 = document.getElementById("buttons"); // find the div for buttons
   for(var i = 0; i < options.length; i++) {
     var temp = document.createElement("BUTTON"); // create buttons
     temp.innerHTML = options[i]; // set button to have proper text
-    temp.onclick = Function("answer = \"" + options[i] + "\""); // set onclick so the buttons do stuff
+    temp.onclick = Function("window.answer = \"" + options[i] + "\""); // set onclick so the buttons do stuff
     temp2.appendChild(temp); // put the new button in the div
     var temp3 = document.createElement("BR");
     temp2.appendChild(temp3);
@@ -115,9 +115,9 @@ function writeTextWait(text, whenDone) {
   temp = document.getElementById("buttons");
   temp2 = document.createElement("BUTTON");
   temp2.innerHTML = "Next";
-  temp2.onclick = Function("answer = 'Next';");
+  temp2.onclick = Function("window.answer = 'Next';");
   temp.appendChild(temp2);
-  answer = " ";
+  window.answer = " ";
   
   waitForUserInput(); // wait for the player to select next
   
