@@ -89,7 +89,7 @@ function requestInput(options, whenDone) { // IMPORTANT: don't put anything that
   waitForUserInput(); // wait for the player to select an option
   
   function waitForUserInput() {
-    if(answer === " ") {
+    if(window.answer === " ") {
       wFUIUpdates();
       setTimeout(waitForUserInput, 0);
     } else {
@@ -122,7 +122,7 @@ function writeTextWait(text, whenDone) {
   waitForUserInput(); // wait for the player to select next
   
   function waitForUserInput() {
-    if(answer === " ") {
+    if(window.answer === " ") {
       wFUIUpdates();
       setTimeout(waitForUserInput, 0);
     } else {
