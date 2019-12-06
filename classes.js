@@ -4,19 +4,6 @@ import { writeText, requestInput } from './utility.js';
 
 export { diffSetting, Shoot, Difficulty };
 
-window.onerror = function(message, source, lineno, colno, error) {
-  if(error.message === "Thanks for playing!") {
-    writeText(error.message);
-  } else if(error.message === "Cannot read property 'toUpperCase' of null" || error.message === "Cannot read property 'toLowerCase' of null"){
-    alert("You just pressed the \"Cancel\" button. That causes the game to end.");
-  } else {
-    alert("Kixley-Classes has run into an unexpected error.");
-    alert("To help in debugging, Kixley-Classes has this to say:");
-    alert(message);
-    alert("Error found on line " + lineno + ", column " + colno);
-  }
-}
-
 
 
 function GameClass(name, description, at, he, boD, spEff, spec, acc, drops, speed, critc, critd) {
@@ -93,11 +80,11 @@ function GameClass(name, description, at, he, boD, spEff, spec, acc, drops, spee
       writeText(this.special.desc);
     }
     
-    requestInput(["Choose", "Exit"], determineAnswer);
-    function determineAnswer() {
+    requestInput(["Choose", "Exit"], determineAnswer, this);
+    function determineAnswer(obj) {
       switch (answer) {
         case 'Choose':
-          this.choose();
+          obj.choose();
           break;
         case 'Exit':
           ChooseClass();
