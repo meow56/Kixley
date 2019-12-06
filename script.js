@@ -9,6 +9,7 @@ window.onerror = function(message, source, lineno, colno, error) {
     alert("Kixley has run into an unexpected error.");
     alert("To help in debugging, Kixley has this to say:");
     alert(message);
+    alert("Error in " + source);
     alert("Error found on line " + lineno);
     alert("Error found on column " + colno);
   }
