@@ -99,8 +99,8 @@ function GameClass(name, description, at, he, boD, spEff, spec, acc, drops, spee
     kixleyNCo[1].blobs += this.blobsOfDoom;
     kixleyNCo[1].magicSkillz = (this.spellEffect / 100);
     kixleyNCo[1].accuracy += this.accuracy;
-    dropMult += (this.dropAmount / 100);
-    kixleyNCo[1].speed += this.speed
+    changeDropMult(dropMult + (this.dropAmount / 100));
+    kixleyNCo[1].speed += this.speed;
     kixleyNCo[1].critChance += this.critChance;
     kixleyNCo[1].critDamage += (this.critDamage / 100);
     kixleyNCo[1].spec = this.special;
