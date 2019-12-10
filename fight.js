@@ -2,23 +2,11 @@ import { randomNumber } from './utility.js';
 import { displayInventory } from './items.js';
 import { diffSetting } from './classes.js';
 
-export { kixleyNCo, fightHandler, monsterGroup, dropMult };
+export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult };
 
-window.onerror = function(message, source, lineno, colno, error) {
-  if(error.message === "Thanks for playing!") {
-    writeText(error.message);
-  } else if(error.message === "Cannot read property 'toUpperCase' of null" || error.message === "Cannot read property 'toLowerCase' of null"){
-    alert("You just pressed the \"Cancel\" button. That causes the game to end.");
-  } else {
-    alert("Kixley-Fight has run into an unexpected error.");
-    alert("To help in debugging, Kixley-Fight has this to say:");
-    alert(message);
-    alert("Error found on line " + lineno);
-    alert("Error found on column " + colno);
-  }
+function changeDropMult(value) {
+  dropMult = value;
 }
-
-
 
 function Fighter(health, attack, acc, name, level, type, BoD, speed) {
   this.hitPoints = health;
@@ -29,9 +17,6 @@ function Fighter(health, attack, acc, name, level, type, BoD, speed) {
   this.element = type;
   this.blobs = BoD;
   this.speed = speed;
-  
-  
-  
   this.spec;
   this.streak = 0;
   this.finalDamage;
