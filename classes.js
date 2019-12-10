@@ -1,5 +1,5 @@
 import { checkDefaults } from './users.js';
-import { kixleyNCo, monsterGroup, dropMult } from './fight.js';
+import { kixleyNCo, monsterGroup, dropMult, changeDropMult } from './fight.js';
 import { writeText, requestInput } from './utility.js';
 
 export { diffSetting, Shoot, Difficulty };
