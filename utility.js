@@ -74,7 +74,7 @@ function requestNumber(whenDone, min, max) {
   }
 }
 
-function requestInput(options, whenDone, options) { // IMPORTANT: don't put anything that runs directly after this function. (ie don't call requestInput and follow it with an if statement, cuz the if statement will run even if there hasn't been an input yet. Put the if statement in requestInput() as whenDone, using function notation (function() {...}))
+function requestInput(options, whenDone, flags) { // IMPORTANT: don't put anything that runs directly after this function. (ie don't call requestInput and follow it with an if statement, cuz the if statement will run even if there hasn't been an input yet. Put the if statement in requestInput() as whenDone, using function notation (function() {...}))
   window.answer = " ";
   var temp2 = document.getElementById("buttons"); // find the div for buttons
   for(var i = 0; i < options.length; i++) {
@@ -86,7 +86,7 @@ function requestInput(options, whenDone, options) { // IMPORTANT: don't put anyt
     temp2.appendChild(temp3);
   }
   
-  waitForUserInput(options); // wait for the player to select an option
+  waitForUserInput(flags); // wait for the player to select an option
   
   function waitForUserInput(options) {
     if(window.answer === " ") {
@@ -100,7 +100,7 @@ function requestInput(options, whenDone, options) { // IMPORTANT: don't put anyt
       while(temp2.firstChild !== null) {
         temp2.removeChild(temp2.firstChild); // remove text
       }
-      whenDone(options); // run whatever's next
+      whenDone(flags); // run whatever's next
     }
   }
 }
