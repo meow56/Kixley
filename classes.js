@@ -80,11 +80,11 @@ function GameClass(name, description, at, he, boD, spEff, spec, acc, drops, spee
       writeText(this.special.desc);
     }
     
-    requestInput(["Choose", "Exit"], determineAnswer, this);
+    requestInput(["Choose", "Exit"], determineAnswer, [this]);
     function determineAnswer(obj) {
       switch (answer) {
         case 'Choose':
-          obj.choose();
+          obj[0].choose();
           break;
         case 'Exit':
           ChooseClass();
