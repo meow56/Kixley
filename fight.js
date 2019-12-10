@@ -2,7 +2,7 @@ import { randomNumber } from './utility.js';
 import { displayInventory } from './items.js';
 import { diffSetting } from './classes.js';
 
-export { kixleyNCo, fightHandler, monsterGroup };
+export { kixleyNCo, fightHandler, monsterGroup, dropMult };
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
