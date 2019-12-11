@@ -5,38 +5,6 @@ import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
 export { WonTheFight, totalGold };
 
 
-var inSwamp;
-var toMountains;
-var plainsCounter = 0;
-var swampDiscovery = false;
-var mountainPass = false;
-var swampCounter = 0;
-var fightingGroup = false;
-var fightingAAbea = false;
-var fightingBalbeag = false;
-var totalGold = 0; // gold you have
-var totalExp = 0; // exp you have
-var expLeft; // exp until level up
-var questKillAmt = 0; // amount of monsters you've killed for the quest
-var questKillReq; // amount of monsters to kill
-var reqItem;
-var questGoldReq; // amount of gold you need to give galkemen
-var questExpAmt = 0; // amount of exp you've gotten for the quest
-var questExpReq; // amount of exp you need to get
-var onAQuest = 0; // are you on a quest?
-var y; // what type of quest
-
-var questType = [
-  'kill',
-  'gold',
-  'EXP',
-  'item'
-];
-var possibleItems = [
-  'wooden sword',
-  'pair of speed boots'
-];
-var reward; // how much gold/exp you get when you finish a quest
 
 function Places() {
   if(marketplaceMusic.paused) {
