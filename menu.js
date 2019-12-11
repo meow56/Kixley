@@ -1,3 +1,5 @@
+import { loadMusic, playMusic } from './music.js';
+import { initializeUsers, MakeNewAccount, login } from './users.js';
 
 
 export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
