@@ -7,6 +7,9 @@ var plainsCounter = 0;
 var swampDiscovery = false;
 var mountainPass = false;
 var swampCounter = 0;
+var fightingGroup = false;
+var fightingAAbea = false;
+var fightingBalbeag = false;
 
 function Places() {
   if(marketplaceMusic.paused) {
