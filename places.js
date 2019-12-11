@@ -1,4 +1,5 @@
 import { numMons } from './fight.js';
+import { writeTextWait } from './utility.js';
 
 export { WonTheFight };
 
