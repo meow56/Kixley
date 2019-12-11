@@ -96,7 +96,9 @@ function GameClass(name, description, at, he, boD, spEff, spec, acc, drops, spee
   this.choose = function() {
     kixleyNCo[1].attackPow += this.attack;
     kixleyNCo[1].hitPoints += this.health;
+    kixleyNCo[1].totalHP += this.health;
     kixleyNCo[1].blobs += this.blobsOfDoom;
+    kixleyNCo[1].totalBlobs += this.blobsOfDoom;
     kixleyNCo[1].magicSkillz = (this.spellEffect / 100);
     kixleyNCo[1].accuracy += this.accuracy;
     changeDropMult(dropMult + (this.dropAmount / 100));
