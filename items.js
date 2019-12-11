@@ -1,7 +1,13 @@
 import { Shoot, diffSetting } from './classes.js';
 import { kixleyNCo } from './fight.js';
 
-export { displayInventory };
+export { displayInventory, changeCatalogPrice };
+
+function changeCatalogPrice(multFactor) {
+  for(var i = 0; i < catalog.length; i++) {
+    catalog[i].price *= multFactor; 
+  }
+}
 
 function FakeFighter(name) {
   this.called = name;
