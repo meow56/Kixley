@@ -1,3 +1,4 @@
+import * from './vars.js';
 export { loadMusic, playMusic };
 
 function Song(name, source) {
