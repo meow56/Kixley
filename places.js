@@ -1,3 +1,5 @@
+import { numMons } from './fight.js';
+
 export { WonTheFight };
 
 
