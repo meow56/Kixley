@@ -562,9 +562,6 @@ var usedSpec = false;
 var baseAttackPower = kixleyNCo[1].attackPow;
 var hasSpecial = false;
 var dropMult = 1; // multiplier for how much gold the monster drops
-var totalGold = 0; // gold you have
-var totalExp = 0; // exp you have
-var expLeft; // exp until level up
 
 function fightLoop() {
   if(fightHandler.endFight === " ") {
