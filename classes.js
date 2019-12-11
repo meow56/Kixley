@@ -1,5 +1,5 @@
 import { checkDefaults } from './users.js';
-import { kixleyNCo, monsterGroup, dropMult, changeDropMult } from './fight.js';
+import { kixleyNCo, monsterGroup, dropMult, changeDropMult, story } from './fight.js';
 import { writeText, requestInput } from './utility.js';
 
 export { diffSetting, Shoot, Difficulty };
@@ -104,7 +104,7 @@ function GameClass(name, description, at, he, boD, spEff, spec, acc, drops, spee
     kixleyNCo[1].critChance += this.critChance;
     kixleyNCo[1].critDamage += (this.critDamage / 100);
     kixleyNCo[1].spec = this.special;
-    Story();
+    story();
   }
 }
 
