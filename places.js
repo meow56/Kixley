@@ -1,5 +1,5 @@
 import { numMons, dropMult, kixleyNCo } from './fight.js';
-import { writeTextWait, randomNumber } from './utility.js';
+import { writeTextWait, randomNumber, writeText } from './utility.js';
 import { addKillCount, addCumulativeGold } from './menu.js';
 
 export { WonTheFight };
