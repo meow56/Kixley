@@ -1,5 +1,5 @@
 import { numMons } from './fight.js';
-import { writeTextWait } from './utility.js';
+import { writeTextWait, randomNumber } from './utility.js';
 
 export { WonTheFight };
 
