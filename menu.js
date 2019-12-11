@@ -354,8 +354,9 @@ function StartUpMenu() {
         openingMenu = false;
     }
   }
+  alert('check 1');
   playMusic("Menu");
-
+alert('check 2');
   function detectIE() {
     var ua = window.navigator.userAgent;
     var msie = ua.indexOf('MSIE ');
