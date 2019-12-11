@@ -47,7 +47,8 @@ function Fighter(health, attack, acc, name, level, type, BoD, speed) {
     for(var i = 0; i < this.equipped.length; i++) {
       this.equipped[i].effect(); // apply any accuracy boosts
     }
-    if (!percentChance(this.tempAccuracy / fighter.speed) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
+    alert(this.tempAccuracy / fighter.speed * 100);
+    if (!percentChance(this.tempAccuracy / fighter.speed * 100) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
       this.streak++ // num times missed in a row plus one
       writeText(this.calledPlusThe + " missed.");
     } else {
@@ -524,7 +525,7 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
 }
 
-var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50)];
+var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50, 20)];
 kixleyNCo[1].calledPlusThe = 'You';
 kixleyNCo[1].calledPlusthe = 'you';
 kixleyNCo[1].intializeMagic();
@@ -614,10 +615,7 @@ function monsInitialize(place) {
     throw err;
   }
   numMons = 1;
-  monsterGroup[1] = new Fighter(100, 5, 90, temp, kixleyNCo[1].lev, "N/A", 50);
-  if(kixleyNCo[1].chosenClass === 7) {
-    monsterGroup[1].accuracy -= 10
-  }
+  monsterGroup[1] = new Fighter(100, 5, 90, temp, kixleyNCo[1].lev, "N/A", 50, 20);
   if(place === "plains") {
     monsterGroup[1].lev += randomNumber(0, 1);
     monsterGroup[1].hitPoints = (100 + (monsterGroup[1].lev * randomNumber(0, 3))) * diffSetting;
@@ -823,7 +821,7 @@ function FightMenu() {
     writeText(monsterGroup[i].called + " type: " + monsterGroup[i].element);
   }
   var temp = ["Fight", "Health Potion", "Magic", "Special Attack", "Run"];
-  if(spec.length > 0 || usedSpec) {
+  if(kixleyNCo[1].spec === undefined || usedSpec) {
     temp.splice(temp.indexOf("Special Attack"), 1);
   }
   var temp2 = false;
