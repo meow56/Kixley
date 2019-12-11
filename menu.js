@@ -35,6 +35,10 @@ var accCheat = 0;
 var actualAccuracy;
 var youCheated = false; // have you cheated, ever?
 var PassOrNot = '';
+var openingMenu;
+var loc;
+var from;
+var answer;
 
 function DevCheats() {
   requestInput(["Infinite Gold", "Infinite EXP", "Infinite Attack", "Infinite Health", "Infinite Blobs of Doom", "Infinite Accuracy", "Activate All", "Leave"], determineAnswer);
