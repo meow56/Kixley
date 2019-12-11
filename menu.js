@@ -1,4 +1,5 @@
 import { loadMusic, playMusic } from './music.js';
+import { diffSetting, Difficulty } from './classes.js';
 import { initializeUsers, MakeNewAccount, login } from './users.js';
 
 
