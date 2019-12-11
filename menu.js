@@ -1,6 +1,6 @@
 
 
-export { addKillCount, addCumulativeGold, CheckIfGotAchieve };
+export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
 
 function addKillCount(kill) {
   killCounter += kill;
