@@ -1,7 +1,4 @@
-import { loadMusic, playMusic } from './music.js';
-import { initializeUsers, MakeNewAccount, login } from './users.js';
 import { fightHandler } from './fight.js';
-import { diffSetting, Difficulty } from './classes.js';
 import { displayInventory } from './items.js';
 
 export { randomNumber, percentChance, requestNumber, requestInput, writeTextWait, writeText };
