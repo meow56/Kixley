@@ -26,7 +26,7 @@ var questExpReq; // amount of exp you need to get
 var onAQuest = 0; // are you on a quest?
 var y; // what type of quest
 
-imopvar questType = [
+var questType = [
   'kill',
   'gold',
   'EXP',
