@@ -128,17 +128,7 @@ var classes = [new GameClass("Knight", "The knight is a fierce warrior. They kno
                new GameClass("Archer", "The archer class isn't the strongest, but they still can fight well. With the shoot attack, they can inflict damage while making the monster less accurate.", -2, -7, -15, 110, new SpecialAttack("Shoot", "You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows.", Shoot), 30)
                ];
 
-var classHealthChanges = [
-  15, -15, -25,
-  15,
-  30, -30,
-  0,
-  0,
-  7, -7, -75,
-  -(Math.log(0))
-];
-var diffSetting = 0; // difficulty: Easy = 0.5, Normal = 1.0, Hard = 1.5, Epic = 2.0, Legend = 2.5
-var chosenClass;
+
 
 
 
