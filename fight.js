@@ -1,3 +1,4 @@
+import * from './vars.js';
 import { randomNumber, writeTextWait, writeText, requestInput, percentChance } from './utility.js';
 import { displayInventory, changeCatalogPrice, changeHealthPotionEff } from './items.js';
 import { diffSetting } from './classes.js';
