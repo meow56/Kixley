@@ -120,14 +120,6 @@ function InventoryItem(name, effect, type, cost, description) {
 } 
 
 
-var inventory = []; // 2D: [[InventoryItem, amount], [InventoryItem, amount]]
-var pastInventory; // used for hud update
-var catalog = [new InventoryItem("Health Potion", useHealthPotion, "item", 20, "Restores health."), 
-               new InventoryItem("Wooden Sword", Function("this.equipped.finalDamage *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50, "Increases attack by a small amount."), 
-               new InventoryItem("Simple Staff", Function("this.equipped.tempMagicSkillz *= 1 + (0.05 * (3 - diffSetting))"), "weapon", 50, "Increases magic by a small amount."), 
-               new InventoryItem("Speed Boots", Function("this.equipped.accuracy += 5 * (3 - diffSetting)"), "boots", 100, "Increases accuracy."), 
-               new InventoryItem("Arrows", Shoot, "item", 5, "Used with the Archer class.")];
-var hpEff = 10 + (10 * (3 - diffSetting)); // how much HP health potions restore
 
 
 
