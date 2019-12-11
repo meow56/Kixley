@@ -1,5 +1,6 @@
 import { numMons, dropMult } from './fight.js';
 import { writeTextWait, randomNumber } from './utility.js';
+import { addKillCount, addCumulativeGold } from './menu.js';
 
 export { WonTheFight };
 
@@ -525,29 +526,33 @@ function WonTheFight() {
     }
   }
   function goldAndEXP() {
-    var goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
-    var expPoints = randomNumber(50 * numMons, 150 * numMons);
-    killCounter += numMons;
+    var goldDrops = 0;
+    var expPoints = 0;
+    for(var i = 0; i < numMons.length; i++) { // better because more accurate probability distribution
+      goldDrops += randomNumber(25, 75) * dropMult;
+      expPoints += randomNumber(50, 150);
+    }
+    addKillCount(numMons);
     if (kixleyNCo[1].rageEffect !== 1) {
-      writeText('You calm down.')
+      writeText('You calm down from your rage.');
       kixleyNCo[1].rageEffect = 1;
     }
-    writeText('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!')
-    totalGold += goldDrops
-    cumulativeGold += goldDrops
-    totalExp += expPoints
-    questExpAmt += expPoints
-    CheckIfGotAchieve('Gold')
+    writeText('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!');
+    totalGold += goldDrops;
+    addCumulativeGold(goldDrops);
+    totalExp += expPoints;
+    questExpAmt += expPoints;
+    CheckIfGotAchieve('Gold');
     if (onAQuest === 1 && y === 1) {
-      questKillAmt += numMons
+      questKillAmt += numMons;
     }
     if (totalExp >= levelReq) {
-      CheckIfGotAchieve('Kill')
-      checkForLevelUp()
+      CheckIfGotAchieve('Kill');
+      checkForLevelUp();
     } else {
-      expLeft = levelReq - totalExp
-      writeText('You have ' + expLeft + ' experience before you level up!')
-      CheckIfGotAchieve('Kill')
+      expLeft = levelReq - totalExp;
+      writeText('You have ' + expLeft + ' experience before you level up!');
+      CheckIfGotAchieve('Kill');
       Places();
     }
   }
