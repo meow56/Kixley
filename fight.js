@@ -47,7 +47,7 @@ function Fighter(health, attack, acc, name, level, type, BoD, speed) {
     for(var i = 0; i < this.equipped.length; i++) {
       this.equipped[i].effect(); // apply any accuracy boosts
     }
-    if (!percentChance(this.tempAccuracy / fighter.speed * 100) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
+    if (!percentChance(Math.min(this.tempAccuracy / fighter.speed * 100, 100)) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
       this.streak++ // num times missed in a row plus one
       writeText(this.calledPlusThe + " missed.");
     } else {
