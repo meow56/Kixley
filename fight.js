@@ -525,44 +525,6 @@ function Fight(faction1, faction2) { // faction 1: [faction name, kixley, fighte
   }
 }
 
-var kixleyNCo = ["Kixley & Co.", new Fighter(100, randomNumber(5, 9), 45, 'You', 1, "NaN", 50, 20)];
-kixleyNCo[1].calledPlusThe = 'You';
-kixleyNCo[1].calledPlusthe = 'you';
-kixleyNCo[1].intializeMagic();
-var dead = [];
-var monsterGroup = ["Enemy"];
-var fightHandler = new Fight(kixleyNCo, monsterGroup);
-var monsName = [
-  'You Will Never Get This Monster',
-  'Goblin',
-  'Rabbit',
-  'Spearman',
-  'Lizard',
-  'Death Snake',
-  'Rabid Pineapple',
-  'Ferocious Lion',
-  'Velociraptor'
-];
-var mountainNames = [
-  'Lolnope',
-  'Rock Giant',
-  'Giant Rock',
-  'Big Spearman',
-  'Mountain Lion',
-  'Killer Goat',
-  'Wind Demon',
-  'Dragon',
-  'Traveller',
-];
-
-var numMons = monsterGroup.length - 1;
-var spec = []; // special move
-var actualSpec;
-var usedSpec = false;
-var baseAttackPower = kixleyNCo[1].attackPow;
-var hasSpecial = false;
-var dropMult = 1; // multiplier for how much gold the monster drops
-
 function fightLoop() {
   if(fightHandler.endFight === " ") {
     fightHandler.chooseAction();
