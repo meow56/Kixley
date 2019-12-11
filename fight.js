@@ -997,6 +997,6 @@ function story() {
   monsterGroup[1].totalHP = 100 * diffSetting
   changeCatalogPrice(diffSetting);
   changeHealthPotionEff(10 * (3 - diffSetting));
-  kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
-  writeTextWait('You are a person named Kixley. You live in the land of Nulm. You are in the Vacant Plains, and you know the town called Smatino resides nearby. You know where it is, but there are monsters in the plains, and one has just spotted you.', Function("writeTextWait('Your attack power is ' + kixleyNCo[1].attackPow + '.', MonsTypeSwitch)"))
+  kixleyNCo[1].accuracy += 15 * (3 - diffSetting);
+  writeTextWait('You are a person named Kixley. You live in the land of Nulm. You are in the Vacant Plains, and you know the town called Smatino resides nearby. You know where it is, but there are monsters in the plains, and one has just spotted you.', Function("import { writeTextWait } from './utility.js'; writeTextWait('Your attack power is ' + kixleyNCo[1].attackPow + '.', MonsTypeSwitch)"))
 }
