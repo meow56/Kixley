@@ -1,3 +1,4 @@
+import * from './vars.js';
 import { fightHandler } from './fight.js';
 import { displayInventory } from './items.js';
 
