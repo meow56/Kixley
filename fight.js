@@ -561,9 +561,7 @@ var actualSpec;
 var usedSpec = false;
 var baseAttackPower = kixleyNCo[1].attackPow;
 var hasSpecial = false;
-var goldDrops; // gold dropped by monster
 var dropMult = 1; // multiplier for how much gold the monster drops
-var expPoints; // exp dropped by monster
 var totalGold = 0; // gold you have
 var totalExp = 0; // exp you have
 var expLeft; // exp until level up
