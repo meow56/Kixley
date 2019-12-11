@@ -1,3 +1,4 @@
+import * from './vars.js';
 import { checkDefaults } from './users.js';
 import { kixleyNCo, monsterGroup, dropMult, changeDropMult, story } from './fight.js';
 import { writeText, requestInput } from './utility.js';
