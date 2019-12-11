@@ -14,6 +14,9 @@ var swampCounter = 0;
 var fightingGroup = false;
 var fightingAAbea = false;
 var fightingBalbeag = false;
+var totalGold = 0; // gold you have
+var totalExp = 0; // exp you have
+var expLeft; // exp until level up
 
 function Places() {
   if(marketplaceMusic.paused) {
