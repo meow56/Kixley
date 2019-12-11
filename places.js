@@ -525,8 +525,8 @@ function WonTheFight() {
     }
   }
   function goldAndEXP() {
-    goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
-    expPoints = randomNumber(50 * numMons, 150 * numMons);
+    var goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
+    var expPoints = randomNumber(50 * numMons, 150 * numMons);
     killCounter += numMons;
     if (kixleyNCo[1].rageEffect !== 1) {
       writeText('You calm down.')
