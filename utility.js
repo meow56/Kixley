@@ -4,12 +4,7 @@ import { fightHandler } from './fight.js';
 import { diffSetting, Difficulty } from './classes.js';
 import { displayInventory } from './items.js';
 
-export { randomNumber, percentChance, StartUpMenu, requestNumber, requestInput, writeTextWait, writeText };
-
-var openingMenu;
-var loc;
-var from;
-var answer;
+export { randomNumber, percentChance, requestNumber, requestInput, writeTextWait, writeText };
 
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
