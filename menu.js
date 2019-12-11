@@ -1,18 +1,11 @@
+import * from './vars.js';
 import { loadMusic, playMusic } from './music.js';
-import { diffSetting, Difficulty } from './classes.js';
+import { Difficulty } from './classes.js';
 import { initializeUsers, MakeNewAccount, login } from './users.js';
 import { randomNumber, writeText, requestInput } from './utility.js';
-import { totalGold } from './places.js';
 
-export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
+export { CheckIfGotAchieve, StartUpMenu };
 
-function addKillCount(kill) {
-  killCounter += kill;
-}
-
-function addCumulativeGold(gold) {
-  cumulativeGold += gold;
-}
 
 function DevCheats() {
   requestInput(["Infinite Gold", "Infinite EXP", "Infinite Attack", "Infinite Health", "Infinite Blobs of Doom", "Infinite Accuracy", "Activate All", "Leave"], determineAnswer);
