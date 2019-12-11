@@ -1,5 +1,5 @@
 import { randomNumber } from './utility.js';
-import { displayInventory, changeCatalogPrice, changeHealtPotionEff } from './items.js';
+import { displayInventory, changeCatalogPrice, changeHealthPotionEff } from './items.js';
 import { diffSetting } from './classes.js';
 
 export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story };
