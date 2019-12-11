@@ -1,6 +1,6 @@
 import { numMons, dropMult, kixleyNCo } from './fight.js';
 import { writeTextWait, randomNumber, writeText } from './utility.js';
-import { addKillCount, addCumulativeGold } from './menu.js';
+import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
 
 export { WonTheFight, totalGold };
 
@@ -25,7 +25,8 @@ var questExpAmt = 0; // amount of exp you've gotten for the quest
 var questExpReq; // amount of exp you need to get
 var onAQuest = 0; // are you on a quest?
 var y; // what type of quest
-var questType = [
+
+imopvar questType = [
   'kill',
   'gold',
   'EXP',
