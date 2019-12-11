@@ -1,12 +1,16 @@
 import { Shoot, diffSetting } from './classes.js';
 import { kixleyNCo } from './fight.js';
 
-export { displayInventory, changeCatalogPrice };
+export { displayInventory, changeCatalogPrice, changeHealthPotionEff };
 
 function changeCatalogPrice(multFactor) {
   for(var i = 0; i < catalog.length; i++) {
     catalog[i].price *= multFactor; 
   }
+}
+
+function changeHealthPotionEff(addFact) {
+  hpEff = 10 + addFact; 
 }
 
 function FakeFighter(name) {
