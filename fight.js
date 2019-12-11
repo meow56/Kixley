@@ -4,7 +4,7 @@ import { diffSetting } from './classes.js';
 import { playMusic } from './music.js';
 import { WonTheFight } from './places.js';
 
-export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story };
+export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story, numMons };
 
 function changeDropMult(value) {
   dropMult = value;
@@ -556,9 +556,6 @@ var mountainNames = [
 ];
 
 var numMons = monsterGroup.length - 1;
-var fightingGroup = false;
-var fightingAAbea = false;
-var fightingBalbeag = false;
 var spec = []; // special move
 var actualSpec;
 var usedSpec = false;
