@@ -1,4 +1,4 @@
-import { numMons } from './fight.js';
+import { numMons, dropMult } from './fight.js';
 import { writeTextWait, randomNumber } from './utility.js';
 
 export { WonTheFight };
