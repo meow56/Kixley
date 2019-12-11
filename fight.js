@@ -1,4 +1,4 @@
-import { randomNumber } from './utility.js';
+import { randomNumber, writeTextWait } from './utility.js';
 import { displayInventory, changeCatalogPrice, changeHealthPotionEff } from './items.js';
 import { diffSetting } from './classes.js';
 
