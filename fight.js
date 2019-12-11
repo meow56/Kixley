@@ -1,6 +1,7 @@
 import { randomNumber, writeTextWait, writeText } from './utility.js';
 import { displayInventory, changeCatalogPrice, changeHealthPotionEff } from './items.js';
 import { diffSetting } from './classes.js';
+import { playMusic } from './music.js';
 
 export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story };
 
@@ -702,9 +703,7 @@ function monsInitialize(place) {
 }
 
 function MonsTypeSwitch() {
-  if(fightMusic.paused) {
-    playMusic(fightMusic);
-  }
+  playMusic("Fight");
   for(var i = 0; i < inventory.length; i++) {
     if(document.getElementById(inventory[i][0].name + "_equip_select") !== null) {
       document.getElementById(inventory[i][0].name + "_equip_select").disabled = true;
