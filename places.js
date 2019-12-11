@@ -1,6 +1,6 @@
-import { numMons, dropMult, kixleyNCo } from './fight.js';
+import * from './vars.js';
 import { writeTextWait, randomNumber, writeText } from './utility.js';
-import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
+import { CheckIfGotAchieve } from './menu.js';
 
 export { WonTheFight, totalGold };
 
@@ -523,14 +523,14 @@ function WonTheFight() {
       goldDrops += randomNumber(25, 75) * dropMult;
       expPoints += randomNumber(50, 150);
     }
-    addKillCount(numMons);
+    killCount += numMons;
     if (kixleyNCo[1].rageEffect !== 1) {
       writeText('You calm down from your rage.');
       kixleyNCo[1].rageEffect = 1;
     }
     writeText('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!');
     totalGold += goldDrops;
-    addCumulativeGold(goldDrops);
+    cumulativeGold += goldDrops;
     totalExp += expPoints;
     questExpAmt += expPoints;
     CheckIfGotAchieve('Gold');
