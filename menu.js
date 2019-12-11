@@ -1,7 +1,7 @@
 import { loadMusic, playMusic } from './music.js';
 import { diffSetting, Difficulty } from './classes.js';
 import { initializeUsers, MakeNewAccount, login } from './users.js';
-import { randomNumber, writeText } from './utility.js';
+import { randomNumber, writeText, requestInput } from './utility.js';
 
 export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
 
@@ -354,9 +354,8 @@ function StartUpMenu() {
         openingMenu = false;
     }
   }
-  alert('check 1');
   playMusic("Menu");
-alert('check 2');
+  
   function detectIE() {
     var ua = window.navigator.userAgent;
     var msie = ua.indexOf('MSIE ');
