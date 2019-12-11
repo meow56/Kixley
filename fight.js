@@ -47,7 +47,6 @@ function Fighter(health, attack, acc, name, level, type, BoD, speed) {
     for(var i = 0; i < this.equipped.length; i++) {
       this.equipped[i].effect(); // apply any accuracy boosts
     }
-    alert(this.tempAccuracy * 100);
     if (!percentChance(this.tempAccuracy / fighter.speed * 100) && this.streak <= 5) { // if you miss and you haven't missed 5 times in a row
       this.streak++ // num times missed in a row plus one
       writeText(this.calledPlusThe + " missed.");
@@ -983,9 +982,9 @@ function FightRound(n) {
 
 function story() {
   if(monsterGroup.length >= 2) {
-    monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
+    monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50, 20);
   } else {
-    monsterGroup.push(new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50));
+    monsterGroup.push(new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50, 20));
   }
   numMons = 1;
   monsterGroup[1].attackPow *= diffSetting;
