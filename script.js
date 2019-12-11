@@ -1,4 +1,4 @@
-import { kixleyNCo, fightHandler } from './fight.js';
+import * from './vars.js';
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
