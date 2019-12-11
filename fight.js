@@ -1,5 +1,5 @@
 import { randomNumber } from './utility.js';
-import { displayInventory } from './items.js';
+import { displayInventory, changeCatalogPrice } from './items.js';
 import { diffSetting } from './classes.js';
 
 export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story };
@@ -692,9 +692,9 @@ function monsInitialize(place) {
     monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
     monsterGroup[1].hitPoints = 100 * diffSetting;
     monsterGroup[1].totalHP = 100 * diffSetting;
-    for(var i = 0; i < catalog.length; i++) {
+    /*for(var i = 0; i < catalog.length; i++) {
       catalog[i].cost *= diffSetting;
-    }
+    }*/
     hpEff = 10 + (10 * (3 - diffSetting));
     kixleyNCo[1].accuracy += 15 * (3 - diffSetting);
   }
@@ -995,9 +995,7 @@ function story() {
   monsterGroup[1].lev = kixleyNCo[1].lev + randomNumber(0, 1);
   monsterGroup[1].hitPoints = 100 * diffSetting
   monsterGroup[1].totalHP = 100 * diffSetting
-  for(var i = 0; i < catalog.length; i++) {
-    catalog[i].cost *= diffSetting;
-  }
+  changeCatalogPrice(diffSetting);
   hpEff = 10 + (10 * (3 - diffSetting))
   kixleyNCo[1].accuracy += 15 * (3 - diffSetting)
   writeTextWait('You are a person named Kixley. You live in the land of Nulm. You are in the Vacant Plains, and you know the town called Smatino resides nearby. You know where it is, but there are monsters in the plains, and one has just spotted you.', Function("writeTextWait('Your attack power is ' + kixleyNCo[1].attackPow + '.', MonsTypeSwitch)"))
