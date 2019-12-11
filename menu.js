@@ -355,7 +355,6 @@ function StartUpMenu() {
         openingMenu = false;
     }
   }
-  alert("check 1");
   playMusic("Menu");
   
   function detectIE() {
