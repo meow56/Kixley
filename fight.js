@@ -2,6 +2,7 @@ import { randomNumber, writeTextWait, writeText, requestInput, percentChance } f
 import { displayInventory, changeCatalogPrice, changeHealthPotionEff } from './items.js';
 import { diffSetting } from './classes.js';
 import { playMusic } from './music.js';
+import { WonTheFight } from './places.js';
 
 export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story };
 
@@ -911,63 +912,6 @@ function ChooseSpec() {
       case "No":
         FightMenu()
         break;
-    }
-  }
-}
-
-
-
-
-function WonTheFight() {
-  if (inSwamp === 1) {
-    inSwamp = 0
-    swampCounter++
-    writeTextWait('As the monster dies, you get teleported out of the swamp.', goldAndEXP)
-  } else if (fightingGroup) {
-    fightingGroup = false
-    writeTextWait('Balbeag\'s soldiers are defeated!', inTowerPostDoomedGroup)
-  } else if (fightingAAbea) {
-    fightingAAbea = false
-    writeTextWait('Tivél is defeated!', finalBossFight)
-  } else if (fightingBalbeag) {
-    fightingBalbeag = false
-    Credits(beatTheGame)
-  } else if (toMountains) {
-    toMountains = false
-    writeTextWait("With the monster defeated, you hike back down the mountain.", goldAndEXP);
-  } else {
-    plainsCounter++
-    if(numMons === 1) {
-      writeTextWait('The monster is defeated!', goldAndEXP);
-    } else {
-      writeTextWait("The monsters are defeated!", goldAndEXP);
-    }
-  }
-  function goldAndEXP() {
-    goldDrops = randomNumber(25 * numMons, 75 * numMons) * dropMult;
-    expPoints = randomNumber(50 * numMons, 150 * numMons);
-    killCounter += numMons;
-    if (kixleyNCo[1].rageEffect !== 1) {
-      writeText('You calm down.')
-      kixleyNCo[1].rageEffect = 1;
-    }
-    writeText('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!')
-    totalGold += goldDrops
-    cumulativeGold += goldDrops
-    totalExp += expPoints
-    questExpAmt += expPoints
-    CheckIfGotAchieve('Gold')
-    if (onAQuest === 1 && y === 1) {
-      questKillAmt += numMons
-    }
-    if (totalExp >= levelReq) {
-      CheckIfGotAchieve('Kill')
-      checkForLevelUp()
-    } else {
-      expLeft = levelReq - totalExp
-      writeText('You have ' + expLeft + ' experience before you level up!')
-      CheckIfGotAchieve('Kill')
-      Places();
     }
   }
 }
