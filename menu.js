@@ -1,7 +1,7 @@
 import { loadMusic, playMusic } from './music.js';
 import { diffSetting, Difficulty } from './classes.js';
 import { initializeUsers, MakeNewAccount, login } from './users.js';
-import { randomNumber } from './utility.js';
+import { randomNumber, writeText } from './utility.js';
 
 export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
 
