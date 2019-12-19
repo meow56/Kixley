@@ -1,11 +1,48 @@
-import * from './vars.js';
 import { loadMusic, playMusic } from './music.js';
-import { Difficulty } from './classes.js';
+import { diffSetting, Difficulty } from './classes.js';
 import { initializeUsers, MakeNewAccount, login } from './users.js';
 import { randomNumber, writeText, requestInput } from './utility.js';
+import { totalGold } from './places.js';
 
-export { CheckIfGotAchieve, StartUpMenu };
+export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
 
+function addKillCount(kill) {
+  killCounter += kill;
+}
+
+function addCumulativeGold(gold) {
+  cumulativeGold += gold;
+}
+
+var allAchievements = [
+  'Kill 5 monsters',
+  'Kill 10 monsters',
+  'Kill 20 monsters',
+  'Reach Level 5',
+  'Reach Level 10',
+  'Reach Level 20',
+  'Get 1000 cumulative gold',
+  'Get 2000 cumulative gold',
+  'Get 5000 cumulative gold'
+];
+var compAchieve = []; // completed achievements
+var killCounter = 0; // how many monsters killed
+var cumulativeGold = 0; // total gold earned
+var getGoldAchieve = 0;
+var volumeSettings = '10';
+var goldCheat = 0;
+var expCheat = 0;
+var attackCheat = 0;
+var healthCheat = 0;
+var blobOfDoomCheat = 0;
+var accCheat = 0;
+var actualAccuracy;
+var youCheated = false; // have you cheated, ever?
+var PassOrNot = '';
+var openingMenu;
+var loc;
+var from;
+var answer;
 
 function DevCheats() {
   requestInput(["Infinite Gold", "Infinite EXP", "Infinite Attack", "Infinite Health", "Infinite Blobs of Doom", "Infinite Accuracy", "Activate All", "Leave"], determineAnswer);
