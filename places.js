@@ -42,11 +42,9 @@ var possibleItems = [
 var reward; // how much gold/exp you get when you finish a quest
 
 function Places() {
-  if(marketplaceMusic.paused) {
-    playMusic(marketplaceMusic);
-  }
+  playMusic("Marketplace");
   writeText("Where do you go now?");
-  loc = 1
+  loc = 1;
   var temp = ["Town", "Plains", "Swamp", "Mountains", "Menu"];
   if(!swampDiscovery) {
     temp.splice(temp.indexOf("Swamp"), 1);
@@ -59,26 +57,26 @@ function Places() {
     switch (answer) {
       case 'Town':
         if (aabeaDestroysTown === false) {
-          writeText('You walk into town, where there is a marketplace and an inn.')
-          InTown()
+          writeText('You walk into town, where there is a marketplace and an inn.');
+          InTown();
         } else {
-          writeText('As you near the outskirts of town, you notice the stream of people leaving town. Then you notice that the entire place is now just a gigantic blast crater. Somebody blew it up!!! You decide to investigate, and walk over to the stream of people.')
-          writeText('When you reach the people, they all say this person named Tivél had just come to town and started fires all over, and then used some weird, magical powers to blow up Smatino.')
-          writeText('You are sure this Tivél is the same as the one who you met in the swamp, and wish you had used some \'weird, magical powers\' to blow him up.')
-          writeTextWait('You race back to the swamp, and see him from a distance. You can\'t, however, blow him up. There are too many vines in the way. So, you follow him. You see a large tower in the distance, and finally, after a few hours, reach it at night. You see Tivél enter, and then, as the gate is clanging down above him, you slide under it and manage to get in.', inTower)
+          writeText('As you near the outskirts of town, you notice the stream of people leaving town. Then you notice that the entire place is now just a gigantic blast crater. Somebody blew it up!!! You decide to investigate, and walk over to the stream of people.');
+          writeText('When you reach the people, they all say this person named Tivél had just come to town and started fires all over, and then used some weird, magical powers to blow up Smatino.');
+          writeText('You are sure this Tivél is the same as the one who you met in the swamp, and wish you had used some \'weird, magical powers\' to blow him up.');
+          writeTextWait('You race back to the swamp, and see him from a distance. You can\'t, however, blow him up. There are too many vines in the way. So, you follow him. You see a large tower in the distance, and finally, after a few hours, reach it at night. You see Tivél enter, and then, as the gate is clanging down above him, you slide under it and manage to get in.', inTower);
         }
         break;
       case 'Plains':
         if (plainsCounter === 7) {
-          writeText('As you are walking through the plains you see a map lying on the ground. It shows a path leading to a nearby swamp.')
-          swampDiscovery = true
+          writeText('As you are walking through the plains you see a map lying on the ground. It shows a path leading to a nearby swamp.');
+          swampDiscovery = true;
         }
         monsInitialize("plains");
         break;
       case 'Swamp':
         if (swampCounter === 7 && killCounter >= 14) {
-          writeText('As you are walking through the swamp, you meet someone. He says his name is Tivél, and he is heading towards Smatino, but doesn\'t tell why.')
-          aabeaDestroysTown = true
+          writeText('As you are walking through the swamp, you meet someone. He says his name is Tivél, and he is heading towards Smatino, but doesn\'t tell why.');
+          aabeaDestroysTown = true;
         }
         inSwamp = 1;
         monsInitialize("swamp");
@@ -88,40 +86,40 @@ function Places() {
         if(percentChance(50)) {
           monsInitialize("plains");
         } else {
-          Mountains()
+          Mountains();
         }
         break;
       case 'Menu':
-        Menu()
+        Menu();
         break;
     }
   }
 }
 
 function Mountains() {
-  writeText('You make it through the plains and head off into the mountains.')
+  writeText('You make it through the plains and head off into the mountains.');
   loc = 3;
   monsInitialize("mountains");
 }
 
 function InTown() {
-  loc = 2
+  loc = 2;
   writeText("Where to?");
   requestInput(["Market", "Inn", "Leave", "Menu"], determineAnswer);
   function determineAnswer() {
     switch (answer) {
       case 'Market':
-        InShop()
+        InShop();
         break;
       case 'Inn':
-        InInn()
+        InInn();
         break;
       case 'Leave':
-        writeText('You leave town.')
-        Places()
+        writeText('You leave town.');
+        Places();
         break;
       case 'Menu':
-        Menu()
+        Menu();
         break;
     }
   }
