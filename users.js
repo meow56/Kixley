@@ -1,5 +1,5 @@
 // import;
-import * from './vars.js';
+
 export { initializeUsers, MakeNewAccount, login, checkDefaults };
 
 
