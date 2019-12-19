@@ -3,7 +3,7 @@ import { writeTextWait, randomNumber, writeText } from './utility.js';
 import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
 import { playMusic } from './music.js';
 
-export { WonTheFight, totalGold };
+export { WonTheFight, totalGold, loc };
 
 var inSwamp;
 var toMountains;
@@ -29,6 +29,7 @@ var levelReq = 300; // exp required until level up
 var levelUpHealth = 50;
 var totalExtraHealth = 0;
 var levelUpBlobsOfDoom = 50;
+var loc;
 
 var questType = [
   'kill',
