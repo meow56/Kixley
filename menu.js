@@ -2,7 +2,7 @@ import { loadMusic, playMusic } from './music.js';
 import { diffSetting, Difficulty } from './classes.js';
 import { initializeUsers, MakeNewAccount, login } from './users.js';
 import { randomNumber, writeText, requestInput } from './utility.js';
-import { totalGold } from './places.js';
+import { totalGold, loc } from './places.js';
 
 export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
 
@@ -40,7 +40,6 @@ var actualAccuracy;
 var youCheated = false; // have you cheated, ever?
 var PassOrNot = '';
 var openingMenu;
-var loc;
 var from;
 var answer;
 
