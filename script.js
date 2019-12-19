@@ -33,11 +33,6 @@ var dwNames = [
 // travel
 var timeGTOne = 0; // whether you get 6 or 7 BoD when Mithrómen sells you BoD
 // level
-var temp;
-var levelReq = 300; // exp required until level up
-var levelUpHealth = 50;
-var totalExtraHealth = 0;
-var levelUpBlobsOfDoom = 50;
 // cheats
 // other
 var x; // rng
@@ -263,47 +258,6 @@ function beatTheGame() {
         throw err;
         break;
     }
-  }
-}
-
-function StatToLevelUp() {
-  writeText("Please choose a stat to level up.");
-  requestInput(["Base Attack + " + temp, "Health + " + levelUpHealth, "Blobs of Doom + " + levelUpBlobsOfDoom], determineAnswer);
-  function determineAnswer() {
-    switch (answer) {
-      case 'Base Attack + ' + temp:
-        writeText('You got ' + temp + ' base attack!')
-        kixleyNCo[1].attackPow += temp
-        baseAttackPower += temp
-        break;
-      case 'Health + ' + levelUpHealth:
-        writeText('You got ' + levelUpHealth + ' health!')
-        kixleyNCo[1].hitPoints += levelUpHealth
-        kixleyNCo[1].totalHP += levelUpHealth
-        break;
-      case 'Blobs of Doom + ' + levelUpBlobsOfDoom:
-        writeText('You got ' + levelUpBlobsOfDoom + ' blobs of doom!')
-        kixleyNCo[1].blobs += levelUpBlobsOfDoom
-        kixleyNCo[1].totalBlobs += levelUpBlobsOfDoom
-        break;
-    }
-    Places();
-  }
-}
-
-function checkForLevelUp() {
-  if (totalExp >= levelReq) {
-    kixleyNCo[1].lev += 1
-    temp = Math.floor(1.2 * kixleyNCo[1].lev) - 1
-    levelUpHealth = 50
-    levelUpHealth += classHealthChanges[kixleyNCo[1].chosenClass]
-    levelUpHealth *= kixleyNCo[1].lev - 1
-    levelUpBlobsOfDoom = 50
-    levelUpBlobsOfDoom *= kixleyNCo[1].lev - 1
-    writeText('You leveled up!')
-    levelReq += levelReq
-    CheckIfGotAchieve('Level')
-    StatToLevelUp()
   }
 }
 
