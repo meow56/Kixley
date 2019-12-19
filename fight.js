@@ -4,7 +4,7 @@ import { diffSetting } from './classes.js';
 import { playMusic } from './music.js';
 import { WonTheFight, totalGold } from './places.js';
 
-export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story, numMons };
+export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story, numMons, monsInitialize };
 
 function changeDropMult(value) {
   dropMult = value;
