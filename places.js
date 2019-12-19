@@ -1,10 +1,41 @@
-import * from './vars.js';
+import { numMons, dropMult, kixleyNCo } from './fight.js';
 import { writeTextWait, randomNumber, writeText } from './utility.js';
-import { CheckIfGotAchieve } from './menu.js';
+import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
 
 export { WonTheFight, totalGold };
 
+var inSwamp;
+var toMountains;
+var plainsCounter = 0;
+var swampDiscovery = false;
+var mountainPass = false;
+var swampCounter = 0;
+var fightingGroup = false;
+var fightingAAbea = false;
+var fightingBalbeag = false;
+var totalGold = 0; // gold you have
+var totalExp = 0; // exp you have
+var expLeft; // exp until level up
+var questKillAmt = 0; // amount of monsters you've killed for the quest
+var questKillReq; // amount of monsters to kill
+var reqItem;
+var questGoldReq; // amount of gold you need to give galkemen
+var questExpAmt = 0; // amount of exp you've gotten for the quest
+var questExpReq; // amount of exp you need to get
+var onAQuest = 0; // are you on a quest?
+var y; // what type of quest
 
+var questType = [
+  'kill',
+  'gold',
+  'EXP',
+  'item'
+];
+var possibleItems = [
+  'wooden sword',
+  'pair of speed boots'
+];
+var reward; // how much gold/exp you get when you finish a quest
 
 function Places() {
   if(marketplaceMusic.paused) {
@@ -523,14 +554,14 @@ function WonTheFight() {
       goldDrops += randomNumber(25, 75) * dropMult;
       expPoints += randomNumber(50, 150);
     }
-    killCount += numMons;
+    addKillCount(numMons);
     if (kixleyNCo[1].rageEffect !== 1) {
       writeText('You calm down from your rage.');
       kixleyNCo[1].rageEffect = 1;
     }
     writeText('You got ' + goldDrops + ' gold and ' + expPoints + ' experience!');
     totalGold += goldDrops;
-    cumulativeGold += goldDrops;
+    addCumulativeGold(goldDrops);
     totalExp += expPoints;
     questExpAmt += expPoints;
     CheckIfGotAchieve('Gold');
