@@ -1,4 +1,4 @@
-import * from './vars.js';
+import { kixleyNCo, fightHandler } from './fight.js';
 
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
@@ -14,6 +14,54 @@ window.onerror = function(message, source, lineno, colno, error) {
     alert("Error found on column " + colno);
   }
 }
+
+// monster variables
+var aabeaDestroysTown = false;
+var dwNamesB = false; // MARKED FOR DELETION
+var dwNames = [
+  'Hey wait a minute, that was a bug',
+  'Dalek',
+  'Cyberman',
+  'Weeping Angel',
+  'Zygon',
+  'Silurian',
+  'Silent',
+  'Master',
+  'Special Weapons Dalek'
+]; // MARKED FOR DELETION
+// achievements
+// travel
+var timeGTOne = 0; // whether you get 6 or 7 BoD when Mithrómen sells you BoD
+// level
+var temp;
+var levelReq = 300; // exp required until level up
+var levelUpHealth = 50;
+var totalExtraHealth = 0;
+var levelUpBlobsOfDoom = 50;
+// cheats
+// other
+var x; // rng
+var theWholeShebang = [
+  'Kixley Beta 1.1',
+  'Programmers:',
+  'Ethan Lai',
+  'Colin Pulis',
+  'Jacob Kuschel',
+  'Cameron Jordan',
+  'John Georgiades',
+  'Composer:',
+  'Colin Pulis',
+  'Special thanks to:',
+  'The Stack Overflow community, for helping with bugs,',
+  'MDN and Codecademy, for helping us learn how to JavaScript,',
+  'Atlassian, for making Bitbucket, which was used in the early days to create this.',
+  'And Github, on which we are hosting the game itself.'
+]; // Credits!
+// menu
+// items
+// accounts
+// questing
+// music
 
 /*******************\
 |      UTILITY      |
