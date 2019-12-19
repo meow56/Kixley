@@ -1,5 +1,6 @@
-import * from './vars.js';
-import { Shoot } from './classes.js';
+import { Shoot, diffSetting } from './classes.js';
+import { kixleyNCo } from './fight.js';
+import { totalGold } from './places.js';
 
 export { displayInventory, changeCatalogPrice, changeHealthPotionEff };
 
