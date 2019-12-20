@@ -612,7 +612,7 @@ function StatToLevelUp() {
 function checkForLevelUp() {
   if (totalExp >= levelReq) {
     kixleyNCo[1].lev += 1
-    temp = Math.floor(1.2 * kixleyNCo[1].lev) - 1
+    var temp = Math.floor(1.2 * kixleyNCo[1].lev) - 1
     levelUpHealth = 50
     levelUpHealth += classHealthChanges[kixleyNCo[1].chosenClass]
     levelUpHealth *= kixleyNCo[1].lev - 1
