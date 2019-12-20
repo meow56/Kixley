@@ -2,7 +2,7 @@ import { randomNumber, writeTextWait, writeText, requestInput, percentChance } f
 import { displayInventory, changeCatalogPrice, changeHealthPotionEff } from './items.js';
 import { diffSetting } from './classes.js';
 import { playMusic } from './music.js';
-import { WonTheFight, totalGold } from './places.js';
+import { WonTheFight, totalGold, toMountains } from './places.js';
 
 export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story, numMons, monsInitialize };
 
