@@ -769,7 +769,7 @@ function FightMenu() {
     writeText(monsterGroup[i].called + " type: " + monsterGroup[i].element);
   }
   var temp = ["Fight", "Health Potion", "Magic", "Special Attack", "Run"];
-  if(kixleyNCo[1].spec === undefined || usedSpec) {
+  if(kixleyNCo[1].spec === null || usedSpec) {
     temp.splice(temp.indexOf("Special Attack"), 1);
   }
   var temp2 = false;
