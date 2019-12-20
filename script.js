@@ -16,7 +16,6 @@ window.onerror = function(message, source, lineno, colno, error) {
 }
 
 // monster variables
-var aabeaDestroysTown = false;
 var dwNamesB = false; // MARKED FOR DELETION
 var dwNames = [
   'Hey wait a minute, that was a bug',
