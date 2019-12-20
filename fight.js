@@ -596,9 +596,7 @@ function fightLoop() {
 
 function monsInitialize(place) {
   var temp = "";
-  if(dwNamesB) {
-    temp = dwNames[randomNumber(1, dwNames.length - 1)];
-  } else if(place === "plains" || place === "swamp") {
+  if(place === "plains" || place === "swamp") {
     temp = monsName[randomNumber(1, monsName.length - 1)];
   } else if(place === "mountains") {
     temp = mountainNames[randomNumber(1, mountainNames.length - 1)];
@@ -614,65 +612,23 @@ function monsInitialize(place) {
     monsterGroup[1].totalHP = monsterGroup[1].hitPoints;
     monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(4, 8)) * diffSetting;
     if(toMountains) {
-      if (monsterGroup[1].called !== 'Master') {
-        writeText('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
-      } else if (foughtMaster === 0 && monsterGroup[1].called === "Master") {
-        writeText('You head off towards the mountain, but get accosted by the Master, who is level ' + monsterGroup[1].lev + '.')
-        foughtMaster = 1
-      } else if (foughtMaster === 1 && monsterGroup[1].called === "Master") {
-        writeText('You head off towards the mountain, but get accosted by a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
-      } else {
-        writeText('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.')
-      }
+      writeText('You head off towards the mountain, but get accosted by a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + ' in the plains.');
     } else {
-      if(dwNamesB) {
-        if (monsterGroup[1].called !== 'Master') {
-          writeText('You head off into the plains, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
-        } else if (foughtMaster === 0) {
-          writeText('You head off into the plains, where you find the Master, who is level ' + monsterGroup[1].lev + '.')
-          foughtMaster = 1
-        } else if (foughtMaster === 1) {
-          writeText('You head off into the plains, where you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
-        }
-      } else {
-        writeText('You head off into the plains, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
-      }
+      writeText('You head off into the plains, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!');
     }
   } else if(place === "swamp") {
     monsterGroup[1].lev *= randomNumber(1, 2);
     monsterGroup[1].hitPoints = (100 + randomNumber(-10, 10)) * diffSetting + Math.pow(monsterGroup[1].lev, 2);
     monsterGroup[1].totalHP = monsterGroup[1].hitPoints;
     monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(0, 5)) * diffSetting;
-    if(dwNamesB) {
-      if (monsterGroup[1].called !== 'Master') {
-        writeText('You get lost in the swamp, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
-      } else if (foughtMaster === 0) {
-        writeText('You get lost in the swamp, where you find the Master, who is level ' + monsterGroup[1].lev + '.')
-        foughtMaster = 1
-      } else if (foughtMaster === 1) {
-        writeText('You get lost in the swamp, where you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
-      }
-    } else {
-      writeText('You get lost in the swamp, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
-    }
+    writeText('You get lost in the swamp, where you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!');
   } else if (place === "mountains") {
     monsterGroup[1].lev *= randomNumber(1, 2);
     monsterGroup[1].lev += 5;
     monsterGroup[1].hitPoints = (100 + randomNumber(-5, 15)) * diffSetting + Math.pow(monsterGroup[1].lev, 2);
     monsterGroup[1].totalHP = monsterGroup[1].hitPoints;
     monsterGroup[1].attackPow = (monsterGroup[1].lev + randomNumber(1, 6)) * diffSetting;
-    if(dwNamesB) {
-      if (monsterGroup[1].called !== 'Master') {
-        writeText('Once you get into the mountains, you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
-      } else if (foughtMaster === 0) {
-        writeText('Once you get into the mountains, you find the Master, who is level ' + monsterGroup[1].lev + '.')
-        foughtMaster = 1
-      } else if (foughtMaster === 1) {
-        writeText('Once you get into the mountains, you find a newly regenerated Master, who is level ' + monsterGroup[1].lev + '.')
-      }
-    } else {
-      writeText('Once you get into the mountains, you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
-    }
+    writeText('Once you get into the mountains, you find a level ' + monsterGroup[1].lev + ' ' + monsterGroup[1].called + '!')
   } else if (place === "start") {
     if(monsterGroup.length >= 2) {
       monsterGroup[1] = new Fighter(100, randomNumber(5, 9), 90, 'Goblin', 1, "Fighting", 50);
