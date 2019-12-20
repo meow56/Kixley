@@ -3,7 +3,7 @@ import { writeTextWait, randomNumber, writeText, requestInput } from './utility.
 import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
 import { playMusic } from './music.js';
 import { classHealthChanges } from './classes.js';
-import { catalog } from './items.js';
+import { catalog, findNameInventory } from './items.js';
 
 export { WonTheFight, totalGold, loc, toMountains, Places };
 
