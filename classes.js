@@ -2,15 +2,16 @@ import { checkDefaults } from './users.js';
 import { kixleyNCo, monsterGroup, dropMult, changeDropMult, story } from './fight.js';
 import { writeText, requestInput } from './utility.js';
 
-export { diffSetting, Shoot, Difficulty, classHealthChanges };
+export { diffSetting, Shoot, Difficulty, chosenClass };
 
 
 
-function GameClass(name, description, at, he, boD, spEff, spec, acc, drops, speed, critc, critd) {
+function GameClass(name, description, at, he, dHe, boD, spEff, spec, acc, drops, speed, critc, critd) {
   this.name = name;
   this.desc = description;
   this.attack = at || 0;
   this.health = he || 0;
+  this.healthChange = dHe || 0;
   this.blobsOfDoom = boD || 0;
   this.spellEffect = spEff || 0;
   this.accuracy = acc || 0;
@@ -94,6 +95,7 @@ function GameClass(name, description, at, he, boD, spEff, spec, acc, drops, spee
   }
   
   this.choose = function() {
+    chosenClass = this;
     kixleyNCo[1].attackPow += this.attack;
     kixleyNCo[1].hitPoints += this.health;
     kixleyNCo[1].totalHP += this.health;
@@ -116,16 +118,16 @@ function SpecialAttack(name, description, action) {
   this.action = action;
 }
                            // name, description, attack, health, bod, spell effectiveness, special, accuracy, drops, speed, critc, critmult
-var classes = [new GameClass("Knight", "The knight is a fierce warrior. They know when to fight and when to block, and trains themself ceaselessly.", 2, 15, -100, 50),
-               new GameClass("Mage", "The mage does not overuse the fight option. Rather, they use magical attacks that damage the enemy.", -2, -15, 100, 150),
-               new GameClass("Barbarian", "The barbarian hits hard, but at the cost of health. With the Rage spell, they can knock out enemies with a single hit.", 4, 75),
-               new GameClass("Cleric", "The cleric would prefer to heal friends than attack foes, but they will have to fight now. With the Heal spell, they can restore some of their health.", -3, 10, 50, 125, new SpecialAttack("Heal", "Heal 60 HP for 30 Blobs of Doom", function() {writeText("You heal 60 hitpoints!"); this.hitPoints += 60; if (this.hitPoints > this.totalHP) { this.hitPoints = this.totalHP; } this.blobs -= 30; })),
-               new GameClass("Prince", "The prince is like a knight on steroids. The fight option is definitely the choice for this class.", 4, 30, -200, 25),
-               new GameClass("Archmage", "The arch-mage is like a mage on steroids. You should definitely use some magic as this class.", -4, -30, 200, 175),
-               new GameClass("Thief", "The thief class has put their stealing ability to good use. Now, they steal from monsters!", -1, 0, -50, 0, new SpecialAttack("Steal", "A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!", Steal), 20, 50),
-               new GameClass("Ninja", "The ninja class is oriented towards hitting more and getting hit less. With higher accuracy, this master of hiding also decreases their opponent\'s accuracy.", -2, 0, -50, 0, null, 25, 0, 10),
-               new GameClass("Cavalry", "The cavalry class is like the knight, but with a higher crit chance. However, the other advantages are less.", 1, 7, -150, 40, null, 0, 0, 0, 10, 50),
-               new GameClass("Archer", "The archer class isn't the strongest, but they still can fight well. With the shoot attack, they can inflict damage while making the monster less accurate.", -2, -7, -15, 110, new SpecialAttack("Shoot", "You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows.", Shoot), 30)
+var classes = [new GameClass("Knight", "The knight is a fierce warrior. They know when to fight and when to block, and trains themself ceaselessly.", 2, 15, 15, -100, 50),
+               new GameClass("Mage", "The mage does not overuse the fight option. Rather, they use magical attacks that damage the enemy.", -2, -15, -15, 100, 150),
+               new GameClass("Barbarian", "The barbarian hits hard, but at the cost of health. With the Rage spell, they can knock out enemies with a single hit.", 4, 75, -25),
+               new GameClass("Cleric", "The cleric would prefer to heal friends than attack foes, but they will have to fight now. With the Heal spell, they can restore some of their health.", -3, 10, 15, 50, 125, new SpecialAttack("Heal", "Heal 60 HP for 30 Blobs of Doom", function() {writeText("You heal 60 hitpoints!"); this.hitPoints += 60; if (this.hitPoints > this.totalHP) { this.hitPoints = this.totalHP; } this.blobs -= 30; })),
+               new GameClass("Prince", "The prince is like a knight on steroids. The fight option is definitely the choice for this class.", 4, 30, 30, -200, 25),
+               new GameClass("Archmage", "The arch-mage is like a mage on steroids. You should definitely use some magic as this class.", -4, -30, -30, 200, 175),
+               new GameClass("Thief", "The thief class has put their stealing ability to good use. Now, they steal from monsters!", -1, 0, 0, -50, 0, new SpecialAttack("Steal", "A 43% chance to steal something from a monster, increasing your attack (for that battle) and decreasing theirs!", Steal), 20, 50),
+               new GameClass("Ninja", "The ninja class is oriented towards hitting more and getting hit less. With higher accuracy, this master of hiding also decreases their opponent\'s accuracy.", -2, 0, 0, -50, 0, null, 25, 0, 10),
+               new GameClass("Cavalry", "The cavalry class is like the knight, but with a higher crit chance. However, the other advantages are less.", 1, 7, 7, -150, 40, null, 0, 0, 0, 10, 50),
+               new GameClass("Archer", "The archer class isn't the strongest, but they still can fight well. With the shoot attack, they can inflict damage while making the monster less accurate.", -2, -7, -7, -15, 110, new SpecialAttack("Shoot", "You drop back and shoot an arrow at the monster, decreasing your enemy\'s accuracy. However, this attack costs arrows.", Shoot), 30)
                ];
 var classHealthChanges = [
   15, -15, -25,
