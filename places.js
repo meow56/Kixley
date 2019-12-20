@@ -588,6 +588,7 @@ function WonTheFight() {
 }
 
 function StatToLevelUp() {
+  var temp = Math.floor(1.2 * kixleyNCo[1].lev) - 1;
   writeText("Please choose a stat to level up.");
   requestInput(["Base Attack + " + temp, "Health + " + levelUpHealth, "Blobs of Doom + " + levelUpBlobsOfDoom], determineAnswer);
   function determineAnswer() {
@@ -615,7 +616,6 @@ function StatToLevelUp() {
 function checkForLevelUp() {
   if (totalExp >= levelReq) {
     kixleyNCo[1].lev += 1
-    var temp = Math.floor(1.2 * kixleyNCo[1].lev) - 1
     levelUpHealth = 50
     levelUpHealth += classHealthChanges[kixleyNCo[1].chosenClass]
     levelUpHealth *= kixleyNCo[1].lev - 1
