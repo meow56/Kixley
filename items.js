@@ -1,6 +1,7 @@
 import { Shoot, diffSetting } from './classes.js';
 import { kixleyNCo } from './fight.js';
 import { totalGold } from './places.js';
+import { writeText, requestInput, writeTextWait, requestNumber } from './utility.js';
 
 export { displayInventory, changeCatalogPrice, changeHealthPotionEff, catalog, findNameInventory };
 
