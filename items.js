@@ -2,7 +2,7 @@ import { Shoot, diffSetting } from './classes.js';
 import { kixleyNCo } from './fight.js';
 import { totalGold } from './places.js';
 
-export { displayInventory, changeCatalogPrice, changeHealthPotionEff, catalog };
+export { displayInventory, changeCatalogPrice, changeHealthPotionEff, catalog, findNameInventory };
 
 function changeCatalogPrice(multFactor) {
   for(var i = 0; i < catalog.length; i++) {
