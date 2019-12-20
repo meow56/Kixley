@@ -554,7 +554,7 @@ function WonTheFight() {
   function goldAndEXP() {
     var goldDrops = 0;
     var expPoints = 0;
-    for(var i = 0; i < numMons.length; i++) { // better because more accurate probability distribution
+    for(var i = 0; i < numMons; i++) { // better because more accurate probability distribution
       goldDrops += randomNumber(25, 75) * dropMult;
       expPoints += randomNumber(50, 150);
     }
