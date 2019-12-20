@@ -3,7 +3,7 @@ import { writeTextWait, randomNumber, writeText, requestInput } from './utility.
 import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
 import { playMusic } from './music.js';
 
-export { WonTheFight, totalGold, loc };
+export { WonTheFight, totalGold, loc, toMountains };
 
 var inSwamp;
 var toMountains;
@@ -80,7 +80,7 @@ function Places() {
           writeText('As you are walking through the swamp, you meet someone. He says his name is Tivél, and he is heading towards Smatino, but doesn\'t tell why.');
           aabeaDestroysTown = true;
         }
-        inSwamp = 1;
+        inSwamp = true;
         monsInitialize("swamp");
         break;
       case 'Mountains':
@@ -527,19 +527,19 @@ function itemQuestEvaluate() {
 }
 
 function WonTheFight() {
-  if (inSwamp === 1) {
-    inSwamp = 0
-    swampCounter++
-    writeTextWait('As the monster dies, you get teleported out of the swamp.', goldAndEXP)
+  if (inSwamp) {
+    inSwamp = false;
+    swampCounter++;
+    writeTextWait('As the monster dies, you get teleported out of the swamp.', goldAndEXP);
   } else if (fightingGroup) {
-    fightingGroup = false
-    writeTextWait('Balbeag\'s soldiers are defeated!', inTowerPostDoomedGroup)
+    fightingGroup = false;
+    writeTextWait('Balbeag\'s soldiers are defeated!', inTowerPostDoomedGroup);
   } else if (fightingAAbea) {
-    fightingAAbea = false
-    writeTextWait('Tivél is defeated!', finalBossFight)
+    fightingAAbea = false;
+    writeTextWait('Tivél is defeated!', finalBossFight);
   } else if (fightingBalbeag) {
-    fightingBalbeag = false
-    Credits(beatTheGame)
+    fightingBalbeag = false;
+    Credits(beatTheGame);
   } else if (toMountains) {
     toMountains = false
     writeTextWait("With the monster defeated, you hike back down the mountain.", goldAndEXP);
