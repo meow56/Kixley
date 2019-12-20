@@ -3,6 +3,7 @@ import { diffSetting, Difficulty } from './classes.js';
 import { initializeUsers, MakeNewAccount, login } from './users.js';
 import { randomNumber, writeText, requestInput } from './utility.js';
 import { totalGold, loc } from './places.js';
+import { kixleyNCo } from './fight.js';
 
 export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
 
