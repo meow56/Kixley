@@ -4,7 +4,7 @@ import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
 import { playMusic } from './music.js';
 import { classHealthChanges } from './classes.js';
 
-export { WonTheFight, totalGold, loc, toMountains };
+export { WonTheFight, totalGold, loc, toMountains, Places };
 
 var inSwamp;
 var toMountains;
