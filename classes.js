@@ -2,7 +2,7 @@ import { checkDefaults } from './users.js';
 import { kixleyNCo, monsterGroup, dropMult, changeDropMult, story } from './fight.js';
 import { writeText, requestInput } from './utility.js';
 
-export { diffSetting, Shoot, Difficulty };
+export { diffSetting, Shoot, Difficulty, classHealthChanges };
 
 
 
