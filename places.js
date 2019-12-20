@@ -2,7 +2,7 @@ import { numMons, dropMult, kixleyNCo, monsInitialize } from './fight.js';
 import { writeTextWait, randomNumber, writeText, requestInput } from './utility.js';
 import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
 import { playMusic } from './music.js';
-import { classHealthChanges } from './classes.js';
+import { chosenClass } from './classes.js';
 import { catalog, findNameInventory } from './items.js';
 
 export { WonTheFight, totalGold, loc, toMountains, Places };
