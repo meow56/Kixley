@@ -617,7 +617,7 @@ function checkForLevelUp() {
   if (totalExp >= levelReq) {
     kixleyNCo[1].lev += 1
     levelUpHealth = 50
-    levelUpHealth += classHealthChanges[kixleyNCo[1].chosenClass]
+    levelUpHealth += chosenClass.dHe;
     levelUpHealth *= kixleyNCo[1].lev - 1
     levelUpBlobsOfDoom = 50
     levelUpBlobsOfDoom *= kixleyNCo[1].lev - 1
