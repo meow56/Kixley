@@ -52,7 +52,7 @@ function requestNumber(whenDone, min, max) { // requests number from player usin
   }
 }
 
-function requestRange(whenDone, min, max, step) { // requests number from player using the "range" input
+function requestRange(whenDone, min, max, step, tickMarks) { // requests number from player using the "range" input
   window.answer = " ";
   var temp2 = document.getElementById("buttons");
   var temp3 = document.createElement("INPUT");
@@ -66,6 +66,17 @@ function requestRange(whenDone, min, max, step) { // requests number from player
   }
   if(step !== undefined) {
     temp3.step = step;
+  }
+  if(tickMarks) {
+    var temp4 = document.createElement("DATALIST");
+    temp4.id = "tickMarks";
+    for(var i = 0; i <= (max - min) / step; i++) {
+      var temp5 = document.createElement("OPTION");
+      temp5.value = min + (step * i);
+      temp4.appendChild(temp5);
+    }
+    temp2.appendChild(temp4);
+    temp3.list = "tickMarks";
   }
   temp2.appendChild(temp3);
   
