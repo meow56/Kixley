@@ -1,4 +1,4 @@
-export { loadMusic, playMusic, setVolume };
+export { loadMusic, playMusic, setMusicVolume };
 
 function Song(name, source) {
   this.name = name;
@@ -41,7 +41,7 @@ function playMusic(which) { // string with the name
   }
 }
 
-function setVolume(volume) {
+function setMusicVolume(volume) {
   for(var i = 0; i < songs.length; i++) {
     songs[i].src.volume = volume;
   }
