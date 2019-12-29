@@ -1,7 +1,7 @@
 import { fightHandler } from './fight.js';
 import { displayInventory } from './items.js';
 
-export { randomNumber, percentChance, requestNumber, requestInput, writeTextWait, writeText };
+export { randomNumber, percentChance, requestNumber, requestRange, requestInput, writeTextWait, writeText };
 
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -18,7 +18,7 @@ function wFUIUpdates() { // waitForUserInputUpdates; mostly UI stuff
   fightHandler.showBlobs();
 }
 
-function requestNumber(whenDone, min, max) {
+function requestNumber(whenDone, min, max) { // requests number from player using the "number" input
   answer = " ";
   var temp2 = document.getElementById("buttons");
   var temp3 = document.createElement("INPUT");
@@ -34,7 +34,7 @@ function requestNumber(whenDone, min, max) {
   
   temp3 = document.createElement("BUTTON");
   temp3.id = "number_submit";
-  temp3.innerHTML = "Submit";
+  temp3.textContent = "Submit";
   temp3.onclick = Function("answer = document.getElementById('number_input').value;");
   temp2.appendChild(temp3);
   
@@ -42,6 +42,43 @@ function requestNumber(whenDone, min, max) {
   
   function waitForUserInput() {
     if(answer === " ") {
+      wFUIUpdates();
+      setTimeout(waitForUserInput, 0);
+    } else {
+      temp2.removeChild(document.getElementById("number_input"));
+      temp2.removeChild(document.getElementById("number_submit"));
+      whenDone();
+    }
+  }
+}
+
+function requestRange(whenDone, min, max, step) { // requests number from player using the "range" input
+  window.answer = " ";
+  var temp2 = document.getElementById("buttons");
+  var temp3 = document.createElement("INPUT");
+  temp3.id = "range_input";
+  temp3.type = "range";
+  if(min !== undefined) {
+    temp3.min = min;
+  }
+  if(max !== undefined) {
+    temp3.max = max;
+  }
+  if(step !== undefined) {
+    temp3.step = step;
+  }
+  temp2.appendChild(temp3);
+  
+  temp3 = document.createElement("BUTTON");
+  temp3.id = "range_submit";
+  temp3.textContent = "Submit";
+  temp3.onclick = Function("window.answer = document.getElementById('range_input').value;");
+  temp2.appendChild(temp3);
+  
+  waitForUserInput();
+  
+  function waitForUserInput() {
+    if(window.answer === " ") {
       wFUIUpdates();
       setTimeout(waitForUserInput, 0);
     } else {
