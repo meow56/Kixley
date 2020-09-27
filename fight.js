@@ -3,6 +3,7 @@ import { displayInventory, changeCatalogPrice, changeHealthPotionEff } from './i
 import { diffSetting } from './classes.js';
 import { playMusic } from './music.js';
 import { WonTheFight, totalGold, toMountains, Places } from './places.js';
+import { GameOver } from './script.js';
 
 export { kixleyNCo, fightHandler, monsterGroup, dropMult, changeDropMult, story, numMons, monsInitialize };
 
