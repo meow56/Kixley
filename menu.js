@@ -5,7 +5,7 @@ import { randomNumber, writeText, requestInput } from './utility.js';
 import { totalGold, loc } from './places.js';
 import { kixleyNCo } from './fight.js';
 
-export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu };
+export { addKillCount, addCumulativeGold, CheckIfGotAchieve, StartUpMenu, Menu };
 
 function addKillCount(kill) {
   killCounter += kill;
