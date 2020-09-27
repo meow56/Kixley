@@ -1,6 +1,6 @@
 import { numMons, dropMult, kixleyNCo, monsInitialize } from './fight.js';
 import { writeTextWait, randomNumber, writeText, requestInput } from './utility.js';
-import { addKillCount, addCumulativeGold, CheckIfGotAchieve } from './menu.js';
+import { addKillCount, addCumulativeGold, CheckIfGotAchieve, Menu } from './menu.js';
 import { playMusic } from './music.js';
 import { chosenClass } from './classes.js';
 import { catalog, findNameInventory } from './items.js';
