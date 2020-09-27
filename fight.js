@@ -41,6 +41,7 @@ function Fighter(health, attack, acc, name, level, type, BoD, speed) {
   this.prevBlobs;
   this.prevGold;
   this.prevLev;
+  this.blobsToGain;
   
   this.equipped = []; // 1D array: [InventoryItem, InventoryItem]
 
@@ -71,12 +72,15 @@ function Fighter(health, attack, acc, name, level, type, BoD, speed) {
       }
       fighter.hitPoints -= this.finalDamage; // actual damage calculation
       if (this.called === "You" && this.totalBlobs > 0 && this.totalBlobs !== this.blobs) {
-        x = randomNumber(1, 5)
-        if(this.totalBlobs - this.blobs < x) {
-          x = this.totalBlobs - this.blobs;
+        this.blobsToGain = randomNumber(1, 5)
+        if(this.totalBlobs - this.blobs < this.blobsToGain) {
+          this.blobsToGain = this.totalBlobs - this.blobs;
         }
-        kixleyNCo[1].blobs += x
-        writeText("You got " + x + " blobs of doom.")
+        else {
+          this.blobsToGain = this.totalBlobs - this.blobs
+        }
+        kixleyNCo[1].blobs += this.blobsToGain
+        writeText("You got " + this.blobsToGain + " blobs of doom.")
       }
       if(this.element === "Poison") {
         if(randomNumber(1, 3) === 1) {
