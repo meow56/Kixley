@@ -1,4 +1,5 @@
 import { kixleyNCo, fightHandler } from './fight.js';
+import { gameOverMusic } from './music.js'
 
 export { GameOver }
 
