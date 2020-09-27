@@ -1,4 +1,4 @@
-export { loadMusic, playMusic, setMusicVolume };
+export { loadMusic, playMusic, setMusicVolume, gameOverMusic };
 
 function Song(name, source) {
   this.name = name;
