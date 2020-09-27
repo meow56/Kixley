@@ -1,5 +1,7 @@
 import { kixleyNCo, fightHandler } from './fight.js';
 
+export { GameOver }
+
 window.onerror = function(message, source, lineno, colno, error) {
   if(error.message === "Thanks for playing!") {
     writeText(error.message);
